@@ -157,14 +157,4 @@ LINE_UPPER_CORNER="\342\224\214"
 export PS1="$c8\$(tput sc)\[\033[1;\$(echo -n \$((\$COLUMNS-45)))H\]\d \174 \$(get_pip) \174 \l \s v\v\$(tput rc)\n$LINE_UPPER_CORNER$LINE_STRAIGHT$LINE_STRAIGHT\174\t\174$LINE_STRAIGHT\174$C8\u$c8\100\h\174$LINE_STRAIGHT\174$C8\$(pwd)$c8: \$(lsfiledirsum) \$(lsbytesum)Mb\174\n$LINE_BOTTOM_CORNER$LINE_STRAIGHT$LINE_BOTTOM\174\[$(tput sgr0)\] "
 
 
-#######################################################
-#		TESTING ONLY
-#######################################################
-
-export PS1="\e[s\e[0;0H\e[0;32m\l \s v\v \t\n\e[;0m\e[u\n$C8\u$c8@$c8\h - \$(pwd):$C8 \$(lsfilesum) files \$(lsbytesum)Mb\n> "
-
-export PS1="\e[s\e[0;0H\e[1;37m\l \s v\v \t\n\e[;0m\e[u\u@\h: \$(pwd)\n> "
-
-export PS1="$C8\u$c8@$c8\h - \$(pwd): \$(lsfilesum)files \$(lsbytesum)Mb\n$c3> $C8"
-
 
