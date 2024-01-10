@@ -67,6 +67,24 @@ extract () {
     done
 }
 
+get_temp() {
+    # Check if 'sensors' command is available
+    if command -v sensors &>/dev/null; then
+        # Extract CPU temperature using 'sensors'
+        local cpu_temperature=$(sensors | grep "Core 0" | awk '{print $3}')
+        
+        # Check if temperature is not empty
+        if [ -n "$cpu_temperature" ]; then
+            echo "CPU Temperature: $cpu_temperature"
+        else
+            echo "Unable to retrieve CPU temperature."
+        fi
+    else
+        echo "The 'sensors' command is not available on this system."
+    fi
+}
+
+
 # Sum the number of files and sub-directories at the current prompt
 lsfiledirsum() {
     local total_count=$(find . -maxdepth 1 -mindepth 1 -exec echo x \; | wc -l)
