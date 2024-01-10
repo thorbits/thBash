@@ -70,7 +70,7 @@ extract() {
 }
 
 # Copy file with a progress bar
-cpp() {
+copy() {
 	set -e
 	strace -q -ewrite cp -- "${1}" "${2}" 2>&1 \
 	| awk '{
