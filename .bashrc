@@ -67,6 +67,7 @@ extract () {
     done
 }
 
+# Display CPU temperature
 get_temp() {
     # Check if 'sensors' command is available
     if command -v sensors &>/dev/null; then
