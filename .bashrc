@@ -16,6 +16,12 @@ if [ -z "$XDG_CACHE_HOME" ] ; then
 fi
 export XDG_RUNTIME_DIR=/run/user/$(id -u)
 
+export HISTFILESIZE=10000
+export HISTSIZE=500
+export HISTCONTROL=erasedups:ignoredups:ignorespace
+shopt -s checkwinsize
+shopt -s histappend
+
 # Configure Bash to ignore case during auto-completion
 # Note: Using 'bind' instead of adding to .inputrc directly
 # Check if $iatest is greater than 0
@@ -40,7 +46,7 @@ get_pip() {
 }
 
 # Extracts any archive(s)
-extract () {
+extract() {
     for archive in "$@"; do
         if [ -f "$archive" ] ; then
                 case $archive in
@@ -62,6 +68,25 @@ extract () {
         fi
     done
 }
+
+# Copy file with a progress bar
+cpp() {
+	set -e
+	strace -q -ewrite cp -- "${1}" "${2}" 2>&1 \
+	| awk '{
+	count += $NF
+	if (count % 10 == 0) {
+		percent = count / total_size * 100
+		printf "%3d%% [", percent
+		for (i=0;i<=percent;i++)
+			printf "="
+			printf ">"
+			for (i=percent;i<100;i++)
+				printf " "
+				printf "]\r"
+			}
+		}
+	END { print "" }' total_size="$(stat -c '%s' "${1}")" count=0
 
 # Display CPU temperature
 get_temp() {
@@ -151,3 +176,4 @@ LINE_STRAIGHT="\342\224\200"
 LINE_UPPER_CORNER="\342\224\214"
 
 export PS1="\$(tput sc)\$(tput rev)\[\033[1;\$(echo -n \$((\$COLUMNS-45)))H\]\d \174 \$(get_pip) \174 \l \s v\v\$(tput sgr0)\$(tput rc)\n$LINE_UPPER_CORNER$LINE_STRAIGHT$LINE_STRAIGHT\174\t\174$LINE_STRAIGHT\174$C8\u$c8\100\h\174$LINE_STRAIGHT\174$C8\$(pwd)$c8: \$(lsfiledirsum) \$(lsbytesum)Mb\174\n$LINE_BOTTOM_CORNER$LINE_STRAIGHT$LINE_BOTTOM\174\[$(tput sgr0)\] "
+
