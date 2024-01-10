@@ -41,7 +41,7 @@ fi
 # Sends a request to the ipinfo.io API to get the public IP address
 get_pip() {
     local ip
-    ip=$(curl -sS ipinfo.io/ip)
+    ip=$(curl -sS ipinfo.io/ip 2>/dev/null) || { echo "Error fetching public IP address"; return 1; }
     echo "$ip"
 }
 
@@ -70,7 +70,7 @@ extract() {
 }
 
 # Copy file with a progress bar
-copy() {
+cpb() {
 	set -e
 	strace -q -ewrite cp -- "${1}" "${2}" 2>&1 \
 	| awk '{
@@ -106,6 +106,42 @@ get_temp() {
     fi
 }
 
+# Colored countdown
+cdown() {
+    N=$1  # Capture the argument as N
+
+    # Start a while loop that continues until N is greater than 0
+    while [[ $((--N)) > 0 ]]
+    do
+        # Display the current countdown number using figlet for ASCII art
+        # and lolcat for colored output, then sleep for 1 second
+        echo "$N" | figlet -c | lolcat && sleep 1
+    done
+}
+
+# Copy and go to the directory
+cpg() {
+	if [ -d "$2" ];then
+		cp "$1" "$2" && cd "$2"
+	else
+		cp "$1" "$2"
+	fi
+}
+
+# Move and go to the directory
+mvg() {
+	if [ -d "$2" ];then
+		mv "$1" "$2" && cd "$2"
+	else
+		mv "$1" "$2"
+	fi
+}
+
+# Create and go to the directory
+mkdirg() {
+	mkdir -p "$1"
+	cd "$1"
+}
 
 # Sum the number of files and sub-directories at the current prompt
 lsfiledirsum() {
