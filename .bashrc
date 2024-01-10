@@ -6,24 +6,24 @@ iatest=$(expr index "$-" i)
 #######################################################
 
 # Setting environment variables
-#	if [ -z "$XDG_CONFIG_HOME" ] ; then
-#	export XDG_CONFIG_HOME="$HOME/.config"
-#fi
-#	if [ -z "$XDG_DATA_HOME" ] ; then
-#	export XDG_DATA_HOME="$HOME/.local/share"
-#fi
-#	if [ -z "$XDG_CACHE_HOME" ] ; then
-#	export XDG_CACHE_HOME="$HOME/.cache"
-#fi
-#
-#export XDG_RUNTIME_DIR=/run/user/$(id -u)
-#
-#export HISTFILESIZE=10000
-#export HISTSIZE=500
-#export HISTCONTROL=erasedups:ignoredups:ignorespace
-#
-#shopt -s checkwinsize
-#shopt -s histappend
+	if [ -z "$XDG_CONFIG_HOME" ] ; then
+	export XDG_CONFIG_HOME="$HOME/.config"
+fi
+	if [ -z "$XDG_DATA_HOME" ] ; then
+	export XDG_DATA_HOME="$HOME/.local/share"
+fi
+	if [ -z "$XDG_CACHE_HOME" ] ; then
+	export XDG_CACHE_HOME="$HOME/.cache"
+fi
+
+export XDG_RUNTIME_DIR=/run/user/$(id -u)
+
+export HISTFILESIZE=10000
+export HISTSIZE=500
+export HISTCONTROL=erasedups:ignoredups:ignorespace
+
+shopt -s checkwinsize
+shopt -s histappend
 
 # Configure Bash to ignore case during auto-completion
 # Note: Using 'bind' instead of adding to .inputrc directly
@@ -42,14 +42,14 @@ fi
 fi
 
 # Sends a request to the ipinfo.io API to get the public IP address
-get_pip() {
+get_pip () {
 	local ip
 	ip=$(curl -sS ipinfo.io/ip 2>/dev/null) || { echo "Error fetching public IP address"; return 1; }
 	echo "$ip"
 }
 
 # Extracts any archive(s)
-extract() {
+extract () {
 	for archive in "$@"; do
 	if [ -f "$archive" ] ; then
 		case $archive in
@@ -72,27 +72,8 @@ extract() {
     done
 }
 
-# Copy file with a progress bar
-cpb() {
-	set -e
-	strace -q -ewrite cp -- "${1}" "${2}" 2>&1 \
-	| awk '{
-	count += $NF
-	if (count % 10 == 0) {
-		percent = count / total_size * 100
-		printf "%3d%% [", percent
-		for (i=0;i<=percent;i++)
-			printf "="
-			printf ">"
-			for (i=percent;i<100;i++)
-				printf " "
-				printf "]\r"
-			}
-		}
-	END { print "" }' total_size="$(stat -c '%s' "${1}")" count=0
-
 # Display CPU temperature
-get_temp() {
+get_temp () {
 	# Check if 'sensors' command is available
 	if command -v sensors &>/dev/null; then
 	# Extract CPU temperature using 'sensors'
@@ -109,7 +90,7 @@ get_temp() {
 }
 
 # Colored countdown
-cdown() {
+cdown () {
 	N=$1  # Capture the argument as N
 	# Start a while loop that continues until N is greater than 0
 	while [[ $((--N)) > 0 ]]
@@ -120,8 +101,27 @@ cdown() {
 	done
 }
 
+# Copy file with a progress bar
+cpb () {
+	set -e
+	strace -q -ewrite cp -- "${1}" "${2}" 2>&1 \
+	| awk '{
+	count += $NF
+	if (count % 10 == 0) {
+		percent = count / total_size * 100
+		printf "%3d%% [", percent
+		for (i=0;i<=percent;i++)
+			printf "="
+			printf ">"
+			for (i=percent;i<100;i++)
+				printf " "
+				printf "]\r"
+			}
+		}
+END { print "" }' total_size="$(stat -c '%s' "${1}")" count=0
+
 # Copy and go to the directory
-cpg() {
+cpg () {
 	if [ -d "$2" ];then
 		cp "$1" "$2" && cd "$2"
 	else
@@ -130,7 +130,7 @@ cpg() {
 }
 
 # Move and go to the directory
-mvg() {
+mvg () {
 	if [ -d "$2" ];then
 		mv "$1" "$2" && cd "$2"
 	else
@@ -139,13 +139,13 @@ mvg() {
 }
 
 # Create and go to the directory
-mkdirg() {
+mkdirg () {
 	mkdir -p "$1"
 	cd "$1"
 }
 
 # Sum the number of files and sub-directories at the current prompt
-lsfiledirsum() {
+lsfiledirsum () {
 	local total_count=$(find . -maxdepth 1 -mindepth 1 -exec echo x \; | wc -l)
 	local file_count=$(find . -maxdepth 1 -type f | wc -l)
 	local dir_count=$(($total_count - $file_count))
@@ -153,7 +153,7 @@ lsfiledirsum() {
 }
 
 # Sum the number of bytes in the current directory
-lsbytesum() {
+lsbytesum () {
 	local totalBytes=0
 	# Use find to get a list of regular files in the current directory
 	while IFS= read -r -d '' file; do
