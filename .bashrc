@@ -6,51 +6,53 @@ iatest=$(expr index "$-" i)
 #######################################################
 
 # Setting environment variables
-if [ -z "$XDG_CONFIG_HOME" ] ; then
-    export XDG_CONFIG_HOME="$HOME/.config"
-fi
-if [ -z "$XDG_DATA_HOME" ] ; then
-    export XDG_DATA_HOME="$HOME/.local/share"
-fi
-if [ -z "$XDG_CACHE_HOME" ] ; then
-    export XDG_CACHE_HOME="$HOME/.cache"
-fi
-export XDG_RUNTIME_DIR=/run/user/$(id -u)
-
-export HISTFILESIZE=10000
-export HISTSIZE=500
-export HISTCONTROL=erasedups:ignoredups:ignorespace
-shopt -s checkwinsize
-shopt -s histappend
+#	if [ -z "$XDG_CONFIG_HOME" ] ; then
+#	export XDG_CONFIG_HOME="$HOME/.config"
+#fi
+#	if [ -z "$XDG_DATA_HOME" ] ; then
+#	export XDG_DATA_HOME="$HOME/.local/share"
+#fi
+#	if [ -z "$XDG_CACHE_HOME" ] ; then
+#	export XDG_CACHE_HOME="$HOME/.cache"
+#fi
+#
+#export XDG_RUNTIME_DIR=/run/user/$(id -u)
+#
+#export HISTFILESIZE=10000
+#export HISTSIZE=500
+#export HISTCONTROL=erasedups:ignoredups:ignorespace
+#
+#shopt -s checkwinsize
+#shopt -s histappend
 
 # Configure Bash to ignore case during auto-completion
 # Note: Using 'bind' instead of adding to .inputrc directly
 # Check if $iatest is greater than 0
-if [[ $iatest -gt 0 ]]; then
-    # Enable case-insensitive auto-completion
-    bind "set completion-ignore-case on"
+	if [[ $iatest -gt 0 ]]; then
+	# Enable case-insensitive auto-completion
+	bind "set completion-ignore-case on"
 fi
 
 # Configure Bash to automatically show auto-completion list without double tab
 # Note: Using 'bind' instead of adding to .inputrc directly
 # Check if $iatest is greater than 0
-if [[ $iatest -gt 0 ]]; then
-    # Enable automatic display of auto-completion list when ambiguous
-    bind "set show-all-if-ambiguous On"
+	if [[ $iatest -gt 0 ]]; then
+	# Enable automatic display of auto-completion list when ambiguous
+	bind "set show-all-if-ambiguous On"
 fi
 
 # Sends a request to the ipinfo.io API to get the public IP address
 get_pip() {
-    local ip
-    ip=$(curl -sS ipinfo.io/ip 2>/dev/null) || { echo "Error fetching public IP address"; return 1; }
-    echo "$ip"
+	local ip
+	ip=$(curl -sS ipinfo.io/ip 2>/dev/null) || { echo "Error fetching public IP address"; return 1; }
+	echo "$ip"
 }
 
 # Extracts any archive(s)
 extract() {
-    for archive in "$@"; do
-        if [ -f "$archive" ] ; then
-                case $archive in
+	for archive in "$@"; do
+	if [ -f "$archive" ] ; then
+		case $archive in
                 *.tar.bz2)   tar xvjf $archive    ;;
                 *.tar.gz)    tar xvzf $archive    ;;
                 *.bz2)       bunzip2 $archive     ;;
@@ -64,7 +66,7 @@ extract() {
                 *.7z)        7z x $archive        ;;
                 *)           echo "don't know how to extract '$archive'..." ;;
                 esac
-        else
+	else
                 echo "'$archive' is not a valid file!"
         fi
     done
@@ -91,33 +93,31 @@ cpb() {
 
 # Display CPU temperature
 get_temp() {
-    # Check if 'sensors' command is available
-    if command -v sensors &>/dev/null; then
-        # Extract CPU temperature using 'sensors'
-        local cpu_temperature=$(sensors | grep "Core 0" | awk '{print $3}')
-        
+	# Check if 'sensors' command is available
+	if command -v sensors &>/dev/null; then
+	# Extract CPU temperature using 'sensors'
+	local cpu_temperature=$(sensors | grep "Core 0" | awk '{print $3}')
         # Check if temperature is not empty
         if [ -n "$cpu_temperature" ]; then
-            echo "CPU Temperature: $cpu_temperature"
+		echo "CPU Temperature: $cpu_temperature"
         else
-            echo "Unable to retrieve CPU temperature."
-        fi
-    else
+		echo "Unable to retrieve CPU temperature."
+        	fi
+	else
         echo "The 'sensors' command is not available on this system."
-    fi
+	fi
 }
 
 # Colored countdown
 cdown() {
-    N=$1  # Capture the argument as N
-
-    # Start a while loop that continues until N is greater than 0
-    while [[ $((--N)) > 0 ]]
-    do
+	N=$1  # Capture the argument as N
+	# Start a while loop that continues until N is greater than 0
+	while [[ $((--N)) > 0 ]]
+	do
         # Display the current countdown number using figlet for ASCII art
         # and lolcat for colored output, then sleep for 1 second
         echo "$N" | figlet -c | lolcat && sleep 1
-    done
+	done
 }
 
 # Copy and go to the directory
@@ -146,31 +146,29 @@ mkdirg() {
 
 # Sum the number of files and sub-directories at the current prompt
 lsfiledirsum() {
-    local total_count=$(find . -maxdepth 1 -mindepth 1 -exec echo x \; | wc -l)
-    local file_count=$(find . -maxdepth 1 -type f | wc -l)
-    local dir_count=$(($total_count - $file_count))
-    echo "$dir_count folder(s) $file_count file(s)"
+	local total_count=$(find . -maxdepth 1 -mindepth 1 -exec echo x \; | wc -l)
+	local file_count=$(find . -maxdepth 1 -type f | wc -l)
+	local dir_count=$(($total_count - $file_count))
+	echo "$dir_count folder(s) $file_count file(s)"
 }
 
 # Sum the number of bytes in the current directory
 lsbytesum() {
-    local totalBytes=0
-
-    # Use find to get a list of regular files in the current directory
-    while IFS= read -r -d '' file; do
+	local totalBytes=0
+	# Use find to get a list of regular files in the current directory
+	while IFS= read -r -d '' file; do
         if [[ -f "$file" ]]; then
-            size=$(stat -c %s "$file" 2>/dev/null)
-            ((totalBytes += size))
-        fi
-    done < <(find . -maxdepth 1 -type f -print0)
-
-    # Check if bc is available before using it
-    if command -v bc &>/dev/null; then
-        totalMegabytes=$(echo "scale=3; $totalBytes/1048576" | bc)
-        printf "%.3f\n" "$totalMegabytes"
-    else
-        echo "bc is not available, unable to convert bytes to megabytes."
-    fi
+		size=$(stat -c %s "$file" 2>/dev/null)
+		((totalBytes += size))
+	fi
+	done < <(find . -maxdepth 1 -type f -print0)
+	# Check if bc is available before using it
+	if command -v bc &>/dev/null; then
+		totalMegabytes=$(echo "scale=3; $totalBytes/1048576" | bc)
+		printf "%.3f\n" "$totalMegabytes"
+	else
+	echo "bc is not available, unable to convert bytes to megabytes."
+	fi
 }
 
 #######################################################
