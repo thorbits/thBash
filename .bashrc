@@ -47,7 +47,7 @@ get_pip () {
 
 # Extracts any archive(s)
 # usage: extract <file>
-# extract () {
+# extract () { 
 #   if [ -f "$1" ] ; then
 #     case $1 in
 #       *.tar.bz2)   tar xjf "$1"   ;;
@@ -100,7 +100,7 @@ cdown () {
 }
 
 # Copy file with a progress bar
-cpb1 () {
+cpb1 () { 
     set -e
 
     strace -q -ewrite cp -- "${1}" "${2}" 2>&1 | awk '{
