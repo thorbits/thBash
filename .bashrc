@@ -34,14 +34,6 @@ bind "set completion-ignore-case on"
 # Show auto-completion list automatically, without double tab
 bind "set show-all-if-ambiguous on"
 
-# Configure Bash to automatically show auto-completion list without double tab
-# Note: Using 'bind' instead of adding to .inputrc directly
-# Check if $iatest is greater than 0
-	if [[ $iatest -gt 0 ]]; then
-	# Enable automatic display of auto-completion list when ambiguous
-	bind "set show-all-if-ambiguous On"
-fi
-
 # Sends a request to the ipinfo.io API to get the public IP address
 get_pip () {
   local ip
