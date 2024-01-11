@@ -34,8 +34,12 @@ bind "set completion-ignore-case on"
 # Show auto-completion list automatically, without double tab
 bind "set show-all-if-ambiguous on"
 
+#######################################################
+#		FUNCTIONS
+#######################################################
+
 # Sends a request to the ipinfo.io API to get the public IP address
-get_pip () {
+get_pip () { 
   local ip
   ip=$(curl -sS ipinfo.io/ip 2>/dev/null) || { echo "Error fetching public IP address"; return 1; }
   echo "$ip"
@@ -43,7 +47,7 @@ get_pip () {
 
 # Extracts any archive(s)
 # usage: extract <file>
-extract () {
+extract () { 
   if [ -f "$1" ] ; then
     case $1 in
       *.tar.bz2)   tar xjf $1   ;;
@@ -68,7 +72,7 @@ extract () {
 }
 
 # Display CPU temperature
-get_temp () {
+get_temp () { 
 	# Check if 'sensors' command is available
 	if command -v sensors &>/dev/null; then
 	# Extract CPU temperature using 'sensors'
@@ -85,19 +89,19 @@ get_temp () {
 }
 
 # Colored countdown
-cdown () {
-	N=$1  # Capture the argument as N
-	# Start a while loop that continues until N is greater than 0
-	while [[ $((--N)) > 0 ]]
-	do
-        # Display the current countdown number using figlet for ASCII art
-        # and lolcat for colored output, then sleep for 1 second
+cdown () { 
+    N=$1 # Capture the argument as N
+  # Start a while loop that continues until N is greater than 0
+  while [[ $((--N)) > 0 ]]
+    do
+    # Display the current countdown number using figlet for ASCII art
+    # and lolcat for colored output, then sleep for 1 second
         echo "$N" | figlet -c | lolcat && sleep 1
-	done
+    done
 }
 
 # Copy file with a progress bar
-cpb () {
+cpb () { 
     set -e
     strace -q -ewrite cp -- "${1}" "${2}" 2>&1 \
     | awk '{
@@ -117,7 +121,7 @@ cpb () {
 }
 
 # Copy and go to the directory
-cpg () {
+cpg () { 
 	if [ -d "$2" ];then
 		cp "$1" "$2" && cd "$2"
 	else
@@ -126,7 +130,7 @@ cpg () {
 }
 
 # Move and go to the directory
-mvg () {
+mvg () { 
 	if [ -d "$2" ];then
 		mv "$1" "$2" && cd "$2"
 	else
@@ -135,13 +139,13 @@ mvg () {
 }
 
 # Create and go to the directory
-mkdirg () {
+mkdirg () { 
 	mkdir -p "$1"
 	cd "$1"
 }
 
 # Sum the number of files and sub-directories at the current prompt
-lsfiledirsum () {
+lsfiledirsum () { 
 	local total_count=$(find . -maxdepth 1 -mindepth 1 -exec echo x \; | wc -l)
 	local file_count=$(find . -maxdepth 1 -type f | wc -l)
 	local dir_count=$(($total_count - $file_count))
@@ -149,7 +153,7 @@ lsfiledirsum () {
 }
 
 # Sum the number of bytes in the current directory
-lsbytesum () {
+lsbytesum () { 
 	local totalBytes=0
 	# Use find to get a list of regular files in the current directory
 	while IFS= read -r -d '' file; do
@@ -171,7 +175,10 @@ lsbytesum () {
 #		ALIASES
 #######################################################
 
+# To temporarily bypass an alias, we precede the command with a \
+# EG: the ls command is aliased, but to use the normal ls command you would type \ls
 # alias ls='ls -phalANXgs --color=auto --time-style=iso --no-group --group-directories-first'
+
 # Changing "ls" to "eza"
 alias ls='eza -al --color=always --group-directories-first' # my preferred listing
 alias la='eza -a --color=always --group-directories-first'  # all files and dirs
