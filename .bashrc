@@ -47,29 +47,29 @@ get_pip () {
 
 # Extracts any archive(s)
 # usage: extract <file>
-extract () {
-  if [ -f "$1" ] ; then
-    case $1 in
-      *.tar.bz2)   tar xjf "$1"   ;;
-      *.tar.gz)    tar xzf "$1"   ;;
-      *.bz2)       bunzip2 "$1"   ;;
-      *.rar)       unrar x "$1"   ;;
-      *.gz)        gunzip "$1"    ;;
-      *.tar)       tar xf "$1"    ;;
-      *.tbz2)      tar xjf "$1"   ;;
-      *.tgz)       tar xzf "$1"   ;;
-      *.zip)       unzip "$1"     ;;
-      *.Z)         uncompress "$1" ;;
-      *.7z)        7z x "$1"      ;;
-      *.deb)       ar x "$1"      ;;
-      *.tar.xz)    tar xf "$1"    ;;
-      *.tar.zst)   unzstd "$1"    ;;
-      *)           echo "'$1' cannot be extracted" ;;
-    esac
-  else
-    echo "'$1' is not a valid file"
-  fi
-}
+# extract () {
+#   if [ -f "$1" ] ; then
+#     case $1 in
+#       *.tar.bz2)   tar xjf "$1"   ;;
+#       *.tar.gz)    tar xzf "$1"   ;;
+#       *.bz2)       bunzip2 "$1"   ;;
+#       *.rar)       unrar x "$1"   ;;
+#       *.gz)        gunzip "$1"    ;;
+#       *.tar)       tar xf "$1"    ;;
+#       *.tbz2)      tar xjf "$1"   ;;
+#       *.tgz)       tar xzf "$1"   ;;
+#       *.zip)       unzip "$1"     ;;
+#       *.Z)         uncompress "$1" ;;
+#       *.7z)        7z x "$1"      ;;
+#       *.deb)       ar x "$1"      ;;
+#       *.tar.xz)    tar xf "$1"    ;;
+#       *.tar.zst)   unzstd "$1"    ;;
+#       *)           echo "'$1' cannot be extracted" ;;
+#     esac
+#   else
+#     echo "'$1' is not a valid file"
+#   fi
+# }
 
 # Display CPU temperature
 get_temp () { 
@@ -92,8 +92,7 @@ get_temp () {
 cdown () { 
     N=$1 # Capture the argument as N
   # Start a while loop that continues until N is greater than 0
-  while [[ $((--N)) > 0 ]]
-    do
+    while ((N-- > 0)); do
     # Display the current countdown number using figlet for ASCII art
     # and lolcat for colored output, then sleep for 1 second
         echo "$N" | figlet -c | lolcat && sleep 1
@@ -101,23 +100,40 @@ cdown () {
 }
 
 # Copy file with a progress bar
-cpb () { 
+cpb1 () {
     set -e
-    strace -q -ewrite cp -- "${1}" "${2}" 2>&1 \
-    | awk '{
+
+    strace -q -ewrite cp -- "${1}" "${2}" 2>&1 | awk '{
         count += $NF
         if (count % 10 == 0) {
             percent = count / total_size * 100
             printf "%3d%% [", percent
-            for (i=0;i<=percent;i++)
+            for (i=0; i<=percent; i++)
                 printf "="
             printf ">"
-            for (i=percent;i<100;i++)
+            for (i=percent; i<100; i++)
                 printf " "
             printf "]\r"
         }
     }
     END { print "" }' total_size="$(stat -c '%s' "${1}")" count=0
+}
+
+# Copy file with a progress bar (Pipe Viewer)
+cpb2 () { 
+    if [ -z "$1" ] || [ -z "$2" ]; then
+        echo "Usage: cpb source_file destination"
+        return 1
+    fi
+
+    # Check if pv is available
+    if ! command -v pv > /dev/null; then
+        echo "pv (Pipe Viewer) is not installed. Please install it to use cpb."
+        return 1
+    fi
+
+    # Use pv to display a progress bar during copy
+    pv "$1" > "$2"
 }
 
 # Copy and go to the directory
