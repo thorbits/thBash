@@ -1,37 +1,38 @@
 #!/bin/bash
-iatest=$(expr index "$-" i)
 
 #######################################################
 #		EXPORTS
 #######################################################
-
-# Setting environment variables
-	if [ -z "$XDG_CONFIG_HOME" ] ; then
-	export XDG_CONFIG_HOME="$HOME/.config"
-fi
-	if [ -z "$XDG_DATA_HOME" ] ; then
-	export XDG_DATA_HOME="$HOME/.local/share"
-fi
-	if [ -z "$XDG_CACHE_HOME" ] ; then
-	export XDG_CACHE_HOME="$HOME/.cache"
-fi
-
-export XDG_RUNTIME_DIR=/run/user/$(id -u)
-
 export HISTFILESIZE=10000
 export HISTSIZE=500
 export HISTCONTROL=erasedups:ignoredups:ignorespace
 
-shopt -s checkwinsize
-shopt -s histappend
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
 
-# Configure Bash to ignore case during auto-completion
-# Note: Using 'bind' instead of adding to .inputrc directly
-# Check if $iatest is greater than 0
-	if [[ $iatest -gt 0 ]]; then
-	# Enable case-insensitive auto-completion
-	bind "set completion-ignore-case on"
+# Setting environment variables
+if [ -z "$XDG_CONFIG_HOME" ] ; then
+    export XDG_CONFIG_HOME="$HOME/.config"
 fi
+if [ -z "$XDG_DATA_HOME" ] ; then
+    export XDG_DATA_HOME="$HOME/.local/share"
+fi
+if [ -z "$XDG_CACHE_HOME" ] ; then
+    export XDG_CACHE_HOME="$HOME/.cache"
+fi
+
+# SHOPT
+shopt -s autocd # change to named directory
+shopt -s cdspell # autocorrects cd misspellings
+shopt -s cmdhist # save multi-line commands in history as single line
+shopt -s histappend # do not overwrite history
+shopt -s expand_aliases # expand aliases
+shopt -s checkwinsize # checks term size when bash regains control
+
+# Ignore upper and lowercase when TAB completion
+bind "set completion-ignore-case on"
+# Show auto-completion list automatically, without double tab
+bind "set show-all-if-ambiguous on"
 
 # Configure Bash to automatically show auto-completion list without double tab
 # Note: Using 'bind' instead of adding to .inputrc directly
@@ -43,33 +44,35 @@ fi
 
 # Sends a request to the ipinfo.io API to get the public IP address
 get_pip () {
-	local ip
-	ip=$(curl -sS ipinfo.io/ip 2>/dev/null) || { echo "Error fetching public IP address"; return 1; }
-	echo "$ip"
+  local ip
+  ip=$(curl -sS ipinfo.io/ip 2>/dev/null) || { echo "Error fetching public IP address"; return 1; }
+  echo "$ip"
 }
 
 # Extracts any archive(s)
+# usage: extract <file>
 extract () {
-	for archive in "$@"; do
-	if [ -f "$archive" ] ; then
-		case $archive in
-                *.tar.bz2)   tar xvjf $archive    ;;
-                *.tar.gz)    tar xvzf $archive    ;;
-                *.bz2)       bunzip2 $archive     ;;
-                *.rar)       rar x $archive       ;;
-                *.gz)        gunzip $archive      ;;
-                *.tar)       tar xvf $archive     ;;
-                *.tbz2)      tar xvjf $archive    ;;
-                *.tgz)       tar xvzf $archive    ;;
-                *.zip)       unzip $archive       ;;
-                *.Z)         uncompress $archive  ;;
-                *.7z)        7z x $archive        ;;
-                *)           echo "don't know how to extract '$archive'..." ;;
-                esac
-	else
-                echo "'$archive' is not a valid file!"
-        fi
-    done
+  if [ -f "$1" ] ; then
+    case $1 in
+      *.tar.bz2)   tar xjf $1   ;;
+      *.tar.gz)    tar xzf $1   ;;
+      *.bz2)       bunzip2 $1   ;;
+      *.rar)       unrar x $1   ;;
+      *.gz)        gunzip $1    ;;
+      *.tar)       tar xf $1    ;;
+      *.tbz2)      tar xjf $1   ;;
+      *.tgz)       tar xzf $1   ;;
+      *.zip)       unzip $1     ;;
+      *.Z)         uncompress $1;;
+      *.7z)        7z x $1      ;;
+      *.deb)       ar x $1      ;;
+      *.tar.xz)    tar xf $1    ;;
+      *.tar.zst)   unzstd $1    ;;
+      *)           echo "'$1' cannot be extracted via ex()" ;;
+    esac
+  else
+    echo "'$1' is not a valid file"
+  fi
 }
 
 # Display CPU temperature
@@ -176,7 +179,14 @@ lsbytesum () {
 #		ALIASES
 #######################################################
 
-alias ls='ls -phalANXgs --color=auto --time-style=iso --no-group --group-directories-first'
+# alias ls='ls -phalANXgs --color=auto --time-style=iso --no-group --group-directories-first'
+# Changing "ls" to "eza"
+alias ls='eza -al --color=always --group-directories-first' # my preferred listing
+alias la='eza -a --color=always --group-directories-first'  # all files and dirs
+alias ll='eza -l --color=always --group-directories-first'  # long format
+alias lt='eza -aT --color=always --group-directories-first' # tree listing
+alias l.='eza -a | egrep "^\."'
+
 alias sudo='sudo '
 alias nf='neofetch'
 alias update='nala update && nala full-upgrade'
