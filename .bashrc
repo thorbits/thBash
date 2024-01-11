@@ -169,22 +169,27 @@ lsfiledirsum () {
 }
 
 # Sum the number of bytes in the current directory
-lsbytesum () { 
-	local totalBytes=0
-	# Use find to get a list of regular files in the current directory
-	while IFS= read -r -d '' file; do
+lsbytesum() { 
+    local totalBytes=0
+
+    # Use find to get a list of regular files in the current directory
+    while IFS= read -r -d '' file; do
         if [[ -f "$file" ]]; then
-		size=$(stat -c %s "$file" 2>/dev/null)
-		((totalBytes += size))
-	fi
-	done < <(find . -maxdepth 1 -type f -print0)
-	# Check if bc is available before using it
-	if command -v bc &>/dev/null; then
-		totalMegabytes=$(echo "scale=3; $totalBytes/1048576" | bc)
-		printf "%.3f\n" "$totalMegabytes"
-	else
-	echo "bc is not available, unable to convert bytes to megabytes."
-	fi
+            size=$(stat -c %s "$file" 2>/dev/null)
+            if [[ -n "$size" ]]; then
+                ((totalBytes += size))
+            fi
+        fi
+    done < <(find . -maxdepth 1 -type f -print0)
+
+    # Check if bc is available before using it
+    if command -v bc &>/dev/null; then
+        totalMegabytes=$(echo "scale=3; $totalBytes/1048576" | bc)
+        printf "%.3f\n" "$totalMegabytes"
+    else
+        echo "Error: 'bc' is not available. Unable to convert bytes to megabytes." >&2
+        return 1
+    fi
 }
 
 #######################################################
