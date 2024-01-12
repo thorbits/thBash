@@ -39,40 +39,41 @@ bind "set show-all-if-ambiguous on"
 #######################################################
 
 # Sends a request to the ipinfo.io API to get the public IP address
-get_pip () { 
+get_pip() { 
   local ip
   ip=$(curl -sS ipinfo.io/ip 2>/dev/null) || { echo "Error fetching public IP address"; return 1; }
   echo "$ip"
 }
 
-# Extracts any archive(s)
-# usage: extract <file>
-# extract () { 
-#   if [ -f "$1" ] ; then
-#     case $1 in
-#       *.tar.bz2)   tar xjf "$1"   ;;
-#       *.tar.gz)    tar xzf "$1"   ;;
-#       *.bz2)       bunzip2 "$1"   ;;
-#       *.rar)       unrar x "$1"   ;;
-#       *.gz)        gunzip "$1"    ;;
-#       *.tar)       tar xf "$1"    ;;
-#       *.tbz2)      tar xjf "$1"   ;;
-#       *.tgz)       tar xzf "$1"   ;;
-#       *.zip)       unzip "$1"     ;;
-#       *.Z)         uncompress "$1" ;;
-#       *.7z)        7z x "$1"      ;;
-#       *.deb)       ar x "$1"      ;;
-#       *.tar.xz)    tar xf "$1"    ;;
-#       *.tar.zst)   unzstd "$1"    ;;
-#       *)           echo "'$1' cannot be extracted" ;;
-#     esac
-#   else
-#     echo "'$1' is not a valid file"
-#   fi
-# }
+# Extracts any archive(s), usage: extract archive1.tar.gz archive2.zip
+extract() { 
+    for archive in "$@"; do
+        if [ -f "$archive" ]; then
+            case $archive in
+                *.tar.bz2)   tar xjf "$archive" ;;
+                *.tar.gz)    tar xzf "$archive" ;;
+                *.bz2)       bunzip2 "$archive" ;;
+                *.rar)       unrar x "$archive" ;;
+                *.gz)        gunzip "$archive" ;;
+                *.tar)       tar xvf "$archive" ;;
+                *.tbz2)      tar xjf "$archive" ;;
+                *.tgz)       tar xzf "$archive" ;;
+                *.zip)       unzip "$archive" ;;
+                *.Z)         uncompress "$archive" ;;
+                *.7z)        7z x "$archive" ;;
+                *.deb)       ar x "$archive" ;;
+                *.tar.xz)    tar xf "$archive" ;;
+                *.tar.zst)   unzstd "$archive" ;;
+                *)           echo "'$archive' cannot be extracted" ;;
+            esac
+        else
+            echo "'$archive' is not a valid file!"
+        fi
+    done
+}
 
 # Display CPU temperature
-get_temp () { 
+get_temp() { 
 	# Check if 'sensors' command is available
 	if command -v sensors &>/dev/null; then
 	# Extract CPU temperature using 'sensors'
@@ -89,7 +90,7 @@ get_temp () {
 }
 
 # Colored countdown
-cdown () { 
+cdown() { 
     N=$1 # Capture the argument as N
   # Start a while loop that continues until N is greater than 0
     while ((N-- > 0)); do
@@ -100,7 +101,7 @@ cdown () {
 }
 
 # Copy file with a progress bar
-cpb1 () { 
+cpb1() { 
     set -e
 
     strace -q -ewrite cp -- "${1}" "${2}" 2>&1 | awk '{
@@ -120,7 +121,7 @@ cpb1 () {
 }
 
 # Copy file with a progress bar (Pipe Viewer)
-cpb2 () { 
+cpb2() { 
     if [ -z "$1" ] || [ -z "$2" ]; then
         echo "Usage: cpb source_file destination"
         return 1
@@ -137,7 +138,7 @@ cpb2 () {
 }
 
 # Copy and go to the directory
-cpg () { 
+cpg() { 
 	if [ -d "$2" ];then
 		cp "$1" "$2" && cd "$2"
 	else
@@ -146,7 +147,7 @@ cpg () {
 }
 
 # Move and go to the directory
-mvg () { 
+mvg() { 
 	if [ -d "$2" ];then
 		mv "$1" "$2" && cd "$2"
 	else
@@ -155,13 +156,13 @@ mvg () {
 }
 
 # Create and go to the directory
-mkdirg () { 
+mkdirg() { 
 	mkdir -p "$1"
 	cd "$1"
 }
 
 # Sum the number of files and sub-directories at the current prompt
-lsfiledirsum () { 
+lsfiledirsum() { 
 	local total_count=$(find . -maxdepth 1 -mindepth 1 -exec echo x \; | wc -l)
 	local file_count=$(find . -maxdepth 1 -type f | wc -l)
 	local dir_count=$(($total_count - $file_count))
@@ -169,28 +170,28 @@ lsfiledirsum () {
 }
 
 # Sum the number of bytes in the current directory
-# lsbytesum() { 
-#     local totalBytes=0
-# 
-#     # Use find to get a list of regular files in the current directory
-#     while IFS= read -r -d '' file; do
-#         if [[ -f "$file" ]]; then
-#             size=$(stat -c %s "$file" 2>/dev/null)
-#             if [[ -n "$size" ]]; then
-#                 ((totalBytes += size))
-#             fi
-#         fi
-#     done < <(find . -maxdepth 1 -type f -print0)
-# 
-#     # Check if bc is available before using it
-#     if command -v bc &>/dev/null; then
-#         totalMegabytes=$(echo "scale=3; $totalBytes/1048576" | bc)
-#         printf "%.3f\n" "$totalMegabytes"
-#     else
-#         echo "Error: 'bc' is not available. Unable to convert bytes to megabytes." >&2
-#         return 1
-#     fi
-# }
+lsbytesum() { 
+    local totalBytes=0
+
+    # Use find to get a list of regular files in the current directory
+    while IFS= read -r -d '' file; do
+        if [[ -f "$file" ]]; then
+            size=$(stat -c %s "$file" 2>/dev/null)
+            if [[ -n "$size" ]]; then
+                ((totalBytes += size))
+            fi
+        fi
+    done < <(find . -maxdepth 1 -type f -print0)
+
+    # Check if bc is available before using it
+    if command -v bc &>/dev/null; then
+        totalMegabytes=$(echo "scale=3; $totalBytes/1048576" | bc)
+        printf "%.3f\n" "$totalMegabytes"
+    else
+        echo "Error: 'bc' is not available. Unable to convert bytes to megabytes." >&2
+        return 1
+    fi
+}
 
 #######################################################
 #		ALIASES
