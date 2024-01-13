@@ -54,7 +54,7 @@ extract () {
   done
 }
 
-# Display CPU temperature
+# Display CPU temperature (Sensors)
 get_temp () { 
 	# Check if 'sensors' command is available
 	if command -v sensors &>/dev/null; then
@@ -67,11 +67,11 @@ get_temp () {
 		echo "Unable to retrieve CPU temperature."
         	fi
 	else
-        echo "The 'sensors' command is not available on this system."
+        echo "Error: 'sensors' is not installed"
 	fi
 }
 
-# Colored countdown
+# Colored countdown (Figlet Lolcat)
 cdown () { 
     N=$1 # Capture the argument as N
   # Start a while loop that continues until N is greater than 0
@@ -82,39 +82,33 @@ cdown () {
     done
 }
 
-# Copy file with a progress bar
-cpb1 () { 
-    set -e
-
-    strace -q -ewrite cp -- "${1}" "${2}" 2>&1 | awk '{
-        count += $NF
-        if (count % 10 == 0) {
-            percent = count / total_size * 100
-            printf "%3d%% [", percent
-            for (i=0; i<=percent; i++)
-                printf "="
-            printf ">"
-            for (i=percent; i<100; i++)
-                printf " "
-            printf "]\r"
-        }
-    }
-    END { print "" }' total_size="$(stat -c '%s' "${1}")" count=0
+# Copy file with a progress bar (Rsync)
+cppb () { 
+    # Check if rsync is available
+     if ! command -v rsync &>/dev/null; then
+	     echo "Error: 'rsync' is not installed"
+	     return 1
+     fi
+    # Check the number of arguments
+     if [[ "$#" -ne 2 ]]; then
+	     echo "Usage: cppb source_file destination_file"
+	     return 1
+     fi
+    # Run rsync with --progress option
+    rsync --progress "$1" "$2"
 }
 
 # Copy file with a progress bar (Pipe Viewer)
-cpb2 () { 
+cppv () { 
     if [ -z "$1" ] || [ -z "$2" ]; then
-        echo "Usage: cpb source_file destination"
+        echo "Usage: cppv source_file destination"
         return 1
     fi
-
     # Check if pv is available
     if ! command -v pv > /dev/null; then
-        echo "pv (Pipe Viewer) is not installed. Please install it to use cpb."
+        echo "Error: 'pv' is not installed"
         return 1
     fi
-
     # Use pv to display a progress bar during copy
     pv "$1" > "$2"
 }
@@ -152,24 +146,21 @@ lsfiledirsum () {
 }
 
 # Sum the number of bytes in the current directory
-#lsbytesum () { 
-#    local totalBytes=0
-#
-#       # Use find to get a list of regular files in the current directory
-#	     while IFS= read -r -d '' file; do
-#		     if [[ -f "$file" ]]; then
-#			     size=$(stat -c %s "$file" 2>/dev/null)
-#			     ((totalBytes += size))
-#		     fi
-#	     done < <(find . -maxdepth 1 -type f -print0)
-#	# Check if bc is available before using it
-#	if command -v bc &>/dev/null; then
-#		totalMegabytes=$(echo "scale=3; $totalBytes/1048576" | bc)
-#		printf "%.3f\n" "$totalMegabytes"
-#		else
-#			echo "Error: 'bc' is not installed"
-#		fi
-#}
+lsbytesum () { 
+    local totalBytes=0
+    
+	# Use find to get a list of regular files in the current directory
+	while IFS= read -r -d '' file; do 
+		[[ -f "$file" ]] && ((totalBytes += $(stat -c %s "$file" 2>/dev/null)))
+		done < <(find . -maxdepth 1 -type f -print0)
+	# Check if bc is available before using it
+	if command -v bc &>/dev/null; then
+		totalMegabytes=$(echo "scale=3; $totalBytes/1048576" | bc)
+		printf "%.3f\n" "$totalMegabytes"
+	else
+		echo "Error: 'bc' is not installed"
+	fi
+}
 
 # GitHub additions
 gitpush () { 
