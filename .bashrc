@@ -171,6 +171,16 @@ lsfiledirsum () {
 #		fi
 #}
 
+# GitHub additions
+gitpush () { 
+	cp ~/.bashrc ~/mybashrc
+	cd ~/mybashrc
+	git add .
+	git commit -m .bashrc
+	git push -u -f origin main
+	{ printf 36136807+thorbits@users.noreply.github.com\n; }
+}
+
 #######################################################
 #		ALIASES
 #######################################################
