@@ -67,7 +67,7 @@ get_temp () {
 		echo "Unable to retrieve CPU temperature."
         	fi
 	else
-        echo "Error: 'sensors' is not installed"
+        echo "Error: 'lm-sensors' is not installed"
 	fi
 }
 
