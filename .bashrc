@@ -1,14 +1,16 @@
 #!/bin/bash
+iatest=$(expr index "$-" i)
 
 #######################################################
 #		EXPORTS
 #######################################################
+
+# Disable the bell
+if [[ $iatest > 0 ]]; then bind "set bell-style visible"; fi
+
 export HISTFILESIZE=10000
 export HISTSIZE=500
 export HISTCONTROL=erasedups:ignoredups:ignorespace
-
-# If not running interactively, don't do anything
-[[ $- != *i* ]] && return
 
 # Setting environment variables
 if [ -z "$XDG_CONFIG_HOME" ] ; then
@@ -29,14 +31,46 @@ shopt -s histappend # do not overwrite history
 shopt -s expand_aliases # expand aliases
 shopt -s checkwinsize # checks term size when bash regains control
 
-# Ignore upper and lowercase when TAB completion
-bind "set completion-ignore-case on"
+# Ignore case on auto-completion
+# Note: bind used instead of sticking these in .inputrc
+if [[ $iatest > 0 ]]; then bind "set completion-ignore-case on"; fi
+
 # Show auto-completion list automatically, without double tab
-bind "set show-all-if-ambiguous on"
+if [[ $iatest > 0 ]]; then bind "set show-all-if-ambiguous On"; fi
+
+#######################################################
+#		ALIASES
+#######################################################
+
+# To temporarily bypass an alias, we precede the command with a \
+# EG: the ls command is aliased, but to use the normal ls command you would type \ls
+# alias ls='ls -phalANXgs --color=auto --time-style=iso --no-group --group-directories-first'
+
+# Changing "ls" to "eza"
+alias ls='eza -al --color=always --group-directories-first' # my preferred listing
+alias la='eza -a --color=always --group-directories-first'  # all files and dirs
+alias ll='eza -l --color=always --group-directories-first'  # long format
+alias lt='eza -aT --color=always --group-directories-first' # tree listing
+alias l.='eza -a | egrep "^\."'
+
+alias sudo='sudo '
+alias nf='neofetch'
+alias update='nala update && nala full-upgrade'
+alias vbrc='vim ~/.bashrc'
 
 #######################################################
 #		FUNCTIONS
 #######################################################
+
+# Automatically do an ls after each cd
+# cd ()
+# {
+# 	if [ -n "$1" ]; then
+# 		builtin cd "$@" && ls
+# 	else
+# 		builtin cd ~ && ls
+# 	fi
+# }
 
 # Sends a request to the ipinfo.io API to get the public IP address
 get_pip () { 
@@ -173,26 +207,6 @@ gitpush () {
 }
 
 #######################################################
-#		ALIASES
-#######################################################
-
-# To temporarily bypass an alias, we precede the command with a \
-# EG: the ls command is aliased, but to use the normal ls command you would type \ls
-# alias ls='ls -phalANXgs --color=auto --time-style=iso --no-group --group-directories-first'
-
-# Changing "ls" to "eza"
-alias ls='eza -al --color=always --group-directories-first' # my preferred listing
-alias la='eza -a --color=always --group-directories-first'  # all files and dirs
-alias ll='eza -l --color=always --group-directories-first'  # long format
-alias lt='eza -aT --color=always --group-directories-first' # tree listing
-alias l.='eza -a | egrep "^\."'
-
-alias sudo='sudo '
-alias nf='neofetch'
-alias update='nala update && nala full-upgrade'
-alias vbrc='vim ~/.bashrc'
-
-#######################################################
 #		PROMPT
 #######################################################
 
@@ -221,5 +235,8 @@ LINE_BOTTOM_CORNER="\342\224\224"
 LINE_STRAIGHT="\342\224\200"
 LINE_UPPER_CORNER="\342\224\214"
 
+# alias cpu="grep 'cpu ' /proc/stat | awk '{usage=(\$2+\$4)*100/(\$2+\$4+\$5)} END {print usage}' | awk '{printf(\"%.1f\n\", \$1)}'"
+
 export PS1="\$(tput sc)\$(tput rev)\[\033[1;\$(echo -n \$((\$COLUMNS-45)))H\]\d \174 \$(get_pip) \174 \l \s v\v\$(tput sgr0)\$(tput rc)\n$LINE_UPPER_CORNER$LINE_STRAIGHT$LINE_STRAIGHT\174\t\174$LINE_STRAIGHT\174$C8\u$c8\100\h\174$LINE_STRAIGHT\174$C8\$(pwd)$c8: \$(lsfiledirsum) \$(lsbytesum)Mb\174\n$LINE_BOTTOM_CORNER$LINE_STRAIGHT$LINE_BOTTOM\174\[$(tput sgr0)\] "
 
+# export PS1="\$(tput sc)\$(tput rev)\[\033[1;\$(echo -n \$((\$COLUMNS-45)))H\]\d \174 \$(get_pip) \174 \l \s v\v\$(tput sgr0)\$(tput rc)\n$LINE_UPPER_CORNER$LINE_STRAIGHT$LINE_STRAIGHT\174\t\174$LINE_STRAIGHT\174$C8\u$c8\100\h\174$LINE_STRAIGHT\174$C8\$(pwd)$c8: \$(/bin/ls -A -1 | /usr/bin/wc -l) file(s) \$(/bin/ls -lah | /bin/grep -m 1 total | /bin/sed 's/total //')\174\n$LINE_BOTTOM_CORNER$LINE_STRAIGHT$LINE_BOTTOM\174\[$(tput sgr0)\] "
