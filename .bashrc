@@ -19,6 +19,7 @@ shopt -s cmdhist # save multi-line commands in history as single line
 shopt -s histappend # do not overwrite history
 shopt -s expand_aliases # expand aliases
 shopt -s checkwinsize # checks term size when bash regains control
+PROMPT_COMMAND='history -a'
 
 # Ignore case on auto-completion
 # Note: bind used instead of sticking these in .inputrc
@@ -200,30 +201,127 @@ lsbytesum() {
 #		PROMPT
 #######################################################
 
-# Color Variables
-c1='\[\033[0;30m\]' # Non-bold color black
-C1='\[\033[1;30m\]' # Bold color
-c2='\[\033[0;31m\]' # Non-bold color red
-C2='\[\033[1;31m\]' # Bold color
-c3='\[\033[0;32m\]' # Non-bold color green
-C3='\[\033[1;32m\]' # Bold color
-c4='\[\033[0;33m\]' # Non-bold color yellow
-C4='\[\033[1;33m\]' # Bold color
-c5='\[\033[0;34m\]' # Non-bold color blue
-C5='\[\033[1;34m\]' # Bold color
-c6='\[\033[0;35m\]' # Non-bold color purple
-C6='\[\033[1;35m\]' # Bold color
-c7='\[\033[0;36m\]' # Non-bold color cyan
-C7='\[\033[1;36m\]' # Bold color
-c8='\[\033[0;37m\]' # Non-bold color white
-C8='\[\033[1;37m\]' # Bold color
-NC='\[\033[0m\]'    # Back to default color
+alias cpu="grep 'cpu ' /proc/stat | awk '{usage=(\$2+\$4)*100/(\$2+\$4+\$5)} END {print usage}' | awk '{printf(\"%.1f\n\", \$1)}'"
 
-# Define line characters
-LINE_BOTTOM="\342\224\200"
-LINE_BOTTOM_CORNER="\342\224\224"
-LINE_STRAIGHT="\342\224\200"
-LINE_UPPER_CORNER="\342\224\214"
+function __setprompt
+{
+	local LAST_COMMAND=$? # Must come first!
 
-# export PS1="\$(tput sc)\$(tput rev)\[\033[1;\$(echo -n \$((\$COLUMNS-45)))H\]\d \174 \$(get_pip) \174 \l \s v\v\$(tput sgr0)\$(tput rc)\n$LINE_UPPER_CORNER$LINE_STRAIGHT$LINE_STRAIGHT\174\t\174$LINE_STRAIGHT\174$C8\u$c8\100\h\174$LINE_STRAIGHT\174$C8\$(pwd)$c8: \$(/bin/ls -A -1 | /usr/bin/wc -l) file(s) \$(/bin/ls -lah | /bin/grep -m 1 total | /bin/sed 's/total //')\174\n$LINE_BOTTOM_CORNER$LINE_STRAIGHT$LINE_BOTTOM\174\[$(tput sgr0)\] "
-export PS1="\$(tput sc)\$(tput rev)\[\033[1;\$(echo -n \$((\$COLUMNS-45)))H\]\d \174 \$(get_pip) \174 \l \s v\v\$(tput sgr0)\$(tput rc)\n$LINE_UPPER_CORNER$LINE_STRAIGHT$LINE_STRAIGHT\174\t\174$LINE_STRAIGHT\174$C8\u$c8\100\h\174$LINE_STRAIGHT\174$C8\$(pwd)$c8: \$(lsfiledirsum) \$(lsbytesum)Mb\174\n$LINE_BOTTOM_CORNER$LINE_STRAIGHT$LINE_BOTTOM\174\[$(tput sgr0)\] "
+	# Define colors
+	local c1='\[\033[0;30m\]' # Non-bold color black
+	local C1='\[\033[1;30m\]' # Bold color
+	local c2='\[\033[0;31m\]' # Non-bold color red
+	local C2='\[\033[1;31m\]' # Bold color
+	local c3='\[\033[0;32m\]' # Non-bold color green
+	local C3='\[\033[1;32m\]' # Bold color
+	local c4='\[\033[0;33m\]' # Non-bold color yellow
+	local C4='\[\033[1;33m\]' # Bold color
+	local c5='\[\033[0;34m\]' # Non-bold color blue
+	local C5='\[\033[1;34m\]' # Bold color
+	local c6='\[\033[0;35m\]' # Non-bold color purple
+	local C6='\[\033[1;35m\]' # Bold color
+	local c7='\[\033[0;36m\]' # Non-bold color cyan
+	local C7='\[\033[1;36m\]' # Bold color
+	local c8='\[\033[0;37m\]' # Non-bold color white
+	local C8='\[\033[1;37m\]' # Bold color
+	local NC='\[\033[0m\]'    # Back to default color
+
+	# Define line characters
+	local LINE_BOTTOM="\342\224\200"
+	local LINE_BOTTOM_CORNER="\342\224\224"
+	local LINE_STRAIGHT="\342\224\200"
+	local LINE_UPPER_CORNER="\342\224\214"
+
+	# Define colors
+	local BLACK="\033[0;30m"
+	local DARKGRAY="\033[1;30m"
+	local RED="\033[0;31m"
+	local LIGHTRED="\033[1;31m"
+	local GREEN="\033[0;32m"
+	local LIGHTGREEN="\033[1;32m"
+	local BROWN="\033[0;33m"
+	local YELLOW="\033[1;33m"
+	local BLUE="\033[0;34m"
+	local LIGHTBLUE="\033[1;34m"
+	local MAGENTA="\033[0;35m"
+	local LIGHTMAGENTA="\033[1;35m"
+	local CYAN="\033[0;36m"
+	local LIGHTCYAN="\033[1;36m"
+	local LIGHTGRAY="\033[0;37m"
+	local WHITE="\033[1;37m"
+	local NOCOLOR="\033[0m"
+
+	# Show error exit code if there is one
+	if [[ $LAST_COMMAND != 0 ]]; then
+		# PS1="\[${RED}\](\[${LIGHTRED}\]ERROR\[${RED}\])-(\[${LIGHTRED}\]Exit Code \[${WHITE}\]${LAST_COMMAND}\[${RED}\])-(\[${LIGHTRED}\]"
+		PS1="\[${DARKGRAY}\](\[${LIGHTRED}\]ERROR\[${DARKGRAY}\])-(\[${RED}\]Exit Code \[${LIGHTRED}\]${LAST_COMMAND}\[${DARKGRAY}\])-(\[${RED}\]"
+		if [[ $LAST_COMMAND == 1 ]]; then
+			PS1+="General error"
+		elif [ $LAST_COMMAND == 2 ]; then
+			PS1+="Missing keyword, command, or permission problem"
+		elif [ $LAST_COMMAND == 126 ]; then
+			PS1+="Permission problem or command is not an executable"
+		elif [ $LAST_COMMAND == 127 ]; then
+			PS1+="Command not found"
+		elif [ $LAST_COMMAND == 128 ]; then
+			PS1+="Invalid argument to exit"
+		elif [ $LAST_COMMAND == 129 ]; then
+			PS1+="Fatal error signal 1"
+		elif [ $LAST_COMMAND == 130 ]; then
+			PS1+="Script terminated by Control-C"
+		elif [ $LAST_COMMAND == 131 ]; then
+			PS1+="Fatal error signal 3"
+		elif [ $LAST_COMMAND == 132 ]; then
+			PS1+="Fatal error signal 4"
+		elif [ $LAST_COMMAND == 133 ]; then
+			PS1+="Fatal error signal 5"
+		elif [ $LAST_COMMAND == 134 ]; then
+			PS1+="Fatal error signal 6"
+		elif [ $LAST_COMMAND == 135 ]; then
+			PS1+="Fatal error signal 7"
+		elif [ $LAST_COMMAND == 136 ]; then
+			PS1+="Fatal error signal 8"
+		elif [ $LAST_COMMAND == 137 ]; then
+			PS1+="Fatal error signal 9"
+		elif [ $LAST_COMMAND -gt 255 ]; then
+			PS1+="Exit status out of range"
+		else
+			PS1+="Unknown error code"
+		fi
+		PS1+="\[${DARKGRAY}\])\[${NOCOLOR}\]\n"
+	else
+		PS1=""
+	fi
+
+	# Info line that stays on top of screen
+	PS1+="\$(tput sc)\$(tput rev)\[\033[1;\$(echo -n \$((\$COLUMNS-45)))H\]\d \174 \$(get_pip) \174 \l \s v\v\$(tput sgr0)\$(tput rc)\n"
+
+	# Custom prompt start with time display
+	PS1+="$LINE_UPPER_CORNER$LINE_STRAIGHT$LINE_STRAIGHT\174$(date +'%-I':%M:%S%P)\174"
+
+	# CPU usage
+	# PS1+="CPU: $(cpu)%"
+
+	# Change color of user name (root/normal)
+	if [[ $EUID -ne 0 ]]; then
+		PS1+="\174$C3\u$c8@\h"
+	else
+		PS1+="\174$c2\u$c8@\h"
+	fi
+
+	# Current directory detailed info
+	PS1+="\174$LINE_STRAIGHT\174$C8\$(pwd)$c8: $(lsfiledirsum) $(lsbytesum) Mb"
+
+	# Skip to the next line, add custom color prompt
+	PS1+="\174\n$LINE_BOTTOM_CORNER$LINE_STRAIGHT$LINE_BOTTOM\174"
+
+	if [[ $EUID -ne 0 ]]; then
+		PS1+="\[${GREEN}\]>\[$(tput sgr0)\] " # Normal user
+	else
+		PS1+="\[${RED}\]>\[$(tput sgr0)\] " # Root user
+	fi
+
+	# PS2 is used to continue a command using the \ character
+	PS2="$C1>$NC "
+}
+PROMPT_COMMAND="__setprompt; $PROMPT_COMMAND"
