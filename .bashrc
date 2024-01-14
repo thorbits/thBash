@@ -63,7 +63,7 @@ alias vbrc='vim ~/.bashrc'
 #######################################################
 
 # Automatically do an ls after each cd
-# cd ()
+# cd()
 # {
 # 	if [ -n "$1" ]; then
 # 		builtin cd "$@" && ls
@@ -73,14 +73,14 @@ alias vbrc='vim ~/.bashrc'
 # }
 
 # Sends a request to the ipinfo.io API to get the public IP address
-get_pip () { 
+get_pip() { 
   local ip
   ip=$(curl -sS ipinfo.io/ip 2>/dev/null) || { echo "Error fetching public IP address"; return 1; }
   echo "$ip"
 }
 
 # Extracts any archive(s), usage: extract archive1.tar.gz archive2.zip
-extract () { 
+extract() { 
   for archive in "$@"; do 
   if [ -f "$archive" ]; then case $archive in *.tar.bz2) tar xjf "$archive" ;; *.tar.gz) tar xzf "$archive" ;; *.bz2) bunzip2 "$archive" ;; *.rar) unrar x "$archive" ;; *.gz) gunzip "$archive" ;; *.tar) tar xvf "$archive" ;; *.tbz2) tar xjf "$archive" ;; *.tgz) tar xzf "$archive" ;; *.zip) unzip "$archive" ;; *.Z) uncompress "$archive" ;; *.7z) 7z x "$archive" ;; *.deb) ar x "$archive" ;; *.tar.xz) tar xf "$archive" ;; *.tar.zst) unzstd "$archive" ;; *) echo "'$archive' cannot be extracted" ;; esac else 
   echo "'$archive' is not a valid file!"
@@ -89,7 +89,7 @@ extract () {
 }
 
 # Display CPU temperature (Sensors)
-get_temp () { 
+get_temp() { 
 	# Check if 'sensors' command is available
 	if command -v sensors &>/dev/null; then
 	# Extract CPU temperature using 'sensors'
@@ -106,7 +106,7 @@ get_temp () {
 }
 
 # Colored countdown (Figlet Lolcat)
-cdown () { 
+cdown() { 
     N=$1 # Capture the argument as N
   # Start a while loop that continues until N is greater than 0
     while ((N-- > 0)); do
@@ -117,7 +117,7 @@ cdown () {
 }
 
 # Copy file with a progress bar (Rsync)
-cppb () { 
+cppb() { 
     # Check if rsync is available
      if ! command -v rsync &>/dev/null; then
 	     echo "Error: 'rsync' is not installed"
@@ -133,7 +133,7 @@ cppb () {
 }
 
 # Copy file with a progress bar (Pipe Viewer)
-cppv () { 
+cppv() { 
     if [ -z "$1" ] || [ -z "$2" ]; then
         echo "Usage: cppv source_file destination"
         return 1
@@ -148,31 +148,37 @@ cppv () {
 }
 
 # Copy and go to the directory
-cpg () { 
-	if [ -d "$2" ];then
-		cp "$1" "$2" && cd "$2"
-	else
-		cp "$1" "$2"
-	fi
+cpg() {
+    local source="$1"
+    local destination="$2"
+
+    if [ -d "$destination" ]; then
+        cp "$source" "$destination" && cd "$destination" || return 1
+    else
+        cp "$source" "$destination" || return 1
+    fi
 }
 
 # Move and go to the directory
-mvg () { 
-	if [ -d "$2" ];then
-		mv "$1" "$2" && cd "$2"
-	else
-		mv "$1" "$2"
-	fi
+mvg() {
+    local source="$1"
+    local destination="$2"
+
+    if [ -d "$destination" ]; then
+        mv "$source" "$destination" && cd "$destination" || return 1
+    else
+        mv "$source" "$destination" || return 1
+    fi
 }
 
 # Create and go to the directory
-mkdirg () { 
+mkdirg() { 
 	mkdir -p "$1"
 	cd "$1"
 }
 
 # Sum the number of files and sub-directories at the current prompt
-lsfiledirsum () { 
+lsfiledirsum() { 
 	local total_count=$(find . -maxdepth 1 -mindepth 1 -exec echo x \; | wc -l)
 	local file_count=$(find . -maxdepth 1 -type f | wc -l)
 	local dir_count=$(($total_count - $file_count))
@@ -180,30 +186,25 @@ lsfiledirsum () {
 }
 
 # Sum the number of bytes in the current directory
-lsbytesum () { 
+lsbytesum() {
     local totalBytes=0
-    
-	# Use find to get a list of regular files in the current directory
-	while IFS= read -r -d '' file; do 
-		[[ -f "$file" ]] && ((totalBytes += $(stat -c %s "$file" 2>/dev/null)))
-		done < <(find . -maxdepth 1 -type f -print0)
-	# Check if bc is available before using it
-	if command -v bc &>/dev/null; then
-		totalMegabytes=$(echo "scale=3; $totalBytes/1048576" | bc)
-		printf "%.3f\n" "$totalMegabytes"
-	else
-		echo "Error: 'bc' is not installed"
-	fi
-}
 
-# GitHub additions
-gitpush () { 
-	cp ~/.bashrc ~/mybashrc
-	cd ~/mybashrc
-	git add .
-	git commit -m .bashrc
-	git push -u -f origin main
-	{ printf 36136807+thorbits@users.noreply.github.com\n; }
+    # Use find to get a list of regular files in the current directory
+    while IFS= read -r -d '' file; do 
+        if [[ -f "$file" ]]; then
+            # Increment totalBytes by the size of each regular file
+            ((totalBytes += $(stat -c %s "$file" 2>/dev/null)))
+        fi
+    done < <(find . -maxdepth 1 -type f -print0)
+
+    # Check if bc is available before using it
+    if command -v bc &>/dev/null; then
+        # Calculate totalMegabytes and print the result
+        totalMegabytes=$(echo "scale=3; $totalBytes/1048576" | bc)
+        printf "%.3f\n" "$totalMegabytes"
+    else
+        echo "Error: 'bc' is not installed"
+    fi
 }
 
 #######################################################
