@@ -232,25 +232,6 @@ function __setprompt
 	local LINE_STRAIGHT="\342\224\200"
 	local LINE_UPPER_CORNER="\342\224\214"
 
-	# Define colors
-	local BLACK="\033[0;30m"
-	local DARKGRAY="\033[1;30m"
-	local RED="\033[0;31m"
-	local LIGHTRED="\033[1;31m"
-	local GREEN="\033[0;32m"
-	local LIGHTGREEN="\033[1;32m"
-	local BROWN="\033[0;33m"
-	local YELLOW="\033[1;33m"
-	local BLUE="\033[0;34m"
-	local LIGHTBLUE="\033[1;34m"
-	local MAGENTA="\033[0;35m"
-	local LIGHTMAGENTA="\033[1;35m"
-	local CYAN="\033[0;36m"
-	local LIGHTCYAN="\033[1;36m"
-	local LIGHTGRAY="\033[0;37m"
-	local WHITE="\033[1;37m"
-	local NOCOLOR="\033[0m"
-
 	# Show error exit code if there is one
 	if [[ $LAST_COMMAND != 0 ]]; then
 		PS1="$C1\174$c2..ERROR..$C1\174-\174$c2 Exit Code$C2 ${LAST_COMMAND}$C1-$c2 "
@@ -287,7 +268,7 @@ function __setprompt
 		else
 			PS1+="Unknown error code"
 		fi
-		PS1+="$C1)$NC\n"
+		PS1+="$NC\n"
 	else
 		PS1=""
 	fi
