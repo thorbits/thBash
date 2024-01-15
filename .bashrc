@@ -253,8 +253,7 @@ function __setprompt
 
 	# Show error exit code if there is one
 	if [[ $LAST_COMMAND != 0 ]]; then
-		# PS1="\[${RED}\](\[${LIGHTRED}\]ERROR\[${RED}\])-(\[${LIGHTRED}\]Exit Code \[${WHITE}\]${LAST_COMMAND}\[${RED}\])-(\[${LIGHTRED}\]"
-		PS1="\[${DARKGRAY}\](\[${LIGHTRED}\]ERROR\[${DARKGRAY}\])-(\[${RED}\]Exit Code \[${LIGHTRED}\]${LAST_COMMAND}\[${DARKGRAY}\])-(\[${RED}\]"
+		PS1="$C1\174$c2..ERROR..$C1\174-\174$c2 Exit Code$C2 ${LAST_COMMAND}$C1-$c2 "
 		if [[ $LAST_COMMAND == 1 ]]; then
 			PS1+="General error"
 		elif [ $LAST_COMMAND == 2 ]; then
@@ -288,21 +287,21 @@ function __setprompt
 		else
 			PS1+="Unknown error code"
 		fi
-		PS1+="\[${DARKGRAY}\])\[${NOCOLOR}\]\n"
+		PS1+="$C1)$NC\n"
 	else
 		PS1=""
 	fi
 
 	# Info line that stays on top of screen
-	PS1+="\$(tput sc)\$(tput rev)\[\033[1;\$(echo -n \$((\$COLUMNS-45)))H\]\d \174 \$(get_pip) \174 \l \s v\v\$(tput sgr0)\$(tput rc)\n"
+	PS1+="\$(tput sc)\$(tput rev)\[\033[1;\$(echo -n \$((\$COLUMNS-45)))H\]\d \174 \$(get_pip) \174 \l \s v\v\$(tput sgr0)\$(tput rc)"
 
 	# Custom prompt start with time display
-	PS1+="$LINE_UPPER_CORNER$LINE_STRAIGHT$LINE_STRAIGHT\174$(date +'%-I':%M:%S%P)\174"
+	PS1+="\n$LINE_UPPER_CORNER$LINE_STRAIGHT$LINE_STRAIGHT\174$(date +'%-I':%M:%S%P)\174$LINE_STRAIGHT"
 
 	# CPU usage
 	# PS1+="CPU: $(cpu)%"
 
-	# Change color of user name (root/normal)
+	# Change color of user name if normal or root)
 	if [[ $EUID -ne 0 ]]; then
 		PS1+="\174$C3\u$c8@\h"
 	else
@@ -316,9 +315,9 @@ function __setprompt
 	PS1+="\174\n$LINE_BOTTOM_CORNER$LINE_STRAIGHT$LINE_BOTTOM\174"
 
 	if [[ $EUID -ne 0 ]]; then
-		PS1+="\[${GREEN}\]>\[$(tput sgr0)\] " # Normal user
+		PS1+="$C3>\[$(tput sgr0)\] " # Normal user
 	else
-		PS1+="\[${RED}\]>\[$(tput sgr0)\] " # Root user
+		PS1+="$c2>\[$(tput sgr0)\] " # Root user
 	fi
 
 	# PS2 is used to continue a command using the \ character
