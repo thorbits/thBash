@@ -234,7 +234,7 @@ function __setprompt
 
 	# Show error exit code if there is one
 	if [[ $LAST_COMMAND != 0 ]]; then
-		PS1="   \174Error exit Code: $c2${LAST_COMMAND} "
+		PS1="   \174Exit Code: $c2${LAST_COMMAND} ("
 		if [[ $LAST_COMMAND == 1 ]]; then
 			PS1+="General error"
 		elif [ $LAST_COMMAND == 2 ]; then
@@ -268,18 +268,18 @@ function __setprompt
 		else
 			PS1+="Unknown error code"
 		fi
-		PS1+="$NC\174\n"
+		PS1+=")$NC\174\n"
 	else
 		PS1=""
 	fi
 
-	# Info line that stays on top of screen
-	PS1+="\[$(tput sc)\$(tput cup 0 \$((COLUMNS-65)))\$(tput rev) \d \174 CPU: $(cpu)% \174 $(get_pip) \174 \l \s v\v \$(tput sgr0)\$(tput rc)"
+	# Info line on top of screen
+	PS1+="\[$(tput sc)\$(tput cup 0)$(tput rev)$(printf '%*s' $((COLUMNS-60)) ' ') \d \174 CPU: $(cpu)% \174 $(get_pip) \174 \l \s v\v \$(tput sgr0)\$(tput rc)\n"
 
-	# Custom prompt begins
-	PS1+="\n$LINE_UPPER_CORNER$LINE_STRAIGHT$LINE_STRAIGHT\174$(date +'%-I':%M:%S%P)\174$LINE_STRAIGHT"
+	# Prompt begins
+	PS1+="$LINE_UPPER_CORNER$LINE_STRAIGHT$LINE_STRAIGHT\174$(date +'%-I':%M:%S%P)\174$LINE_STRAIGHT"
 
-	# Change color of user name if normal or root
+	# Change username color if normal or root
 	if [[ $EUID -ne 0 ]]; then
 		PS1+="\174$C3\u$c8@\h"
 	else
@@ -289,13 +289,13 @@ function __setprompt
 	# Current directory detailed info
 	PS1+="\174$LINE_STRAIGHT\174$C8\$(pwd)$c8: $(lsfiledirsum) $(lsbytesum) Mb"
 
-	# Skip to the next line, add custom color prompt
+	# Change cursor color if normal user or root
 	PS1+="\174\n$LINE_BOTTOM_CORNER$LINE_STRAIGHT$LINE_BOTTOM\174"
 
 	if [[ $EUID -ne 0 ]]; then
-		PS1+="$C3>\[$(tput sgr0)\] " # normal user
+		PS1+="$C3>\[$(tput sgr0)\] "
 	else
-		PS1+="$c2>\[$(tput sgr0)\] " # root user
+		PS1+="$c2>\[$(tput sgr0)\] "
 	fi
 
 	# PS2 is used to continue a command using the \ character
