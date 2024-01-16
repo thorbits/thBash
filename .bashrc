@@ -219,33 +219,39 @@ function __setprompt
 	local LAST_COMMAND=$? # Must come first!
 
 	# Define colors
-	local c1='\[\033[0;30m\]' # Non-bold color black
+	local c1='\[\033[0;30m\]' # Color black
 	local C1='\[\033[1;30m\]' # Bold color
-	local c2='\[\033[0;31m\]' # Non-bold color red
+	local c2='\[\033[0;31m\]' # Color red
 	local C2='\[\033[1;31m\]' # Bold color
-	local c3='\[\033[0;32m\]' # Non-bold color green
+	local c3='\[\033[0;32m\]' # Color green
 	local C3='\[\033[1;32m\]' # Bold color
-	local c4='\[\033[0;33m\]' # Non-bold color yellow
+	local c4='\[\033[0;33m\]' # Color yellow
 	local C4='\[\033[1;33m\]' # Bold color
-	local c5='\[\033[0;34m\]' # Non-bold color blue
+	local c5='\[\033[0;34m\]' # Color blue
 	local C5='\[\033[1;34m\]' # Bold color
-	local c6='\[\033[0;35m\]' # Non-bold color purple
+	local c6='\[\033[0;35m\]' # Color purple
 	local C6='\[\033[1;35m\]' # Bold color
-	local c7='\[\033[0;36m\]' # Non-bold color cyan
+	local c7='\[\033[0;36m\]' # Color cyan
 	local C7='\[\033[1;36m\]' # Bold color
-	local c8='\[\033[0;37m\]' # Non-bold color white
+	local c8='\[\033[0;37m\]' # Color white
 	local C8='\[\033[1;37m\]' # Bold color
-	local NC='\[\033[0m\]'    # Back to default color
+	local NC='\[\033[0m\]'    # Default color
 
 	# Define line characters
-	local LINE_BOTTOM="\342\224\200"
-	local LINE_BOTTOM_CORNER="\342\224\224"
-	local LINE_STRAIGHT="\342\224\200"
-	local LINE_UPPER_CORNER="\342\224\214"
+	local LINE_BOTTOM='\342\224\200'
+	local LINE_BOTTOM_CORNER='\342\224\224'
+	local LINE_STRAIGHT='\342\224\200'
+	local LINE_UPPER_CORNER='\342\224\214'
 
-	local RESET="\[$(tput sgr0)\]"
-	local TRIAN=$(echo -e "\uE0B0")
+	local t1_bg='\[$(tput setab 31)\]'
+	local t1_fg='\[$(tput setaf 31)\]'
+	local t2_bg='\[$(tput setab 69)\]'
+	local t2_fg='\[$(tput setaf 69)\]'
+	local RESET='\[$(tput sgr0)\]'
 
+	local tr1=$(echo -e "${t1_fg}${t2_bg}\uE0B0${RESET}")
+	local tr2=$(echo -e "${t2_fg}\uE0B0")
+	
 	# Show error exit code if there is one
 	if [[ $LAST_COMMAND != 0 ]]; then
 		PS1="   \174Exit Code: $c2${LAST_COMMAND} ("
@@ -307,9 +313,9 @@ function __setprompt
 	PS1+="\174\n$LINE_BOTTOM_CORNER$LINE_STRAIGHT$LINE_BOTTOM\174"
 
 	if [[ $EUID -ne 0 ]]; then
-		PS1+="$C8$TRIANGL$RESET "
+		PS1+="${t1_bg} ${RESET}${tr1}${t2_bg} ${RESET}${tr2}${RESET} "
 	else
-		PS1+="$c2$TRIANGL$RESET "
+		PS1+="${t1_bg} ${RESET}${tr1}${t2_bg} ${RESET}${tr2}${RESET} "
 	fi
 
 	# PS2 is used to continue a command using the \ character
