@@ -285,9 +285,8 @@ function __setprompt
 	fi
 
 	# Info line on top of screen
-	PS1+="\[$(tput sc)\$(tput cup 0)$(tput rev)   \174 \l \s v\v$(printf '%*s' $((COLUMNS-80)) ' ') \174 CPU: $(cpu)% \174 $(get_pip) \174 $(memusage) \174 \d \$(tput sgr0)\$(tput rc)\n"
-	# PS1+="\[$(tput sc)\$(tput cup 0)$(tput rev)$(printf '%*s' $((COLUMNS-80)) ' ') \d \174 CPU: $(cpu)% \174 $(memusage) \174 $(get_pip) \174 \l \s v\v \$(tput sgr0)\$(tput rc)\n"
-
+	PS1+="\[$(tput sc)\$(tput cup 0)$(tput rev)   \174 \l \s v\v$(printf '%*s' $((COLUMNS-80)) ' ') \174 CPU: $(cpu)% \174 $(memusage) \174 $(get_pip) \174 \d \$(tput sgr0)\$(tput rc)\n"
+	
 	# Prompt begins
 	PS1+="$LINE_UPPER_CORNER$LINE_STRAIGHT$LINE_STRAIGHT\174$(date +'%-I':%M:%S%P)\174$LINE_STRAIGHT"
 
