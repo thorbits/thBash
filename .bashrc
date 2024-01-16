@@ -78,7 +78,7 @@ extract() {
   done
 }
 
-# Display CPU temperature (Sensors)
+# Display CPU temperature (lm-Sensors)
 get_temp() { 
 	# Check if 'sensors' command is available
 	if command -v sensors &>/dev/null; then
@@ -95,7 +95,7 @@ get_temp() {
 	fi
 }
 
-# Colored countdown (Figlet Lolcat)
+# Colored countdown (figlet lolcat)
 cdown() { 
     N=$1 # Capture the argument as N
   # Start a while loop that continues until N is greater than 0
@@ -106,7 +106,7 @@ cdown() {
     done
 }
 
-# Copy file with a progress bar (Rsync)
+# Copy file with a progress bar (rsync)
 cppb() { 
     # Check if rsync is available
      if ! command -v rsync &>/dev/null; then
@@ -122,7 +122,7 @@ cppb() {
     rsync --progress "$1" "$2"
 }
 
-# Copy file with a progress bar (Pipe Viewer)
+# Copy file with a progress bar (pv)
 cppv() { 
     if [ -z "$1" ] || [ -z "$2" ]; then
         echo "Usage: cppv source_file destination"
