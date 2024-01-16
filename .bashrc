@@ -243,6 +243,9 @@ function __setprompt
 	local LINE_STRAIGHT="\342\224\200"
 	local LINE_UPPER_CORNER="\342\224\214"
 
+	local RESET="\[$(tput sgr0)\]"
+	local TRIAN=$(echo -e "\uE0B0")
+
 	# Show error exit code if there is one
 	if [[ $LAST_COMMAND != 0 ]]; then
 		PS1="   \174Exit Code: $c2${LAST_COMMAND} ("
@@ -285,14 +288,14 @@ function __setprompt
 	fi
 
 	# Info line on top of screen
-	PS1+="\[$(tput sc)\$(tput cup 0)$(tput rev)   \174 \l \s v\v$(printf '%*s' $((COLUMNS-80)) ' ') \174 CPU: $(cpu)% \174 $(memusage) \174 $(get_pip) \174 \d \$(tput sgr0)\$(tput rc)\n"
+	PS1+="\[$(tput sc)\$(tput cup 0)$(tput rev)   \174 \l \s v\v$(printf '%*s' $((COLUMNS-85)) ' ') \174 CPU: $(cpu)% \174 $(memusage) \174 $(get_pip) \174 \d $RESET\$(tput rc)\n"
 	
 	# Prompt begins
 	PS1+="$LINE_UPPER_CORNER$LINE_STRAIGHT$LINE_STRAIGHT\174$(date +'%-I':%M:%S%P)\174$LINE_STRAIGHT"
 
 	# Change username color if normal or root
 	if [[ $EUID -ne 0 ]]; then
-		PS1+="\174$C3\u$c8@\h"
+		PS1+="\174$C8\u$c8@\h"
 	else
 		PS1+="\174$c2\u$c8@\h"
 	fi
@@ -304,9 +307,9 @@ function __setprompt
 	PS1+="\174\n$LINE_BOTTOM_CORNER$LINE_STRAIGHT$LINE_BOTTOM\174"
 
 	if [[ $EUID -ne 0 ]]; then
-		PS1+="$C3>\[$(tput sgr0)\] "
+		PS1+="$C8$TRIANGL$RESET "
 	else
-		PS1+="$c2>\[$(tput sgr0)\] "
+		PS1+="$c2$TRIANGL$RESET "
 	fi
 
 	# PS2 is used to continue a command using the \ character
