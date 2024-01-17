@@ -62,12 +62,6 @@ alias vbrc='vim ~/.bashrc'
 # 	fi
 # }
 
-# Sends a request to the ipinfo.io API to get the public IP address
-get_pip() { 
-  local ip
-  ip=$(curl -sS ipinfo.io/ip 2>/dev/null) || { echo "Error fetching public IP address"; return 1; }
-  echo "$ip"
-}
 
 # Extracts any archive(s), usage: extract archive1.tar.gz archive2.zip
 extract() { 
@@ -231,7 +225,7 @@ draw_bar() {
 	local menu_width=$(tput cols)
 	while true; do
 		tput cup 0 0
-		printf '%s' "\[$(tput sc)$(tput sc)$(tput sc)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-95)) ' ') | CPU: $(cpu)% | $(memusage) | $(get_pip) | $(get_date) $RESET$(tput rc)"
+		printf '%s' "$(tput sc)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-95)) ' ') | CPU: $(cpu)% | $(memusage) | $(get_pip) | $(get_date) $RESET$(tput rc)"
 	for ((i=1; i<=menu_height; i++)); do
 		printf "\n"
 		done
@@ -325,7 +319,7 @@ function __setprompt
 	fi
 
 	# Info line on top of screen
-	PS1+="\[$(tput sc)\$(tput cup 0)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-95)) ' ') \174 CPU: $(cpu)% \174 $(memusage) \174 $(get_pip) \174 $(get_date) $RESET\$(tput rc)\n"
+	PS1+="\[$(tput sc)\$(tput cup 0)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-90)) ' ') \174 CPU: $(cpu)% \174 $(memusage) \174 $(get_pip) \174 $(get_date) $RESET\$(tput rc)\n"
 	
 	# Prompt begins
 	PS1+="$LINE_UPPER_CORNER$LINE_STRAIGHT$LINE_STRAIGHT\174$(date +'%-I':%M:%S%P)\174$LINE_STRAIGHT"
