@@ -1,6 +1,14 @@
 #!/bin/bash
 iatest=$(expr index "$-" i)
 
+#  _______
+#  \_   _|
+#    | |  
+#    |_|horbits 
+#
+# My bash config, the following packages are required: autojump bc curl eza figlet lolcat lm-sensors man-db pv rsync neovim
+
+
 #######################################################
 #		EXPORTS
 #######################################################
@@ -12,6 +20,19 @@ export HISTFILESIZE=10000
 export HISTSIZE=500
 export HISTCONTROL=erasedups:ignoredups:ignorespace
 
+# "nvim" as manpager
+export MANPAGER="nvim +Man!"
+
+# Change title of terminals
+case ${TERM} in
+	xterm*|rxvt*|Eterm*|aterm|kterm|gnome*|alacritty|st|konsole*)
+	  PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/\~}\007"'
+	  ;;
+	screen*)
+	  PROMPT_COMMAND='echo -ne "\033_${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/\~}\033\\"'
+	  ;;
+esac
+
 # SHOPT
 shopt -s autocd # change to named directory
 shopt -s cdspell # autocorrects cd misspellings
@@ -19,6 +40,7 @@ shopt -s cmdhist # save multi-line commands in history as single line
 shopt -s histappend # do not overwrite history
 shopt -s expand_aliases # expand aliases
 shopt -s checkwinsize # checks term size when bash regains control
+
 PROMPT_COMMAND='history -a'
 
 # Ignore case on auto-completion
@@ -27,6 +49,7 @@ if [[ $iatest > 0 ]]; then bind "set completion-ignore-case on"; fi
 
 # Show auto-completion list automatically, without double tab
 if [[ $iatest > 0 ]]; then bind "set show-all-if-ambiguous On"; fi
+
 
 #######################################################
 #		ALIASES
@@ -47,6 +70,7 @@ alias sudo='sudo '
 alias nf='neofetch'
 alias update='nala update && nala full-upgrade'
 alias vbrc='vim ~/.bashrc'
+
 
 #######################################################
 #		GENERAL FUNCTIONS
@@ -161,6 +185,7 @@ mkdirg() {
 	cd "$1"
 }
 
+
 #######################################################
 #		DRAW BAR
 #######################################################
@@ -206,6 +231,7 @@ draw_bar() {
 	sleep 10
 	done
 }
+
 
 #######################################################
 #		PROMPT
@@ -325,7 +351,7 @@ function __setprompt
 	fi
 
 	# Info line on top of screen
-	PS1+="\[$(tput sc)\$(tput cup 0)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-95)) ' ') \174 CPU: $(cpu)% \174 $(memusage) \174 $(lip) \174 $(get_date) $RESET\$(tput rc)\n"
+	PS1+="\[$(tput sc)\$(tput cup 0)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-92)) ' ') \174 CPU: $(cpu)% \174 $(memusage) \174 $(lip) \174 $(get_date) $RESET\$(tput rc)\n"
 	
 	# Prompt begins
 	PS1+="$LINE_UPPER_CORNER$LINE_STRAIGHT$LINE_STRAIGHT\174$(date +'%-I':%M:%S%P)\174$LINE_STRAIGHT"
@@ -341,7 +367,7 @@ function __setprompt
 	PS1+="\174$LINE_STRAIGHT\174$C8\$(pwd)$c8: $(lsfiledirsum) $(lsbytesum) Mb"
 
 	# Change cursor color if normal user or root
-	PS1+="\174\n$LINE_BOTTOM_CORNER$LINE_STRAIGHT$LINE_BOTTOM\174"
+	PS1+="\n$LINE_BOTTOM_CORNER$LINE_STRAIGHT$LINE_BOTTOM\174"
 
 	if [[ $EUID -ne 0 ]]; then
 		PS1+=$'\uE0B0 '
