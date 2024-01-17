@@ -49,7 +49,7 @@ alias update='nala update && nala full-upgrade'
 alias vbrc='vim ~/.bashrc'
 
 #######################################################
-#		FUNCTIONS
+#		GENERAL FUNCTIONS
 #######################################################
 
 # Automatically do an ls after each cd
@@ -161,6 +161,10 @@ mkdirg() {
 	cd "$1"
 }
 
+#######################################################
+#		DRAW BAR
+#######################################################
+
 # Show some shell infos
 shell_info() { 
 	local bash_name=$(ps -p $$ -o comm=)
@@ -189,6 +193,23 @@ memusage() {
 get_date() { 
 	date "+%a-%d-%b"
 }
+
+draw_bar() { 
+	local menu_height=1
+	local menu_width=$(tput cols)
+	while true; do
+		tput cup 0 0
+		printf '%s' "$(tput sc)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-95)) ' ') | CPU: $(cpu)% | $(memusage) | $(get_pip) | $(get_date) $RESET$(tput rc)"
+	for ((i=1; i<=menu_height; i++)); do
+		printf "\n"
+		done
+	sleep 10
+	done
+}
+
+#######################################################
+#		PROMPT
+#######################################################
 
 # Sum the number of files and sub-directories at the current prompt
 lsfiledirsum() { 
@@ -219,23 +240,6 @@ lsbytesum() {
         echo "Error: 'bc' is not installed"
     fi
 }
-
-draw_bar() { 
-	local menu_height=1
-	local menu_width=$(tput cols)
-	while true; do
-		tput cup 0 0
-		printf '%s' "$(tput sc)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-95)) ' ') | CPU: $(cpu)% | $(memusage) | $(get_pip) | $(get_date) $RESET$(tput rc)"
-	for ((i=1; i<=menu_height; i++)); do
-		printf "\n"
-		done
-	sleep 10
-	done
-}
-
-#######################################################
-#		PROMPT
-#######################################################
 
 alias cpu="grep 'cpu ' /proc/stat | awk '{usage=(\$2+\$4)*100/(\$2+\$4+\$5)} END {print usage}' | awk '{printf(\"%.1f\n\", \$1)}'"
 
