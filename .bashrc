@@ -5,7 +5,7 @@
 #    | |  
 #    |_|horbits 
 #
-# My bash config, the following packages are required: autojump bc curl eza figlet lolcat lm-sensors nala man-db neofetch neovim pv rsync vim
+# My bash config, the following packages are required: autojump bc curl eza figlet lolcat lm-sensors nala man-db neofetch neovim pv rsync sudo vim
 
 
 #######################################################
@@ -69,7 +69,8 @@ alias l.='eza -a | egrep "^\."'
 
 alias sudo='sudo '
 alias nf='neofetch'
-alias update='nala update && nala full-upgrade'
+alias update='if [ $(id -u) -eq 0 ]; then nala update && nala full-upgrade; else sudo nala update && sudo nala full-upgrade; fi'
+alias reboot='if [ $(id -u) -eq 0 ]; then reboot; else sudo reboot; fi'
 alias vbrc='vim ~/.bashrc'
 
 
@@ -213,10 +214,10 @@ memusage() {
 	local used_memory=$(echo "$mem_info" | awk '{print $3}')
 	local total_memory=$(echo "$mem_info" | awk '{print $2}')
 	# Display the result
-	echo "RAM: $used_memory / $total_memory"
+	echo "MEM: $used_memory / $total_memory"
 }
 
-# Obvious one
+# Show current date
 get_date() { 
 	date "+%a-%d-%b"
 }
@@ -227,7 +228,7 @@ draw_bar() {
 	local menu_width=$(tput cols)
 	while true; do
 		tput cup 0 0
-		printf '\033[K%s' "$(tput sc)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-90)) ' ') | CPU: $(cpu)% | $(memusage) | $(get_pip) | $(get_date) $(tput sgr0)$(tput rc)"
+		printf '\033[K%s' "$(tput sc)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-90)) ' ') | $(cpu) | $(memusage) | $(get_pip) | $(get_date) $(tput sgr0)$(tput rc)"
 	for ((i=1; i<=menu_height; i++)); do
 		printf "\n"
 		done
@@ -249,7 +250,7 @@ lsfiledirsum() {
 }
 
 # Sum the number of bytes in the current directory
-lsbytesum() {
+lsbytesum() { 
     local totalBytes=0
 
     # Use find to get a list of regular files in the current directory
@@ -270,7 +271,7 @@ lsbytesum() {
     fi
 }
 
-alias cpu="grep 'cpu ' /proc/stat | awk '{usage=(\$2+\$4)*100/(\$2+\$4+\$5)} END {print usage}' | awk '{printf(\"%.1f\n\", \$1)}'"
+alias cpu="echo 'CPU: $(grep 'cpu ' /proc/stat | awk '{usage=($2+$4)*100/($2+$4+$5)} END {printf("%.1f\n", usage)}')%'"
 alias pwd='pwd | sed "s#\(/[^/]\{1,\}/[^/]\{1,\}/[^/]\{1,\}/\).*\(/[^/]\{1,\}/[^/]\{1,\}\)/\{0,1\}#\1_\2#g"'
 alias lip="ip addr show | grep -oP '(?<=inet\s)\d+(\.\d+){3}' | grep -v '127.0.0.1'"
 
@@ -354,7 +355,7 @@ function __setprompt
 	fi
 
 	# Info line on top of screen
-	PS1+="\[$(tput sc)\$(tput cup 0)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-92)) ' ') \174 CPU: $(cpu)% \174 $(memusage) \174 $(lip) \174 $(get_date) $RESET\$(tput rc)\n"
+	PS1+="\[$(tput sc)\$(tput cup 0)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-92)) ' ') \174 $(cpu) \174 $(memusage) \174 $(lip) \174 $(get_date) $RESET\$(tput rc)\n"
 	
 	# Prompt begins
 	PS1+="$LINE_UPPER_CORNER$LINE_STRAIGHT$LINE_STRAIGHT\174$(date +'%-I':%M:%S%P)\174$LINE_STRAIGHT"
