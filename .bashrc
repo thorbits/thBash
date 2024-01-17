@@ -226,6 +226,16 @@ lsbytesum() {
     fi
 }
 
+draw_bar() { 
+	local menu_height=1
+	local menu_width=$(tput cols)
+	while true; do
+		tput cup 0 0
+		printf '%s' "\[$(tput sc)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-95)) ' ') | CPU: $(cpu)% | $(memusage) | $(get_pip) | $(get_date) $RESET$(tput rc)"
+	sleep 10
+	done
+}
+
 #######################################################
 #		PROMPT
 #######################################################
