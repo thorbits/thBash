@@ -216,16 +216,18 @@ memusage() {
 	echo "RAM: $used_memory / $total_memory"
 }
 
+# Obvious one
 get_date() { 
 	date "+%a-%d-%b"
 }
 
+# Menu style bar that stays on top of screen
 draw_bar() { 
 	local menu_height=1
 	local menu_width=$(tput cols)
 	while true; do
 		tput cup 0 0
-		printf '%s' "$(tput sc)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-95)) ' ') | CPU: $(cpu)% | $(memusage) | $(get_pip) | $(get_date) $RESET$(tput rc)"
+		printf '\033[K%s' "$(tput sc)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-90)) ' ') | CPU: $(cpu)% | $(memusage) | $(get_pip) | $(get_date) $(tput sgr0)$(tput rc)"
 	for ((i=1; i<=menu_height; i++)); do
 		printf "\n"
 		done
