@@ -88,13 +88,16 @@ alias vbrc='vim ~/.bashrc'
 # 	fi
 # }
 
-
 # Extracts any archive(s), usage: extract archive1.tar.gz archive2.zip
 extract() { 
-  for archive in "$@"; do 
-  if [ -f "$archive" ]; then case $archive in *.tar.bz2) tar xjf "$archive" ;; *.tar.gz) tar xzf "$archive" ;; *.bz2) bunzip2 "$archive" ;; *.rar) unrar x "$archive" ;; *.gz) gunzip "$archive" ;; *.tar) tar xvf "$archive" ;; *.tbz2) tar xjf "$archive" ;; *.tgz) tar xzf "$archive" ;; *.zip) unzip "$archive" ;; *.Z) uncompress "$archive" ;; *.7z) 7z x "$archive" ;; *.deb) ar x "$archive" ;; *.tar.xz) tar xf "$archive" ;; *.tar.zst) unzstd "$archive" ;; *) echo "'$archive' cannot be extracted" ;; esac else 
-  echo "'$archive' is not a valid file!"
-  fi
+  for archive in "$@"; do
+	  if [ -f "$archive" ];
+		  then case $archive in *.tar.bz2) tar xjf "$archive" ;; *.tar.gz) tar xzf "$archive" ;; *.bz2) bunzip2 "$archive" ;; *.rar) unrar x "$archive" ;; *.gz) gunzip "$archive" ;; *.tar) tar xvf "$archive" ;; *.tbz2) tar xjf "$archive" ;; *.tgz) tar xzf "$archive" ;; *.zip) unzip "$archive" ;; *.Z) uncompress "$archive" ;; *.7z) 7z x "$archive" ;; *.deb) ar x "$archive" ;; *.tar.xz) tar xf "$archive" ;; *.tar.zst) unzstd "$archive" ;; *)
+			  echo "'$archive' cannot be extracted" ;; esac
+		  else
+			  echo "'$archive' is not a valid file!"
+		  fi
+
   done
 }
 
