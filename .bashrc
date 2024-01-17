@@ -88,17 +88,51 @@ alias vbrc='vim ~/.bashrc'
 # 	fi
 # }
 
-# Extracts any archive(s), usage: extract archive1.tar.gz archive2.zip
+# Extracts any archive(s) to a specified directory, usage: extract -d /path/to/destination archive1.tar.gz archive2.zip
 extract() { 
-  for archive in "$@"; do
-	  if [ -f "$archive" ];
-		  then case $archive in *.tar.bz2) tar xjf "$archive" ;; *.tar.gz) tar xzf "$archive" ;; *.bz2) bunzip2 "$archive" ;; *.rar) unrar x "$archive" ;; *.gz) gunzip "$archive" ;; *.tar) tar xvf "$archive" ;; *.tbz2) tar xjf "$archive" ;; *.tgz) tar xzf "$archive" ;; *.zip) unzip "$archive" ;; *.Z) uncompress "$archive" ;; *.7z) 7z x "$archive" ;; *.deb) ar x "$archive" ;; *.tar.xz) tar xf "$archive" ;; *.tar.zst) unzstd "$archive" ;; *)
-			  echo "'$archive' cannot be extracted" ;; esac
-		  else
-			  echo "'$archive' is not a valid file!"
-		  fi
+	local dest_dir="."  # default destination directory
+	while getopts ":d:" opt; do
+		case $opt in
+			d)
+				dest_dir="$OPTARG"
+				;;
+			\?)
+				echo "Invalid option: -$OPTARG" >&2
+				return 1
+				;;
+		esac
+	done
 
-  done
+	shift $((OPTIND - 1))
+
+	for archive in "$@"; do
+		if [ -f "$archive" ]; then
+			echo "Extracting '$archive' to '$dest_dir'..."
+			case $archive in
+				*.tar.bz2)   tar xjf "$archive" -C "$dest_dir" ;;
+				*.tar.gz)    tar xzf "$archive" -C "$dest_dir" ;;
+				*.bz2)       bunzip2 "$archive" ;;
+				*.rar)       unrar x "$archive" "$dest_dir" ;;
+				*.gz)        gunzip "$archive" ;;
+				*.tar)       tar xvf "$archive" -C "$dest_dir" ;;
+				*.tbz2)      tar xjf "$archive" -C "$dest_dir" ;;
+				*.tgz)       tar xzf "$archive" -C "$dest_dir" ;;
+				*.zip)       unzip "$archive" -d "$dest_dir" ;;
+				*.Z)         uncompress "$archive" ;;
+				*.7z)        7z x "$archive" -o"$dest_dir" ;;
+				*.deb)       ar x "$archive" -C "$dest_dir" ;;
+				*.tar.xz)    tar xf "$archive" -C "$dest_dir" ;;
+				*.tar.zst)   unzstd "$archive" -d "$dest_dir" ;;
+				*)
+					echo "Unsupported archive format: '$archive'" >&2
+					continue
+					;;
+			esac
+			echo "Extraction of '$archive' completed successfully."
+		else
+			echo "'$archive' is not a valid file!"
+		fi
+	done
 }
 
 # Display CPU temperature (lm-Sensors)
