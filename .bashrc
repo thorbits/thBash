@@ -167,6 +167,20 @@ mkdirg() {
 	cd "$1"
 }
 
+# Show some shell infos
+shell_info() { 
+	local bash_name=$(ps -p $$ -o comm=)
+	local shell_version=$BASH_VERSION
+	echo "   | $bash_name v$shell_version"
+}
+
+# Sends a request to the ipinfo.io API to get the public IP address
+get_pip() { 
+	local ip
+	ip=$(curl -sS ipinfo.io/ip 2>/dev/null) || { echo "Error fetching public IP address"; return 1; }
+	echo "$ip"
+}
+
 # Show memory usage
 memusage() { 
 	# Use the free command to get memory information
@@ -176,6 +190,10 @@ memusage() {
 	local total_memory=$(echo "$mem_info" | awk '{print $2}')
 	# Display the result
 	echo "RAM: $used_memory / $total_memory"
+}
+
+get_date() { 
+	date "+%a-%d-%b"
 }
 
 # Sum the number of files and sub-directories at the current prompt
@@ -249,8 +267,8 @@ function __setprompt
 	local t2_fg='\[$(tput setaf 69)\]'
 	local RESET='\[$(tput sgr0)\]'
 
-	local tr1=$(echo -e "${t1_fg}${t2_bg}\uE0B0${RESET}")
-	local tr2=$(echo -e "${t2_fg}\uE0B0")
+	local tr1=$(echo -e "${t1_fg}${t2_bg}E0B0${RESET}")
+	local tr2=$(echo -e "${t2_fg}E0B0")
 	
 	# Show error exit code if there is one
 	if [[ $LAST_COMMAND != 0 ]]; then
@@ -294,12 +312,12 @@ function __setprompt
 	fi
 
 	# Info line on top of screen
-	PS1+="\[$(tput sc)\$(tput cup 0)$(tput rev)   \174 \l \s v\v$(printf '%*s' $((COLUMNS-85)) ' ') \174 CPU: $(cpu)% \174 $(memusage) \174 $(get_pip) \174 \d $RESET\$(tput rc)\n"
+	PS1+="\[$(tput sc)\$(tput cup 0)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-95)) ' ') \174 CPU: $(cpu)% \174 $(memusage) \174 $(get_pip) \174 $(get_date) $RESET\$(tput rc)\n"
 	
 	# Prompt begins
 	PS1+="$LINE_UPPER_CORNER$LINE_STRAIGHT$LINE_STRAIGHT\174$(date +'%-I':%M:%S%P)\174$LINE_STRAIGHT"
 
-	# Change username color if normal or root
+	# Change username color if normal user or root
 	if [[ $EUID -ne 0 ]]; then
 		PS1+="\174$C8\u$c8@\h"
 	else
@@ -313,7 +331,7 @@ function __setprompt
 	PS1+="\174\n$LINE_BOTTOM_CORNER$LINE_STRAIGHT$LINE_BOTTOM\174"
 
 	if [[ $EUID -ne 0 ]]; then
-		PS1+="${t1_bg} ${RESET}${tr1}${t2_bg} ${RESET}${tr2}${RESET} "
+		PS1+=$'\uE0B0 ${RESET}'
 	else
 		PS1+="${t1_bg} ${RESET}${tr1}${t2_bg} ${RESET}${tr2}${RESET} "
 	fi
@@ -322,3 +340,12 @@ function __setprompt
 	PS2="$C1>$NC "
 }
 PROMPT_COMMAND="__setprompt; $PROMPT_COMMAND"
+
+# Autojump
+	if [ -f "/usr/share/autojump/autojump.sh" ]; then
+		. /usr/share/autojump/autojump.sh
+	elif [ -f "/usr/share/autojump/autojump.bash" ]; then
+		. /usr/share/autojump/autojump.bash
+	else
+		echo "can't found the autojump script"
+	fi
