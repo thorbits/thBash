@@ -1,17 +1,18 @@
 #!/bin/bash
-iatest=$(expr index "$-" i)
 
 #  _______
 #  \_   _|
 #    | |  
 #    |_|horbits 
 #
-# My bash config, the following packages are required: autojump bc curl eza figlet lolcat lm-sensors man-db pv rsync neovim
+# My bash config, the following packages are required: autojump bc curl eza figlet lolcat lm-sensors nala man-db neofetch neovim pv rsync vim
 
 
 #######################################################
 #		EXPORTS
 #######################################################
+
+iatest=$(expr index "$-" i)
 
 # Disable the bell
 if [[ $iatest > 0 ]]; then bind "set bell-style visible"; fi
