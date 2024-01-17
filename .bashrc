@@ -242,6 +242,8 @@ lsbytesum() {
 }
 
 alias cpu="grep 'cpu ' /proc/stat | awk '{usage=(\$2+\$4)*100/(\$2+\$4+\$5)} END {print usage}' | awk '{printf(\"%.1f\n\", \$1)}'"
+alias pwd='pwd | sed "s#\(/[^/]\{1,\}/[^/]\{1,\}/[^/]\{1,\}/\).*\(/[^/]\{1,\}/[^/]\{1,\}\)/\{0,1\}#\1_\2#g"'
+alias lip="ip addr show | grep -oP '(?<=inet\s)\d+(\.\d+){3}' | grep -v '127.0.0.1'"
 
 function __setprompt
 {
@@ -323,7 +325,7 @@ function __setprompt
 	fi
 
 	# Info line on top of screen
-	PS1+="\[$(tput sc)\$(tput cup 0)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-90)) ' ') \174 CPU: $(cpu)% \174 $(memusage) \174 $(get_pip) \174 $(get_date) $RESET\$(tput rc)\n"
+	PS1+="\[$(tput sc)\$(tput cup 0)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-95)) ' ') \174 CPU: $(cpu)% \174 $(memusage) \174 $(lip) \174 $(get_date) $RESET\$(tput rc)\n"
 	
 	# Prompt begins
 	PS1+="$LINE_UPPER_CORNER$LINE_STRAIGHT$LINE_STRAIGHT\174$(date +'%-I':%M:%S%P)\174$LINE_STRAIGHT"
@@ -342,7 +344,7 @@ function __setprompt
 	PS1+="\174\n$LINE_BOTTOM_CORNER$LINE_STRAIGHT$LINE_BOTTOM\174"
 
 	if [[ $EUID -ne 0 ]]; then
-		PS1+=$'\uE0B0 ${RESET}'
+		PS1+=$'\uE0B0 '
 	else
 		PS1+="${t1_bg} ${RESET}${tr1}${t2_bg} ${RESET}${tr2}${RESET} "
 	fi
