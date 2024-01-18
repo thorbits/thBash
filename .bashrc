@@ -87,6 +87,8 @@ alias lf='du -h --max-depth=1 | more'
 
 # 10 most used commands with their counts
 alias h10="history | awk '{print \$2}' | sort | uniq -c | sort -nr | head"
+# Generate a random 32 characters password
+alias rpwd="tr -dc 'a-zA-Z0-9~!@#$%^&*_()+}{?></\";.,[]=-' < /dev/urandom | fold -w 32 | head -n 1"
 
 # System commands
 alias sudo='sudo '
@@ -281,7 +283,8 @@ mvg() {
 }
 
 # Create and go to the directory
-mkdirg() { 
+# mkcd(){ NAME=$1; mkdir -p "$NAME"; cd "$NAME"; }
+mkcd() { 
 	mkdir -p "$1"
 	cd "$1"
 }
