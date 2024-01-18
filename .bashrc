@@ -232,7 +232,7 @@ mkdirg() {
 autojump() { 
 	distro=$(lsb_release -si 2>/dev/null || cat /etc/os-release | grep '^ID=' | cut -d= -f2)
 	case $distro in
-		"debian")
+		"Debian")
 			if [ -f "/usr/share/autojump/autojump.sh" ]; then
 				. /usr/share/autojump/autojump.sh
 			elif [ -f "/usr/share/autojump/autojump.bash" ]; then
@@ -243,7 +243,7 @@ autojump() {
 			;;
 		"arch")
 			;;
-		"fedora")
+		"Fedora")
 			;;
 		*)
 			echo "Unsupported distribution: $distro"
@@ -292,7 +292,7 @@ draw_bar() {
 	# local menu_width=$(tput cols)
 	# while true; do
 		# tput cup 0 0
-		printf '\033[K%s' "$(tput sc)$(tput cup 0 0)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-90)) ' ') | $(cpu) | $(memusage) | $(lip) | $(get_date)$(tput sgr0)$(tput rc)"
+		printf '\033[K%s' "$(tput sc)$(tput cup 0 0)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-95)) ' ') | $(cpu) | $(memusage) | $(lip) | $(get_date)$(tput sgr0)$(tput rc)"
 	# for ((i=1; i<=menu_height; i++)); do
 	# 	printf "\n"
 	#	done
@@ -420,7 +420,7 @@ function __setprompt
 
 	# Menu style bar on top of screen
 	# PS1+="$(draw_bar)"
-	PS1+="\[$(tput sc)\$(tput cup 0)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-90)) ' ') \174 $(cpu) \174 $(memusage) \174 $(lip) \174 $(get_date) $RESET\$(tput rc)\n"
+	PS1+="\[$(tput sc)\$(tput cup 0)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-95)) ' ') \174 $(cpu) \174 $(memusage) \174 $(lip) \174 $(get_date) $RESET\$(tput rc)\n"
 	
 	# Prompt begins
 	PS1+="$LINE_UPPER_CORNER$LINE_STRAIGHT$LINE_STRAIGHT\174$(date +'%-I':%M:%S%P)\174$LINE_STRAIGHT"
