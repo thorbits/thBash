@@ -79,9 +79,10 @@ shopt -s cdspell 2> /dev/null
 alias ls='eza -al --color=always --group-directories-first' # my preferred listing
 alias la='eza -a --color=always --group-directories-first'  # all files and dirs
 alias ll='eza -l --color=always --group-directories-first'  # long format
-alias lt='eza -aT --color=always --group-directories-first' # tree listing
+# alias lt='eza -aT --color=always --group-directories-first' # tree listing
 alias l.='eza -a | egrep "^\."'
 
+alias lt="ls -R | grep ':$' | sed -e 's/:$//' -e 's/[^-][^/]*\//-- /g' -e 's/^/   /' -e 's/--/|/'"
 alias ld='du -S | sort -n -r | more'
 alias lf='du -h --max-depth=1 | more'
 
