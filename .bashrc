@@ -417,7 +417,7 @@ function __setprompt
 	if [[ $EUID -ne 0 ]]; then
 		PS1+=$'\uE0B0 '
 	else
-		PS1+="${t1_bg} ${RESET}${tr1}${t2_bg} ${RESET}${tr2}${RESET} "
+		PS1+="$c2>$RESET "
 	fi
 
 	# PS2 is used to continue a command using the \ character
