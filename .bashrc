@@ -72,7 +72,8 @@ alias nf='neofetch'
 alias update='if [ $(id -u) -eq 0 ]; then nala update && nala full-upgrade; else sudo nala update && sudo nala full-upgrade; fi'
 alias reboot='if [ $(id -u) -eq 0 ]; then reboot; else sudo reboot; fi'
 alias vbrc='vim ~/.bashrc'
-
+alias gitcred='git config --global credential.helper store' # verify status with: git config --get-all --global credential.helper
+alias pushbash='cp ~/.bashrc ~/mybashrc/.bashrc && cd ~/mybashrc && git add . && git commit -m .bashrc && git push -u -f origin main'
 
 #######################################################
 #		GENERAL FUNCTIONS
