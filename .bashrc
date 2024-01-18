@@ -182,9 +182,9 @@ pbar() {
 		fit_to_screen=$((fit_to_screen+1));
 	fi
 
-	already_done() { for ((done=0; done<(elapsed / fit_to_screen) ; done=done+1 )); do printf ">"; done }
+	already_done() { for ((done=0; done<(elapsed / fit_to_screen) ; done=done+1 )); do printf ">" | lolcat; done }
 	remaining() { for (( remain=(elapsed/fit_to_screen) ; remain<(duration/fit_to_screen) ; remain=remain+1 )); do printf " "; done }
-	percentage() { printf "| %s%%" $(( ((elapsed)*100)/(duration)*100/100 )); }
+	percentage() { printf "| %s%%" $(( ((elapsed)*100)/(duration)*100/100 )) | lolcat; }
 	clean_line() { printf "\r"; }
 
 	for (( elapsed=1; elapsed<=duration; elapsed=elapsed+1 )); do
@@ -478,7 +478,8 @@ function __setprompt
 	PS1+="\n$LINE_BOTTOM_CORNER$LINE_STRAIGHT$LINE_BOTTOM\174"
 
 	if [[ $EUID -ne 0 ]]; then
-		PS1+=$'\uE0B0 '
+		PS1+=$'\u2192 '
+		# PS1+=$'\u00A6 '
 	else
 		PS1+="$c2>$RESET "
 	fi
