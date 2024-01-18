@@ -262,13 +262,13 @@ get_date() {
 	date "+%a-%d-%b"
 }
 
-# Menu style bar that stays on top of screen
+# Menu style bar on top of screen
 draw_bar() { 
 	# local menu_height=1
 	# local menu_width=$(tput cols)
 	# while true; do
 		# tput cup 0 0
-		printf '\033[K%s' "$(tput sc)$(tput cup 0)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-90)) ' ') | $(cpu) | $(memusage) | $(lip) | $(get_date)$(tput sgr0)$(tput rc)"
+		printf '\033[K%s' "$(tput sc)$(tput cup 0 0)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-90)) ' ') | $(cpu) | $(memusage) | $(lip) | $(get_date)$(tput sgr0)$(tput rc)"
 	# for ((i=1; i<=menu_height; i++)); do
 	# 	printf "\n"
 	#	done
@@ -394,8 +394,9 @@ function __setprompt
 		PS1=""
 	fi
 
-	# Info line on top of screen
-	PS1+="\[$(tput sc)\$(tput cup 0)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-92)) ' ') \174 $(cpu) \174 $(memusage) \174 $(lip) \174 $(get_date) $RESET\$(tput rc)\n"
+	# Menu style bar on top of screen
+	# PS1+="$(draw_bar)"
+	PS1+="\[$(tput sc)\$(tput cup 0)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-90)) ' ') \174 $(cpu) \174 $(memusage) \174 $(lip) \174 $(get_date) $RESET\$(tput rc)\n"
 	
 	# Prompt begins
 	PS1+="$LINE_UPPER_CORNER$LINE_STRAIGHT$LINE_STRAIGHT\174$(date +'%-I':%M:%S%P)\174$LINE_STRAIGHT"
