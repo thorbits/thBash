@@ -103,7 +103,7 @@ alias archupd='if [ $(id -u) -eq 0 ]; then pacman -Syyu --needed; else sudo pacm
 
 # Github commands
 alias gitcred='git config --global credential.helper store' # verify status with: git config --get-all --global credential.helper
-alias pushbash='cp ~/.bashrc ~/mybashrc/.bashrc && cd ~/mybashrc && git add . && git commit -m .bashrc && git push -u -f origin main'
+alias pushbash='cp ~/.bashrc ~/mybashrc/.bashrc && cd ~/mybashrc && git add . && git commit -m "$(w3m whatthecommit.com | head -n 1)" .bashrc && git push -u -f origin main'
 
 #######################################################
 #		GENERAL FUNCTIONS
