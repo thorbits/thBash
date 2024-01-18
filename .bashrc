@@ -18,7 +18,10 @@ if [[ $iatest > 0 ]]; then bind "set bell-style visible"; fi
 
 export HISTFILESIZE=10000
 export HISTSIZE=500
+# Avoid duplicate entries
 export HISTCONTROL=erasedups:ignoredups:ignorespace
+# Don't record some commands
+export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear"
 
 # "nvim" as manpager
 export MANPAGER="nvim +Man!"
@@ -36,11 +39,12 @@ esac
 # SHOPT
 shopt -s autocd # change to named directory
 shopt -s cdspell # autocorrects cd misspellings
-shopt -s cmdhist # save multi-line commands in history as single line
+shopt -s cmdhist # save multi-line commands as single line
 shopt -s histappend # do not overwrite history
 shopt -s expand_aliases # expand aliases
 shopt -s checkwinsize # checks term size when bash regains control
 
+# Record each line as it gets issued
 PROMPT_COMMAND='history -a'
 
 # Ignore case on auto-completion
@@ -50,6 +54,18 @@ if [[ $iatest > 0 ]]; then bind "set completion-ignore-case on"; fi
 # Show auto-completion list automatically, without double tab
 if [[ $iatest > 0 ]]; then bind "set show-all-if-ambiguous On"; fi
 
+# Enable incremental history search with up/down arrows (also Readline goodness)
+bind '"\e[A": history-search-backward'
+bind '"\e[B": history-search-forward'
+bind '"\e[C": forward-char'
+bind '"\e[D": backward-char'
+
+# Prepend cd to directory names automatically
+shopt -s autocd 2> /dev/null
+# Correct spelling errors during tab-completion
+shopt -s dirspell 2> /dev/null
+# Correct spelling errors in arguments supplied to cd
+shopt -s cdspell 2> /dev/null
 
 #######################################################
 #		ALIASES
@@ -66,18 +82,21 @@ alias ll='eza -l --color=always --group-directories-first'  # long format
 alias lt='eza -aT --color=always --group-directories-first' # tree listing
 alias l.='eza -a | egrep "^\."'
 
-alias ld="du -S | sort -n -r |more"
-alias lf='du -h --max-depth=1'
+alias ld='du -S | sort -n -r | more'
+alias lf='du -h --max-depth=1 | more'
+
+# 10 most used commands with their counts
+alias h10="history | awk '{print \$2}' | sort | uniq -c | sort -nr | head"
 
 # System commands
 alias sudo='sudo '
 alias reboot='if [ $(id -u) -eq 0 ]; then reboot; else sudo reboot; fi'
 alias nf='neofetch'
 alias vbrc='vim ~/.bashrc'
-alias clickpaste='sleep 3; xdotool type "$(xclip -o -selection clipboard)"'
 
 # Packages management
-alias debupd='if [ $(id -u) -eq 0 ]; then nala update && nala full-upgrade; else sudo nala update && sudo nala full-upgrade; fi'
+alias debupd="if [ $(id -u) -eq 0 ]; then nala update && nala full-upgrade; else sudo -s <<< 'apt update && apt full-upgrade -y'; fi"
+#alias debupd='if [ $(id -u) -eq 0 ]; then nala update && nala full-upgrade; else sudo nala update && sudo nala full-upgrade; fi'
 alias archupd='if [ $(id -u) -eq 0 ]; then pacman -Syyu --needed; else sudo pacman -Syyu --needed; fi'
 
 # Github commands
@@ -479,7 +498,6 @@ function __setprompt
 
 	if [[ $EUID -ne 0 ]]; then
 		PS1+=$'\u2192 '
-		# PS1+=$'\u00A6 '
 	else
 		PS1+="$c2>$RESET "
 	fi
