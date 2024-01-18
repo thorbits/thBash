@@ -66,6 +66,9 @@ alias ll='eza -l --color=always --group-directories-first'  # long format
 alias lt='eza -aT --color=always --group-directories-first' # tree listing
 alias l.='eza -a | egrep "^\."'
 
+alias ld="du -S | sort -n -r |more"
+alias lf='du -h --max-depth=1'
+
 # System commands
 alias sudo='sudo '
 alias reboot='if [ $(id -u) -eq 0 ]; then reboot; else sudo reboot; fi'
