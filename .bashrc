@@ -2,7 +2,6 @@
 
 #  _______
 #  \_   _|
-#    | |  
 #    |_|horbits 
 #
 # My bash config, the following packages are required: autojump bc curl eza figlet lolcat lm-sensors nala man-db neofetch neovim pv rsync sudo vim
@@ -265,16 +264,16 @@ get_date() {
 
 # Menu style bar that stays on top of screen
 draw_bar() { 
-	local menu_height=1
-	local menu_width=$(tput cols)
-	while true; do
-		tput cup 0 0
-		printf '\033[K%s' "$(tput sc)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-90)) ' ') | $(cpu) | $(memusage) | $(get_pip) | $(get_date) $(tput sgr0)$(tput rc)"
-	for ((i=1; i<=menu_height; i++)); do
-		printf "\n"
-		done
-	sleep 10
-	done
+	# local menu_height=1
+	# local menu_width=$(tput cols)
+	# while true; do
+		# tput cup 0 0
+		printf '\033[K%s' "$(tput sc)$(tput cup 0)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-90)) ' ') | $(cpu) | $(memusage) | $(lip) | $(get_date)$(tput sgr0)$(tput rc)"
+	# for ((i=1; i<=menu_height; i++)); do
+	# 	printf "\n"
+	#	done
+	# sleep 2
+	# done
 }
 
 
