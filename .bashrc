@@ -4,7 +4,7 @@
 #  \_   _|
 #    |_|horbits 
 #
-# My bash config, the following packages are required: autojump bc curl eza figlet lolcat lm-sensors nala man-db neofetch neovim pv rsync sudo vim
+# My bash config, the following packages are required: autojump bc curl eza figlet lolcat lm-sensors nala man-db neofetch neovim pv rsync sudo vim xdotool
 
 
 #######################################################
@@ -68,11 +68,14 @@ alias l.='eza -a | egrep "^\."'
 
 # System commands
 alias sudo='sudo '
+alias reboot='if [ $(id -u) -eq 0 ]; then reboot; else sudo reboot; fi'
 alias nf='neofetch'
+alias vbrc='vim ~/.bashrc'
+alias clickpaste='sleep 3; xdotool type "$(xclip -o -selection clipboard)"'
+
+# Packages management
 alias debupd='if [ $(id -u) -eq 0 ]; then nala update && nala full-upgrade; else sudo nala update && sudo nala full-upgrade; fi'
 alias archupd='if [ $(id -u) -eq 0 ]; then pacman -Syyu --needed; else sudo pacman -Syyu --needed; fi'
-alias reboot='if [ $(id -u) -eq 0 ]; then reboot; else sudo reboot; fi'
-alias vbrc='vim ~/.bashrc'
 
 # Github commands
 alias gitcred='git config --global credential.helper store' # verify status with: git config --get-all --global credential.helper
@@ -243,7 +246,7 @@ autojump() {
 			;;
 		"arch")
 			;;
-		"Fedora")
+		"fedora")
 			;;
 		*)
 			echo "Unsupported distribution: $distro"
