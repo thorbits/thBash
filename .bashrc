@@ -69,7 +69,8 @@ alias l.='eza -a | egrep "^\."'
 # System commands
 alias sudo='sudo '
 alias nf='neofetch'
-alias update='if [ $(id -u) -eq 0 ]; then nala update && nala full-upgrade; else sudo nala update && sudo nala full-upgrade; fi'
+alias debupd='if [ $(id -u) -eq 0 ]; then nala update && nala full-upgrade; else sudo nala update && sudo nala full-upgrade; fi'
+alias archupd='if [ $(id -u) -eq 0 ]; then pacman -Syyu --needed; else sudo pacman -Syyu --needed; fi'
 alias reboot='if [ $(id -u) -eq 0 ]; then reboot; else sudo reboot; fi'
 alias vbrc='vim ~/.bashrc'
 
@@ -225,6 +226,29 @@ mvg() {
 mkdirg() { 
 	mkdir -p "$1"
 	cd "$1"
+}
+
+# Start the autojump script depending on the installed distro
+start_autojump() { 
+	distro=$(lsb_release -si 2>/dev/null || cat /etc/os-release | grep '^ID=' | cut -d= -f2)
+	case $distro in
+		"debian")
+			if [ -f "/usr/share/autojump/autojump.sh" ]; then
+				. /usr/share/autojump/autojump.sh
+			elif [ -f "/usr/share/autojump/autojump.bash" ]; then
+				. /usr/share/autojump/autojump.bash
+			else
+				echo "Can't find the autojump script."
+			fi
+			;;
+		"arch")
+			;;
+		"fedora")
+			;;
+		*)
+			echo "Unsupported distribution: $distro"
+			;;
+	esac
 }
 
 
@@ -409,7 +433,7 @@ function __setprompt
 	fi
 
 	# Current directory detailed info
-	PS1+="\174$LINE_STRAIGHT\174$C8\$(pwd)$c8: $(lsfiledirsum) $(lsbytesum) Mb"
+	PS1+="\174$LINE_STRAIGHT\174$C8\$(pwd)$c8: $(lsfiledirsum) $(lsbytesum) Mb $(start_autojump)"
 
 	# Change cursor color if normal user or root
 	PS1+="\n$LINE_BOTTOM_CORNER$LINE_STRAIGHT$LINE_BOTTOM\174"
@@ -425,11 +449,3 @@ function __setprompt
 }
 PROMPT_COMMAND="__setprompt; $PROMPT_COMMAND"
 
-# Autojump
-	if [ -f "/usr/share/autojump/autojump.sh" ]; then
-		. /usr/share/autojump/autojump.sh
-	elif [ -f "/usr/share/autojump/autojump.bash" ]; then
-		. /usr/share/autojump/autojump.bash
-	else
-		echo "can't found the autojump script"
-	fi
