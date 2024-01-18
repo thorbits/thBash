@@ -98,7 +98,7 @@ alias nf='neofetch'
 alias vbrc='vim ~/.bashrc'
 
 # Packages management
-alias debupd="if [ $(id -u) -eq 0 ]; then nala update && nala full-upgrade; else sudo -s <<< 'apt update && apt full-upgrade -y'; fi"
+alias debupd="if [ $(id -u) -eq 0 ]; then nala update && nala full-upgrade; else sudo -s <<< 'nala update && nala full-upgrade'; fi"
 #alias debupd='if [ $(id -u) -eq 0 ]; then nala update && nala full-upgrade; else sudo nala update && sudo nala full-upgrade; fi'
 alias archupd='if [ $(id -u) -eq 0 ]; then pacman -Syyu --needed; else sudo pacman -Syyu --needed; fi'
 
@@ -284,11 +284,7 @@ mvg() {
 }
 
 # Create and go to the directory
-# mkcd(){ NAME=$1; mkdir -p "$NAME"; cd "$NAME"; }
-mkcd() { 
-	mkdir -p "$1"
-	cd "$1"
-}
+mkcd(){ NAME=$1; mkdir -p "$NAME"; cd "$NAME"; }
 
 # Start a script depending on the installed distro (autojump)
 autojump() { 
@@ -400,6 +396,7 @@ lsbytesum() {
 alias cpu="echo 'CPU: $(grep 'cpu ' /proc/stat | awk '{usage=($2+$4)*100/($2+$4+$5)} END {printf("%.1f\n", usage)}')%'"
 alias pwd='pwd | sed "s#\(/[^/]\{1,\}/[^/]\{1,\}/[^/]\{1,\}/\).*\(/[^/]\{1,\}/[^/]\{1,\}\)/\{0,1\}#\1_\2#g"'
 alias lip="ip addr show | grep -oP '(?<=inet\s)\d+(\.\d+){3}' | grep -v '127.0.0.1'"
+alias dirsize="du -cshx | awk 'END {print $1}'"
 
 function __setprompt
 {
@@ -495,7 +492,7 @@ function __setprompt
 	fi
 
 	# Current directory detailed info
-	PS1+="\174$LINE_STRAIGHT\174$C8\$(pwd)$c8: $(lsfiledirsum) $(lsbytesum) Mb $(autojump)"
+	PS1+="\174$LINE_STRAIGHT\174$C8\$(pwd)$c8: $(lsfiledirsum) $(lsbytesum)Mb / $(dirsize) $(autojump)"
 
 	# Change cursor color if normal user or root
 	PS1+="\n$LINE_BOTTOM_CORNER$LINE_STRAIGHT$LINE_BOTTOM\174"
