@@ -86,6 +86,8 @@ alias lt="ls -R | grep ':$' | sed -e 's/:$//' -e 's/[^-][^/]*\//-- /g' -e 's/^/ 
 alias ld='du -S | sort -n -r | more'
 alias lf='du -h --max-depth=1 | more'
 
+# Test your hard drive speed
+alias diskspeed='time (dd if=/dev/zero of=zerofile bs=1M count=500;sync);rm zerofile'
 # 10 most used commands with their counts
 alias h10="history | awk '{print \$2}' | sort | uniq -c | sort -nr | head"
 # Generate a random 32 characters password
@@ -317,8 +319,7 @@ autojump() {
 # Show some shell infos
 shell_info() { 
 	local bash_name=$(ps -p $$ -o comm=)
-	local shell_version=$BASH_VERSION
-	echo "   | $bash_name v$shell_version"
+	echo "   | $bash_name v$BASH_VERSION"
 }
 
 # Sends a request to the ipinfo.io API to get the public IP address
