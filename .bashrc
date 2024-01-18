@@ -228,8 +228,8 @@ mkdirg() {
 	cd "$1"
 }
 
-# Start the autojump script depending on the installed distro
-start_autojump() { 
+# Start a script depending on the installed distro (autojump)
+autojump() { 
 	distro=$(lsb_release -si 2>/dev/null || cat /etc/os-release | grep '^ID=' | cut -d= -f2)
 	case $distro in
 		"debian")
@@ -433,7 +433,7 @@ function __setprompt
 	fi
 
 	# Current directory detailed info
-	PS1+="\174$LINE_STRAIGHT\174$C8\$(pwd)$c8: $(lsfiledirsum) $(lsbytesum) Mb $(start_autojump)"
+	PS1+="\174$LINE_STRAIGHT\174$C8\$(pwd)$c8: $(lsfiledirsum) $(lsbytesum) Mb $(autojump)"
 
 	# Change cursor color if normal user or root
 	PS1+="\n$LINE_BOTTOM_CORNER$LINE_STRAIGHT$LINE_BOTTOM\174"
