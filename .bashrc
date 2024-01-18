@@ -4,7 +4,7 @@
 #  \_   _|
 #    |_|horbits 
 #
-# My bash config, the following packages are required: autojump bc curl eza figlet lolcat lm-sensors nala man-db neofetch neovim pv rsync sudo vim xdotool
+# My bash config, the following packages are required: autojump bc curl eza figlet lolcat lm-sensors nala man-db neofetch neovim pv rsync sudo vim
 
 
 #######################################################
