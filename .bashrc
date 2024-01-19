@@ -72,16 +72,16 @@ shopt -s cdspell 2> /dev/null
 
 # To temporarily bypass an alias, we precede the command with a \
 # EG: the ls command is aliased, but to use the normal ls command you would type \ls
-# alias ls='ls -phalANXgs --color=auto --time-style=iso --no-group --group-directories-first'
+# alias ls='ls -phalANXgs --color=auto --time-style=iso --no-group --group-directories-first | more'
 
 # Changing "ls" to "eza"
-alias ls='eza -al --color=always --group-directories-first' # my preferred listing
-alias la='eza -a --color=always --group-directories-first'  # all files and dirs
-alias ll='eza -l --color=always --group-directories-first'  # long format
-# alias lt='eza -aT --color=always --group-directories-first' # tree listing
+alias ls='eza -al --color=always --group-directories-first | more' # my preferred listing
+alias la='eza -a --color=always --group-directories-first | more'  # all files and dirs
+alias ll='eza -l --color=always --group-directories-first | more'  # long format
+alias lt='eza -aT --color=always --group-directories-first | more' # tree listing
 alias l.='eza -a | egrep "^\."'
 
-alias lt="ls -R | grep ':$' | sed -e 's/:$//' -e 's/[^-][^/]*\//-- /g' -e 's/^/   /' -e 's/--/|/'"
+# alias lt="ls -R | grep ':$' | sed -e 's/:$//' -e 's/[^-][^/]*\//-- /g' -e 's/^/   /' -e 's/--/|/' | more"
 alias ld='du -S | sort -n -r | more'
 alias lf='du -h --max-depth=1 | more'
 
@@ -101,8 +101,8 @@ alias nf='neofetch'
 alias vbrc='vim ~/.bashrc'
 
 # Packages management
-alias debupd="if [ $(id -u) -eq 0 ]; then nala update && nala full-upgrade; else sudo -s <<< 'nala update && nala full-upgrade'; fi"
-# alias debupd='if [ $(id -u) -eq 0 ]; then nala update && nala full-upgrade; else sudo nala update && sudo nala full-upgrade; fi'
+#alias debupd="if [ $(id -u) -eq 0 ]; then nala update && nala full-upgrade; else sudo -s <<< 'nala update && nala full-upgrade -y'; fi"
+alias debupd='if [ $(id -u) -eq 0 ]; then nala update && nala full-upgrade; else sudo nala update && sudo nala full-upgrade; fi'
 alias debinst="if [ $(id -u) -eq 0 ]; then nala install; else sudo nala install; fi"
 alias archupd='if [ $(id -u) -eq 0 ]; then pacman -Syyu --needed; else sudo pacman -Syyu --needed; fi'
 
@@ -188,7 +188,12 @@ get_temp() {
 	fi
 }
 
-# Display a progress bar
+# Display a progress bar (parallel) usage: parallel 1000 10 1
+parabar() {  
+	seq "$1" | parallel -j"$2" --bar 'echo {}; sleep 1; clear'
+    }
+
+# Colored progress bar (lolcat)
 pbar() { 
 	local duration
 	local columns
