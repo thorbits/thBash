@@ -92,6 +92,7 @@ alias diskspeed='time (dd if=/dev/zero of=zerofile bs=1M count=500;sync);rm zero
 alias h10="history | awk '{print \$2}' | sort | uniq -c | sort -nr | head"
 # Generate a random 32 characters password
 alias rpwd="tr -dc 'a-zA-Z0-9~!@#$%^&*_()+}{?></\";.,[]=-' < /dev/urandom | fold -w 32 | head -n 1"
+alias itraffic='sudo iftop -i enp2s0'
 
 # System commands
 alias sudo='sudo '
