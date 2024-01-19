@@ -1,20 +1,34 @@
 #!/bin/bash
-
+#
 #  _______
 #  \_   _|
 #    |_|horbits 
 #
 # My bash config, the following packages are required: autojump bc curl eza figlet iftop lolcat lm-sensors nala man-db neofetch neovim pv rsync sudo vim
 
-#######################################################
-#		EXPORTS
-#######################################################
 
 iatest=$(expr index "$-" i)
+
+# Source global definitions
+# if [ -f /etc/bashrc ]; then
+# 	. /etc/bashrc
+# fi
+
+# Enable bash programmable completion features in interactive shells
+if [ -f /usr/share/bash-completion/bash_completion ]; then
+	. /usr/share/bash-completion/bash_completion
+elif [ -f /etc/bash_completion ]; then
+	. /etc/bash_completion
+fi
+
+#######################################################
+#		EXPORTS
+########################################################
 
 # Disable the bell
 if [[ $iatest > 0 ]]; then bind "set bell-style visible"; fi
 
+# Expand history size
 export HISTFILESIZE=10000
 export HISTSIZE=500
 # Avoid duplicate entries
@@ -298,29 +312,6 @@ mvg() {
 # Create and go to the directory
 mkcd(){ NAME=$1; mkdir -p "$NAME"; cd "$NAME"; }
 
-# Start a script depending on the installed distro (autojump)
-autojump() { 
-	distro=$(lsb_release -si 2>/dev/null || cat /etc/os-release | grep '^ID=' | cut -d= -f2)
-	case $distro in
-		"Debian")
-			if [ -f "/usr/share/autojump/autojump.sh" ]; then
-				. /usr/share/autojump/autojump.sh
-			elif [ -f "/usr/share/autojump/autojump.bash" ]; then
-				. /usr/share/autojump/autojump.bash
-			else
-				echo "Can't find the autojump script."
-			fi
-			;;
-		"arch")
-			;;
-		"fedora")
-			;;
-		*)
-			echo "Unsupported distribution: $distro"
-			;;
-	esac
-}
-
 
 #######################################################
 #		DRAW BAR
@@ -373,6 +364,29 @@ draw_bar() {
 #######################################################
 #		PROMPT
 #######################################################
+
+# Start a script depending on the installed distro (autojump)
+autojump() { 
+	distro=$(lsb_release -si 2>/dev/null || cat /etc/os-release | grep '^ID=' | cut -d= -f2)
+	case $distro in
+		"Debian")
+			if [ -f "/usr/share/autojump/autojump.sh" ]; then
+				. /usr/share/autojump/autojump.sh
+			elif [ -f "/usr/share/autojump/autojump.bash" ]; then
+				. /usr/share/autojump/autojump.bash
+			else
+				echo "Can't find the autojump script."
+			fi
+			;;
+		"arch")
+			;;
+		"fedora")
+			;;
+		*)
+			echo "Unsupported distribution: $distro"
+			;;
+	esac
+}
 
 # Sum the number of files and sub-directories at the current prompt
 lsfiledirsum() { 
