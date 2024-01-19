@@ -4,15 +4,16 @@
 #  \_   _|
 #    |_|horbits 
 #
-# My bash config, the following packages are required: autojump bc curl eza figlet iftop lolcat lm-sensors nala man-db neofetch neovim pv rsync sudo vim
+# My bash config, the following packages are required:
+# autojump bc curl eza figlet iftop lolcat lm-sensors nala man-db neofetch neovim parallel pv rsync sudo vim
 
 
 iatest=$(expr index "$-" i)
 
 # Source global definitions
-# if [ -f /etc/bashrc ]; then
-# 	. /etc/bashrc
-# fi
+if [ -f /etc/bashrc ]; then
+	. /etc/bashrc
+fi
 
 # Enable bash programmable completion features in interactive shells
 if [ -f /usr/share/bash-completion/bash_completion ]; then
@@ -20,6 +21,7 @@ if [ -f /usr/share/bash-completion/bash_completion ]; then
 elif [ -f /etc/bash_completion ]; then
 	. /etc/bash_completion
 fi
+
 
 #######################################################
 #		EXPORTS
@@ -80,6 +82,7 @@ shopt -s dirspell 2> /dev/null
 # Correct spelling errors in arguments supplied to cd
 shopt -s cdspell 2> /dev/null
 
+
 #######################################################
 #		ALIASES
 #######################################################
@@ -117,12 +120,12 @@ alias vbrc='vim ~/.bashrc'
 # Packages management
 #alias debupd="if [ $(id -u) -eq 0 ]; then nala update && nala full-upgrade; else sudo -s <<< 'nala update && nala full-upgrade -y'; fi"
 alias debupd='if [ $(id -u) -eq 0 ]; then nala update && nala full-upgrade; else sudo nala update && sudo nala full-upgrade; fi'
-alias debinst="if [ $(id -u) -eq 0 ]; then nala install; else sudo nala install; fi"
 alias archupd='if [ $(id -u) -eq 0 ]; then pacman -Syyu --needed; else sudo pacman -Syyu --needed; fi'
 
 # Github commands
 alias gitcred='git config --global credential.helper store' # verify status with: git config --get-all --global credential.helper
 alias pushbash='cp ~/.bashrc ~/mybashrc/.bashrc && cd ~/mybashrc && git add . && git commit -m "$(w3m whatthecommit.com | head -n 1)" .bashrc && git push -u -f origin main'
+
 
 #######################################################
 #		GENERAL FUNCTIONS
