@@ -6,7 +6,6 @@
 #
 # My bash config, the following packages are required: autojump bc curl eza figlet iftop lolcat lm-sensors nala man-db neofetch neovim pv rsync sudo vim
 
-
 #######################################################
 #		EXPORTS
 #######################################################
@@ -102,7 +101,8 @@ alias vbrc='vim ~/.bashrc'
 
 # Packages management
 alias debupd="if [ $(id -u) -eq 0 ]; then nala update && nala full-upgrade; else sudo -s <<< 'nala update && nala full-upgrade'; fi"
-#alias debupd='if [ $(id -u) -eq 0 ]; then nala update && nala full-upgrade; else sudo nala update && sudo nala full-upgrade; fi'
+# alias debupd='if [ $(id -u) -eq 0 ]; then nala update && nala full-upgrade; else sudo nala update && sudo nala full-upgrade; fi'
+alias debinst="if [ $(id -u) -eq 0 ]; then nala install; else sudo nala install; fi"
 alias archupd='if [ $(id -u) -eq 0 ]; then pacman -Syyu --needed; else sudo pacman -Syyu --needed; fi'
 
 # Github commands
