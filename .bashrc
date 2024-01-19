@@ -85,12 +85,13 @@ alias lt="ls -R | grep ':$' | sed -e 's/:$//' -e 's/[^-][^/]*\//-- /g' -e 's/^/ 
 alias ld='du -S | sort -n -r | more'
 alias lf='du -h --max-depth=1 | more'
 
-# Test your hard drive speed
+# Test hard drive speed
 alias diskspeed='time (dd if=/dev/zero of=zerofile bs=1M count=500;sync);rm zerofile'
-# 10 most used commands with their counts
+# 10 most used commands with counts
 alias h10="history | awk '{print \$2}' | sort | uniq -c | sort -nr | head"
-# Generate a random 32 characters password
+# Generate a 32 characters password
 alias rpwd="tr -dc 'a-zA-Z0-9~!@#$%^&*_()+}{?></\";.,[]=-' < /dev/urandom | fold -w 32 | head -n 1"
+# Display network utilization
 alias itraffic='sudo iftop -i enp2s0'
 
 # System commands
