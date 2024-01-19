@@ -188,10 +188,13 @@ get_temp() {
 	fi
 }
 
-# Display a progress bar (parallel) usage: parallel 1000 10 1
-parabar() {  
-	seq "$1" | parallel -j"$2" --bar 'echo {}; sleep 1; clear'
-    }
+# Display a progress bar (parallel) usage: parallel 1000 10 0.5
+parabar() { 
+	local range="$1"
+	local jobs="$2"
+	local sleeptime="${3:-1}"  # Default sleep duration is 1 second
+	seq "$range" | parallel -j"$jobs" --bar 'echo {}; sleep '"$sleeptime"'; clear'
+}
 
 # Colored progress bar (lolcat)
 pbar() { 
