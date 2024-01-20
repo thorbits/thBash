@@ -5,7 +5,7 @@
 #    |_|horbits 
 #
 # My bash config, the following packages are required: 
-# autojump bc curl eza figlet iftop lolcat lm-sensors nala man-db neofetch neovim pv rsync sudo vim
+# autojump bc curl eza feh figlet iftop lolcat lm-sensors nala man-db neofetch neovim pv rsync sudo vim
 
 
 iatest=$(expr index "$-" i)
