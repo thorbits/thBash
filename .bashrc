@@ -19,7 +19,7 @@ elif [ -f /etc/bash_completion ]; then
 	.  /etc/bash_completion
 fi
 
-for file in ~/.{bash_prompt,aliases,functions,exports}; do
+for file in ~/.{bash_prompt,aliases,exports,functions}; do
 	if [[ -r "$file" ]] && [[ -f "$file" ]]; then
 		# shellcheck source=/dev/null
 		source "$file"
