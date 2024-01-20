@@ -6,6 +6,8 @@
 #
 # My bash config
 
+# Record each line as it gets issued
+PROMPT_COMMAND='history -a'
 
 #######################################################
 #		DRAW BAR
