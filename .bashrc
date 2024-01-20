@@ -6,19 +6,34 @@
 #
 # My bash config, the following packages are required: autojump bc curl eza figlet iftop lolcat lm-sensors nala man-db neofetch neovim pv rsync sudo vim
 
+iatest=$(expr index "$-" i)
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+	. /etc/bashrc
+fi
+
+# Enable bash programmable completion features in interactive shells
+if [ -f /usr/share/bash-completion/bash_completion ]; then
+	. /usr/share/bash-completion/bash_completion
+elif [ -f /etc/bash_completion ]; then
+	.  /etc/bash_completion
+fi
+
 #######################################################
 #		EXPORTS
 #######################################################
 
-iatest=$(expr index "$-" i)
-
 # Disable the bell
 if [[ $iatest > 0 ]]; then bind "set bell-style visible"; fi
 
+# Expand history size
 export HISTFILESIZE=10000
 export HISTSIZE=500
+
 # Avoid duplicate entries
 export HISTCONTROL=erasedups:ignoredups:ignorespace
+
 # Don't record some commands
 export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear"
 
@@ -66,6 +81,7 @@ shopt -s dirspell 2> /dev/null
 # Correct spelling errors in arguments supplied to cd
 shopt -s cdspell 2> /dev/null
 
+
 #######################################################
 #		ALIASES
 #######################################################
@@ -77,11 +93,11 @@ shopt -s cdspell 2> /dev/null
 # Changing "ls" to "eza"
 alias ls='eza -al --color=always --group-directories-first' # my preferred listing
 alias la='eza -a --color=always --group-directories-first'  # all files and dirs
-alias ll='eza -l --color=always --group-directories-first'  # long format
-# alias lt='eza -aT --color=always --group-directories-first' # tree listing
+alias ll='eza -l --color=always --group-directories-first | more'  # long format
+alias lt='eza -aT --color=always --group-directories-first | more' # tree listing
 alias l.='eza -a | egrep "^\."'
 
-alias lt="ls -R | grep ':$' | sed -e 's/:$//' -e 's/[^-][^/]*\//-- /g' -e 's/^/   /' -e 's/--/|/'"
+# alias lt="ls -R | grep ':$' | sed -e 's/:$//' -e 's/[^-][^/]*\//-- /g' -e 's/^/   /' -e 's/--/|/'"
 alias ld='du -S | sort -n -r | more'
 alias lf='du -h --max-depth=1 | more'
 
@@ -100,15 +116,10 @@ alias reboot='if [ $(id -u) -eq 0 ]; then reboot; else sudo reboot; fi'
 alias nf='neofetch'
 alias vbrc='vim ~/.bashrc'
 
-# Packages management
-alias debupd="if [ $(id -u) -eq 0 ]; then nala update && nala full-upgrade; else sudo -s <<< 'nala update && nala full-upgrade'; fi"
-# alias debupd='if [ $(id -u) -eq 0 ]; then nala update && nala full-upgrade; else sudo nala update && sudo nala full-upgrade; fi'
-alias debinst="if [ $(id -u) -eq 0 ]; then nala install; else sudo nala install; fi"
-alias archupd='if [ $(id -u) -eq 0 ]; then pacman -Syyu --needed; else sudo pacman -Syyu --needed; fi'
-
 # Github commands
 alias gitcred='git config --global credential.helper store' # verify status with: git config --get-all --global credential.helper
 alias pushbash='cp ~/.bashrc ~/mybashrc/.bashrc && cd ~/mybashrc && git add . && git commit -m "$(w3m whatthecommit.com | head -n 1)" .bashrc && git push -u -f origin main'
+
 
 #######################################################
 #		GENERAL FUNCTIONS
@@ -224,6 +235,14 @@ get_temp() {
 	fi
 }
 
+# Display a progress bar (parallel) usage: parabar 1000 10 0.5
+parabar() { 
+	local range="$1"
+	local jobs="$2"
+	local sleeptime="${3:-1}"  # Default sleep duration is 1 second
+	seq "$range" | parallel -j"$jobs" --bar 'echo {}; sleep '"$sleeptime"'; clear'
+}
+
 # Display a progress bar
 pbar() { 
 	local duration
@@ -326,29 +345,6 @@ mvg() {
 # Create and go to the directory
 mkcd(){ NAME=$1; mkdir -p "$NAME"; cd "$NAME"; }
 
-# Start a script depending on the installed distro (autojump)
-autojump() { 
-	distro=$(lsb_release -si 2>/dev/null || cat /etc/os-release | grep '^ID=' | cut -d= -f2)
-	case $distro in
-		"Debian")
-			if [ -f "/usr/share/autojump/autojump.sh" ]; then
-				. /usr/share/autojump/autojump.sh
-			elif [ -f "/usr/share/autojump/autojump.bash" ]; then
-				. /usr/share/autojump/autojump.bash
-			else
-				echo "Can't find the autojump script."
-			fi
-			;;
-		"arch")
-			;;
-		"fedora")
-			;;
-		*)
-			echo "Unsupported distribution: $distro"
-			;;
-	esac
-}
-
 
 #######################################################
 #		DRAW BAR
@@ -402,6 +398,29 @@ draw_bar() {
 #######################################################
 #		PROMPT
 #######################################################
+
+# Start a script depending on the installed distro (autojump)
+autojump() { 
+	distro=$(lsb_release -si 2>/dev/null || cat /etc/os-release | grep '^ID=' | cut -d= -f2)
+	case $distro in
+		"Debian")
+			if [ -f "/usr/share/autojump/autojump.sh" ]; then
+				. /usr/share/autojump/autojump.sh
+			elif [ -f "/usr/share/autojump/autojump.bash" ]; then
+				. /usr/share/autojump/autojump.bash
+			else
+				echo "Can't find the autojump script."
+			fi
+			;;
+		"arch")
+			;;
+		"fedora")
+			;;
+		*)
+			echo "Unsupported distribution: $distro"
+			;;
+	esac
+}
 
 # Sum the number of files and sub-directories at the current prompt
 lsfiledirsum() { 
