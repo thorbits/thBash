@@ -4,7 +4,8 @@
 #  \_   _|
 #    |_|horbits 
 #
-# My bash config, functions portion only
+# My bash config, the following packages are required: 
+# autojump bc curl eza feh figlet iftop lolcat lm-sensors nala man-db neofetch neovim pv rsync sudo vim
 
 #######################################################
 #		GENERAL FUNCTIONS
@@ -170,6 +171,21 @@ cdown() {
     # and lolcat for colored output, then sleep for 1 second
         echo "$N" | figlet -c | lolcat && sleep 1
     done
+}
+
+# Use feh to nicely view images
+openimage() {
+	local types='*.jpg *.JPG *.png *.PNG *.gif *.GIF *.jpeg *.JPEG'
+
+	cd "$(dirname "$1")" || exit
+	local file
+	file=$(basename "$1")
+
+	feh -q "$types" --auto-zoom \
+		--sort filename --borderless \
+		--scale-down --draw-filename \
+		--image-bg black \
+		--start-at "$file"
 }
 
 # Copy file with a progress bar (rsync)
