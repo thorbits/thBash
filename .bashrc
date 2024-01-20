@@ -125,6 +125,7 @@ alias vbrc='vim ~/.bashrc'
 #alias debupd="if [ $(id -u) -eq 0 ]; then nala update && nala full-upgrade; else sudo -s <<< 'nala update && nala full-upgrade -y'; fi"
 alias debupd='if [ $(id -u) -eq 0 ]; then nala update && nala full-upgrade; else sudo nala update && sudo nala full-upgrade; fi'
 alias archupd='if [ $(id -u) -eq 0 ]; then pacman -Syyu --needed; else sudo pacman -Syyu --needed; fi'
+alias fedupd='if [ $(id -u) -eq 0 ]; then dnf upgrade; else sudo dnf upgrade; fi'
 
 # Github commands
 alias gitcred='git config --global credential.helper store' # verify status with: git config --get-all --global credential.helper
@@ -374,7 +375,7 @@ draw_bar() {
 	# local menu_width=$(tput cols)
 	# while true; do
 		# tput cup 0 0
-		printf '\033[K%s' "$(tput sc)$(tput cup 0 0)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-95)) ' ') | $(cpu) | $(memusage) | $(lip) | $(get_date)$(tput sgr0)$(tput rc)"
+		printf '\033[K%s' "$(tput sc)$(tput cup 0 0)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-95)) ' ') | $(cpu) | $(memuse) | $(lip) | $(get_date)$(tput sgr0)$(tput rc)"
 	# for ((i=1; i<=menu_height; i++)); do
 	# 	printf "\n"
 	#	done
