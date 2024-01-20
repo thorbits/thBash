@@ -351,15 +351,15 @@ get_date() {
 draw_bar() { 
 	# local menu_height=1
 	# local menu_width=$(tput cols)
-	while true
-	do
+	# while true
+	# do
 		printf '\033[K%s' "$(tput sc)$(tput cup 0 0)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-95)) ' ') | $(cpu) | $(memusage) | $(lip) | $(get_date)$(tput sgr0)$(tput rc)"
-		break
+	# 	break
 	# for ((i=1; i<=menu_height; i++)); do
 	# 	printf "\n"
 	#	done
 	# sleep 2
-	done
+	# done
 }
 
 
