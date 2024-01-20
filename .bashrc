@@ -102,6 +102,8 @@ alias l.='eza -a | egrep "^\."'
 alias ld='du -S | sort -n -r | more'
 alias lf='du -h --max-depth=1 | more'
 
+# Display CPU info
+alias cpuinfo="lscpu | egrep 'Model name|Socket|Thread|NUMA|CPU\(s\)'"
 # Test hard drive speed
 alias diskspeed='time (dd if=/dev/zero of=zerofile bs=1M count=500;sync);rm zerofile'
 # 10 most used commands with counts
@@ -207,7 +209,7 @@ get_temp() {
 	fi
 }
 
-# Display a progress bar (parallel) usage: parallel 1000 10 0.5
+# Display a progress bar (parallel) usage: parabar 1000 10 0.5
 parabar() { 
 	local range="$1"
 	local jobs="$2"
@@ -215,7 +217,7 @@ parabar() {
 	seq "$range" | parallel -j"$jobs" --bar 'echo {}; sleep '"$sleeptime"'; clear'
 }
 
-# Colored progress bar (lolcat)
+# Display a progress bar
 pbar() { 
 	local duration
 	local columns
@@ -235,7 +237,7 @@ pbar() {
 		fit_to_screen=$((fit_to_screen+1));
 	fi
 
-	already_done() { for ((done=0; done<(elapsed / fit_to_screen) ; done=done+1 )); do printf ">" | lolcat; done }
+	already_done() { for ((done=0; done<(elapsed / fit_to_screen) ; done=done+1 )); do printf ">"; done }
 	remaining() { for (( remain=(elapsed/fit_to_screen) ; remain<(duration/fit_to_screen) ; remain=remain+1 )); do printf " "; done }
 	percentage() { printf "| %s%%" $(( ((elapsed)*100)/(duration)*100/100 )) | lolcat; }
 	clean_line() { printf "\r"; }
@@ -253,10 +255,25 @@ cdown() {
     N=$1 # Capture the argument as N
   # Start a while loop that continues until N is greater than 0
     while ((N-- > 0)); do
-    # Display the current countdown number using figlet for ASCII art
-    # and lolcat for colored output, then sleep for 1 second
         echo "$N" | figlet -c | lolcat && sleep 1
     done
+}
+
+# Add color to text
+# function colorify() { n=$(bc <<< "$(echo ${1}|od -An -vtu1 -w100000000|tr -d ' ') % 7"); echo -e "\e[3${n}m${1}\e[0m"; }
+colorify() { 
+	# Check if input is provided
+	if [ -z "$1" ]; then
+		echo "Usage: colorify <text>"
+		return 1
+	fi
+
+	local text="$1"
+
+	# Custom color mapping
+	local colors=("31" "32" "33" "34" "35" "36" "37")  # Red, Green, Yellow, Blue, Magenta, Cyan, White
+	local color_index=$(( RANDOM % ${#colors[@]} ))
+	echo -e "\e[3${colors[color_index]}m${text}\e[0m"
 }
 
 # Copy file with a progress bar (rsync)
@@ -336,14 +353,14 @@ get_pip() {
 }
 
 # Show memory usage
-memusage() { 
+memuse() { 
 	# Use the free command to get memory information
 	local mem_info=$(free --mega -h | grep "Mem:")
 	# Extract used memory and total memory
-	local used_memory=$(echo "$mem_info" | awk '{print $3}')
-	local total_memory=$(echo "$mem_info" | awk '{print $2}')
+	local used_mem=$(echo "$mem_info" | awk '{print $3}')
+	local total_mem=$(echo "$mem_info" | awk '{print $2}')
 	# Display the result
-	echo "MEM: $used_memory / $total_memory"
+	echo "MEM: $used_mem / $total_mem"
 }
 
 # Show current date
@@ -434,22 +451,22 @@ function __setprompt
 
 	# Define colors
 	local c1='\[\033[0;30m\]' # Color black
-	local C1='\[\033[1;30m\]' # Bold color
+	local C1='\[\033[1;30m\]' # Bold
 	local c2='\[\033[0;31m\]' # Color red
-	local C2='\[\033[1;31m\]' # Bold color
+	local C2='\[\033[1;31m\]' # Bold
 	local c3='\[\033[0;32m\]' # Color green
-	local C3='\[\033[1;32m\]' # Bold color
+	local C3='\[\033[1;32m\]' # Bold
 	local c4='\[\033[0;33m\]' # Color yellow
-	local C4='\[\033[1;33m\]' # Bold color
+	local C4='\[\033[1;33m\]' # Bold
 	local c5='\[\033[0;34m\]' # Color blue
-	local C5='\[\033[1;34m\]' # Bold color
+	local C5='\[\033[1;34m\]' # Bold
 	local c6='\[\033[0;35m\]' # Color purple
-	local C6='\[\033[1;35m\]' # Bold color
+	local C6='\[\033[1;35m\]' # Bold
 	local c7='\[\033[0;36m\]' # Color cyan
-	local C7='\[\033[1;36m\]' # Bold color
+	local C7='\[\033[1;36m\]' # Bold
 	local c8='\[\033[0;37m\]' # Color white
-	local C8='\[\033[1;37m\]' # Bold color
-	local NC='\[\033[0m\]'    # Default color
+	local C8='\[\033[1;37m\]' # Bold
+	local NC='\[\033[0m\]'    # Reset
 
 	# Define line characters
 	local LINE_BOTTOM='\342\224\200'
@@ -509,7 +526,7 @@ function __setprompt
 
 	# Menu style bar on top of screen
 	# PS1+="$(draw_bar)"
-	PS1+="$(tput sc)\$(tput cup 0)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-95)) ' ') \174 $(cpu) \174 $(memusage) \174 $(lip) \174 $(get_date) $RESET\$(tput rc)"
+	PS1+="$(tput sc)\$(tput cup 0)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-95)) ' ') \174 $(cpu) \174 $(memuse) \174 $(lip) \174 $(get_date) $RESET\$(tput rc)"
 	
 	# Prompt begins
 	PS1+="\n$LINE_UPPER_CORNER$LINE_STRAIGHT$LINE_STRAIGHT\174$(date +'%-I':%M:%S%P)\174$LINE_STRAIGHT"
