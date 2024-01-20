@@ -6,7 +6,7 @@
 #
 # My bash config
 
-# Load .bashrc, which loads: ~/.{bash_prompt,aliases,functions,path,extra,exports}
+# Load .bashrc, which loads: ~/.{bash_prompt,aliases,exports,functions}
 if [[ -r "${HOME}/.bashrc" ]]; then
 	source "${HOME}/.bashrc"
 fi
