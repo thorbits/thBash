@@ -1,0 +1,49 @@
+#!/bin/bash
+#
+#  _______
+#  \_   _|
+#    |_|horbits 
+#
+# My bash config, the following packages are required: 
+# autojump bc curl eza figlet iftop lolcat lm-sensors nala man-db neofetch neovim pv rsync sudo vim
+
+
+#######################################################
+#		ALIASES
+#######################################################
+
+# To temporarily bypass an alias, we precede the command with a \
+# EG: the ls command is aliased, but to use the normal ls command you would type \ls
+# alias ls='ls -phalANXgs --color=auto --time-style=iso --no-group --group-directories-first'
+
+# Changing "ls" to "eza"
+alias ls='eza -al --color=always --group-directories-first' # my preferred listing
+alias la='eza -a --color=always --group-directories-first'  # all files and dirs
+alias ll='eza -l --color=always --group-directories-first | more'  # long format
+alias lt='eza -aT --color=always --group-directories-first | more' # tree listing
+alias l.='eza -a | egrep "^\."'
+
+# alias lt="ls -R | grep ':$' | sed -e 's/:$//' -e 's/[^-][^/]*\//-- /g' -e 's/^/   /' -e 's/--/|/'"
+alias ld='du -S | sort -n -r | more'
+alias lf='du -h --max-depth=1 | more'
+
+# Test hard drive speed
+alias diskspeed='time (dd if=/dev/zero of=zerofile bs=1M count=500;sync);rm zerofile'
+# 10 most used commands with counts
+alias h10="history | awk '{print \$2}' | sort | uniq -c | sort -nr | head"
+# Generate a 32 characters password
+alias rpwd="tr -dc 'a-zA-Z0-9~!@#$%^&*_()+}{?></\";.,[]=-' < /dev/urandom | fold -w 32 | head -n 1"
+# Display network utilization
+alias netwatch='sudo iftop -i enp2s0'
+# Check latest online kernel version
+alias linus="wget -qO - https://raw.githubusercontent.com/torvalds/linux/master/Makefile | head -n5 | grep -E '\ \=\ [0-9]{1,}' | cut -d' ' -f3 | tr '\n' '.' | sed -e "s/\.$//""
+
+# System commands
+alias sudo='sudo '
+alias reboot='if [ $(id -u) -eq 0 ]; then reboot; else sudo reboot; fi'
+alias nf='neofetch'
+alias vbrc='vim ~/.bashrc'
+
+# Github commands
+alias gitcred='git config --global credential.helper store' # verify status with: git config --get-all --global credential.helper
+alias pushbash='cp ~/.bashrc ~/mybashrc/.bashrc && cd ~/mybashrc && git add . && git commit -m "$(w3m whatthecommit.com | head -n 1)" .bashrc && git push -u -f origin main'
