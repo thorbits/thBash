@@ -1,10 +1,12 @@
 #!/bin/bash
-
+#
 #  _______
 #  \_   _|
 #    |_|horbits 
 #
-# My bash config, the following packages are required: autojump bc curl eza figlet iftop lolcat lm-sensors nala man-db neofetch neovim pv rsync sudo vim
+# My bash config, the following packages are required: 
+# autojump bc curl eza figlet iftop lolcat lm-sensors nala man-db neofetch neovim pv rsync sudo vim
+
 
 iatest=$(expr index "$-" i)
 
@@ -19,6 +21,7 @@ if [ -f /usr/share/bash-completion/bash_completion ]; then
 elif [ -f /etc/bash_completion ]; then
 	.  /etc/bash_completion
 fi
+
 
 #######################################################
 #		EXPORTS
@@ -108,7 +111,7 @@ alias h10="history | awk '{print \$2}' | sort | uniq -c | sort -nr | head"
 # Generate a 32 characters password
 alias rpwd="tr -dc 'a-zA-Z0-9~!@#$%^&*_()+}{?></\";.,[]=-' < /dev/urandom | fold -w 32 | head -n 1"
 # Display network utilization
-alias itraffic='sudo iftop -i enp2s0'
+alias netwatch='sudo iftop -i enp2s0'
 # Check latest online kernel version
 alias linus="wget -qO - https://raw.githubusercontent.com/torvalds/linux/master/Makefile | head -n5 | grep -E '\ \=\ [0-9]{1,}' | cut -d' ' -f3 | tr '\n' '.' | sed -e "s/\.$//""
 
@@ -265,7 +268,7 @@ pbar() {
 		fit_to_screen=$((fit_to_screen+1));
 	fi
 
-	already_done() { for ((done=0; done<(elapsed / fit_to_screen) ; done=done+1 )); do printf ">" | lolcat; done }
+	already_done() { for ((done=0; done<(elapsed / fit_to_screen) ; done=done+1 )); do printf ">"; done }
 	remaining() { for (( remain=(elapsed/fit_to_screen) ; remain<(duration/fit_to_screen) ; remain=remain+1 )); do printf " "; done }
 	percentage() { printf "| %s%%" $(( ((elapsed)*100)/(duration)*100/100 )) | lolcat; }
 	clean_line() { printf "\r"; }
@@ -385,15 +388,15 @@ get_date() {
 draw_bar() { 
 	# local menu_height=1
 	# local menu_width=$(tput cols)
-	# while true
-	# do
-		printf '\033[K%s' "$(tput sc)$(tput cup 0 0)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-95)) ' ') | $(cpu) | $(memusage) | $(lip) | $(get_date)$(tput sgr0)$(tput rc)"
-	# 	break
+	while true
+	do
+		printf '\033[K%s' "$(tput sc)$(tput cup 0 0)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-95)) ' ') | $(cpu) | $(memusage) | $(lip) | $(get_date) $(tput sgr0)$(tput rc)"
+	 	break
 	# for ((i=1; i<=menu_height; i++)); do
 	# 	printf "\n"
 	#	done
 	# sleep 2
-	# done
+	done
 }
 
 
