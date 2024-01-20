@@ -110,6 +110,8 @@ alias h10="history | awk '{print \$2}' | sort | uniq -c | sort -nr | head"
 alias rpwd="tr -dc 'a-zA-Z0-9~!@#$%^&*_()+}{?></\";.,[]=-' < /dev/urandom | fold -w 32 | head -n 1"
 # Display network utilization
 alias itraffic='sudo iftop -i enp2s0'
+# Check latest kernel version online
+alias linus="wget -qO - https://raw.githubusercontent.com/torvalds/linux/master/Makefile | head -n5 | grep -E '\ \=\ [0-9]{1,}' | cut -d' ' -f3 | tr '\n' '.' | sed -e "s/\.$//""
 
 # System commands
 alias sudo='sudo '
