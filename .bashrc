@@ -121,11 +121,11 @@ alias reboot='if [ $(id -u) -eq 0 ]; then reboot; else sudo reboot; fi'
 alias nf='neofetch'
 alias vbrc='vim ~/.bashrc'
 
-# Packages management
-#alias debupd="if [ $(id -u) -eq 0 ]; then nala update && nala full-upgrade; else sudo -s <<< 'nala update && nala full-upgrade -y'; fi"
-alias debupd='if [ $(id -u) -eq 0 ]; then nala update && nala full-upgrade; else sudo nala update && sudo nala full-upgrade; fi'
-alias archupd='if [ $(id -u) -eq 0 ]; then pacman -Syyu --needed; else sudo pacman -Syyu --needed; fi'
-alias fedupd='if [ $(id -u) -eq 0 ]; then dnf upgrade; else sudo dnf upgrade; fi'
+# Packages management (see 'update' function)
+# alias debupd="if [ $(id -u) -eq 0 ]; then nala update && nala full-upgrade; else sudo -s <<< 'nala update && nala full-upgrade -y'; fi"
+# alias debupd='if [ $(id -u) -eq 0 ]; then nala update && nala full-upgrade; else sudo nala update && sudo nala full-upgrade; fi'
+# alias archupd='if [ $(id -u) -eq 0 ]; then pacman -Syyu --needed; else sudo pacman -Syyu --needed; fi'
+# alias fedupd='if [ $(id -u) -eq 0 ]; then dnf upgrade; else sudo dnf upgrade; fi'
 
 # Github commands
 alias gitcred='git config --global credential.helper store' # verify status with: git config --get-all --global credential.helper
@@ -145,6 +145,42 @@ alias pushbash='cp ~/.bashrc ~/mybashrc/.bashrc && cd ~/mybashrc && git add . &&
 # 		builtin cd ~ && ls
 # 	fi
 # }
+
+# Update the system packages depending on the distro
+update() { 
+	local user_id=$(id -u)
+	if [ "$user_id" -eq 0 ]; then
+		case "$(uname -s)" in
+			Linux*)
+				if command -v nala &> /dev/null; then
+					nala update && nala full-upgrade
+				elif command -v pacman &> /dev/null; then
+					pacman -Syyu --needed
+				elif command -v dnf &> /dev/null; then
+					dnf upgrade
+				else
+					echo "Unsupported Linux distribution"
+				fi
+				;;
+		esac
+	else
+		case "$(uname -s)" in
+			Linux*)
+				if command -v sudo &> /dev/null; then
+					if command -v nala &> /dev/null; then
+						sudo nala update && sudo nala full-upgrade
+					elif command -v pacman &> /dev/null; then
+						sudo pacman -Syyu --needed
+					elif command -v dnf &> /dev/null; then
+						sudo dnf upgrade
+					else
+						echo "Unsupported Linux distribution"
+					fi
+				fi
+				;;
+		esac
+	fi
+}
 
 # Extracts any archive(s) to a specified directory, usage: extract -d /path/to/destination archive1.tar.gz archive2.zip
 extract() { 
