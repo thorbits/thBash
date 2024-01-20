@@ -1,36 +1,20 @@
 #!/bin/bash
-#
+
 #  _______
 #  \_   _|
 #    |_|horbits 
 #
-# My bash config, the following packages are required:
-# autojump bc curl eza figlet iftop lolcat lm-sensors nala man-db neofetch neovim parallel pv rsync sudo vim
-
-
-iatest=$(expr index "$-" i)
-
-# Source global definitions
-if [ -f /etc/bashrc ]; then
-	. /etc/bashrc
-fi
-
-# Enable bash programmable completion features in interactive shells
-if [ -f /usr/share/bash-completion/bash_completion ]; then
-	. /usr/share/bash-completion/bash_completion
-elif [ -f /etc/bash_completion ]; then
-	. /etc/bash_completion
-fi
-
+# My bash config, the following packages are required: autojump bc curl eza figlet iftop lolcat lm-sensors nala man-db neofetch neovim pv rsync sudo vim
 
 #######################################################
 #		EXPORTS
-########################################################
+#######################################################
+
+iatest=$(expr index "$-" i)
 
 # Disable the bell
 if [[ $iatest > 0 ]]; then bind "set bell-style visible"; fi
 
-# Expand history size
 export HISTFILESIZE=10000
 export HISTSIZE=500
 # Avoid duplicate entries
@@ -82,28 +66,25 @@ shopt -s dirspell 2> /dev/null
 # Correct spelling errors in arguments supplied to cd
 shopt -s cdspell 2> /dev/null
 
-
 #######################################################
 #		ALIASES
 #######################################################
 
 # To temporarily bypass an alias, we precede the command with a \
 # EG: the ls command is aliased, but to use the normal ls command you would type \ls
-# alias ls='ls -phalANXgs --color=auto --time-style=iso --no-group --group-directories-first | more'
+# alias ls='ls -phalANXgs --color=auto --time-style=iso --no-group --group-directories-first'
 
 # Changing "ls" to "eza"
-alias ls='eza -al --color=always --group-directories-first | more' # my preferred listing
-alias la='eza -a --color=always --group-directories-first | more'  # all files and dirs
-alias ll='eza -l --color=always --group-directories-first | more'  # long format
-alias lt='eza -aT --color=always --group-directories-first | more' # tree listing
+alias ls='eza -al --color=always --group-directories-first' # my preferred listing
+alias la='eza -a --color=always --group-directories-first'  # all files and dirs
+alias ll='eza -l --color=always --group-directories-first'  # long format
+# alias lt='eza -aT --color=always --group-directories-first' # tree listing
 alias l.='eza -a | egrep "^\."'
 
-# alias lt="ls -R | grep ':$' | sed -e 's/:$//' -e 's/[^-][^/]*\//-- /g' -e 's/^/   /' -e 's/--/|/' | more"
+alias lt="ls -R | grep ':$' | sed -e 's/:$//' -e 's/[^-][^/]*\//-- /g' -e 's/^/   /' -e 's/--/|/'"
 alias ld='du -S | sort -n -r | more'
 alias lf='du -h --max-depth=1 | more'
 
-# Display CPU info
-alias cpuinfo="lscpu | egrep 'Model name|Socket|Thread|NUMA|CPU\(s\)'"
 # Test hard drive speed
 alias diskspeed='time (dd if=/dev/zero of=zerofile bs=1M count=500;sync);rm zerofile'
 # 10 most used commands with counts
@@ -112,8 +93,6 @@ alias h10="history | awk '{print \$2}' | sort | uniq -c | sort -nr | head"
 alias rpwd="tr -dc 'a-zA-Z0-9~!@#$%^&*_()+}{?></\";.,[]=-' < /dev/urandom | fold -w 32 | head -n 1"
 # Display network utilization
 alias itraffic='sudo iftop -i enp2s0'
-# Check latest kernel version online
-alias linus="wget -qO - https://raw.githubusercontent.com/torvalds/linux/master/Makefile | head -n5 | grep -E '\ \=\ [0-9]{1,}' | cut -d' ' -f3 | tr '\n' '.' | sed -e "s/\.$//""
 
 # System commands
 alias sudo='sudo '
@@ -121,10 +100,15 @@ alias reboot='if [ $(id -u) -eq 0 ]; then reboot; else sudo reboot; fi'
 alias nf='neofetch'
 alias vbrc='vim ~/.bashrc'
 
+# Packages management
+alias debupd="if [ $(id -u) -eq 0 ]; then nala update && nala full-upgrade; else sudo -s <<< 'nala update && nala full-upgrade'; fi"
+# alias debupd='if [ $(id -u) -eq 0 ]; then nala update && nala full-upgrade; else sudo nala update && sudo nala full-upgrade; fi'
+alias debinst="if [ $(id -u) -eq 0 ]; then nala install; else sudo nala install; fi"
+alias archupd='if [ $(id -u) -eq 0 ]; then pacman -Syyu --needed; else sudo pacman -Syyu --needed; fi'
+
 # Github commands
 alias gitcred='git config --global credential.helper store' # verify status with: git config --get-all --global credential.helper
 alias pushbash='cp ~/.bashrc ~/mybashrc/.bashrc && cd ~/mybashrc && git add . && git commit -m "$(w3m whatthecommit.com | head -n 1)" .bashrc && git push -u -f origin main'
-
 
 #######################################################
 #		GENERAL FUNCTIONS
@@ -139,42 +123,6 @@ alias pushbash='cp ~/.bashrc ~/mybashrc/.bashrc && cd ~/mybashrc && git add . &&
 # 		builtin cd ~ && ls
 # 	fi
 # }
-
-# Update the system packages depending on the distro
-update() { 
-	local user_id=$(id -u)
-	if [ "$user_id" -eq 0 ]; then
-		case "$(uname -s)" in
-			Linux*)
-				if command -v nala &> /dev/null; then
-					nala update && nala full-upgrade
-				elif command -v pacman &> /dev/null; then
-					pacman -Syyu --needed
-				elif command -v dnf &> /dev/null; then
-					dnf upgrade
-				else
-					echo "Unsupported Linux distribution"
-				fi
-				;;
-		esac
-	else
-		case "$(uname -s)" in
-			Linux*)
-				if command -v sudo &> /dev/null; then
-					if command -v nala &> /dev/null; then
-						sudo nala update && sudo nala full-upgrade
-					elif command -v pacman &> /dev/null; then
-						sudo pacman -Syyu --needed
-					elif command -v dnf &> /dev/null; then
-						sudo dnf upgrade
-					else
-						echo "Unsupported Linux distribution"
-					fi
-				fi
-				;;
-		esac
-	fi
-}
 
 # Extracts any archive(s) to a specified directory, usage: extract -d /path/to/destination archive1.tar.gz archive2.zip
 extract() { 
@@ -240,14 +188,6 @@ get_temp() {
 	fi
 }
 
-# Display a progress bar (parallel) usage: parabar 1000 10 0.5
-parabar() { 
-	local range="$1"
-	local jobs="$2"
-	local sleeptime="${3:-1}"  # Default sleep duration is 1 second
-	seq "$range" | parallel -j"$jobs" --bar 'echo {}; sleep '"$sleeptime"'; clear'
-}
-
 # Display a progress bar
 pbar() { 
 	local duration
@@ -268,7 +208,7 @@ pbar() {
 		fit_to_screen=$((fit_to_screen+1));
 	fi
 
-	already_done() { for ((done=0; done<(elapsed / fit_to_screen) ; done=done+1 )); do printf ">"; done }
+	already_done() { for ((done=0; done<(elapsed / fit_to_screen) ; done=done+1 )); do printf ">" | lolcat; done }
 	remaining() { for (( remain=(elapsed/fit_to_screen) ; remain<(duration/fit_to_screen) ; remain=remain+1 )); do printf " "; done }
 	percentage() { printf "| %s%%" $(( ((elapsed)*100)/(duration)*100/100 )) | lolcat; }
 	clean_line() { printf "\r"; }
@@ -286,25 +226,10 @@ cdown() {
     N=$1 # Capture the argument as N
   # Start a while loop that continues until N is greater than 0
     while ((N-- > 0)); do
+    # Display the current countdown number using figlet for ASCII art
+    # and lolcat for colored output, then sleep for 1 second
         echo "$N" | figlet -c | lolcat && sleep 1
     done
-}
-
-# Add color to text
-# function colorify() { n=$(bc <<< "$(echo ${1}|od -An -vtu1 -w100000000|tr -d ' ') % 7"); echo -e "\e[3${n}m${1}\e[0m"; }
-colorify() { 
-	# Check if input is provided
-	if [ -z "$1" ]; then
-		echo "Usage: colorify <text>"
-		return 1
-	fi
-
-	local text="$1"
-
-	# Custom color mapping
-	local colors=("31" "32" "33" "34" "35" "36" "37")  # Red, Green, Yellow, Blue, Magenta, Cyan, White
-	local color_index=$(( RANDOM % ${#colors[@]} ))
-	echo -e "\e[3${colors[color_index]}m${text}\e[0m"
 }
 
 # Copy file with a progress bar (rsync)
@@ -365,64 +290,6 @@ mvg() {
 # Create and go to the directory
 mkcd(){ NAME=$1; mkdir -p "$NAME"; cd "$NAME"; }
 
-
-#######################################################
-#		DRAW BAR
-#######################################################
-
-# Show some shell infos
-shell_info() { 
-	local bash_name=$(ps -p $$ -o comm=)
-	echo "   | $bash_name v$BASH_VERSION"
-}
-
-# Sends a request to the ipinfo.io API to get the public IP address
-get_pip() { 
-	local ip
-	ip=$(curl -sS ipinfo.io/ip 2>/dev/null) || { echo "Error fetching public IP address"; return 1; }
-	echo "$ip"
-}
-
-# Show memory usage
-memuse() { 
-	# Use the free command to get memory information
-	local mem_info=$(free --mega -h | grep "Mem:")
-	# Extract used memory and total memory
-	local used_mem=$(echo "$mem_info" | awk '{print $3}')
-	local total_mem=$(echo "$mem_info" | awk '{print $2}')
-	# Display the result
-	echo "MEM: $used_mem / $total_mem"
-}
-
-# Show current date
-get_date() { 
-	date "+%a-%d-%b"
-}
-
-# Menu style bar on top of screen
-draw_bar() { 
-	# local menu_height=1
-	# local menu_width=$(tput cols)
-	while :; do
-		local cursor_position=$(tput sc; tput cup $(( $(tput lines) - 1 )) 0; echo -n)
-		printf '\033[K%s' "$(tput sc)$(tput cup 0 0)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-95)) ' ') | $(cpu) | $(memuse) | $(lip) | $(get_date)$(tput sgr0)$(tput rc)"
-		if [ "$cursor_position" == $'\033[?25l' ]; then
-			clear
-		fi
-		
-		break
-	# for ((i=1; i<=menu_height; i++)); do
-	# 	printf "\n"
-	#	done
-	# sleep 2
-	done
-}
-
-
-#######################################################
-#		PROMPT
-#######################################################
-
 # Start a script depending on the installed distro (autojump)
 autojump() { 
 	distro=$(lsb_release -si 2>/dev/null || cat /etc/os-release | grep '^ID=' | cut -d= -f2)
@@ -445,6 +312,60 @@ autojump() {
 			;;
 	esac
 }
+
+
+#######################################################
+#		DRAW BAR
+#######################################################
+
+# Show some shell infos
+shell_info() { 
+	local bash_name=$(ps -p $$ -o comm=)
+	echo "   | $bash_name v$BASH_VERSION"
+}
+
+# Sends a request to the ipinfo.io API to get the public IP address
+get_pip() { 
+	local ip
+	ip=$(curl -sS ipinfo.io/ip 2>/dev/null) || { echo "Error fetching public IP address"; return 1; }
+	echo "$ip"
+}
+
+# Show memory usage
+memusage() { 
+	# Use the free command to get memory information
+	local mem_info=$(free --mega -h | grep "Mem:")
+	# Extract used memory and total memory
+	local used_memory=$(echo "$mem_info" | awk '{print $3}')
+	local total_memory=$(echo "$mem_info" | awk '{print $2}')
+	# Display the result
+	echo "MEM: $used_memory / $total_memory"
+}
+
+# Show current date
+get_date() { 
+	date "+%a-%d-%b"
+}
+
+# Menu style bar on top of screen
+draw_bar() { 
+	# local menu_height=1
+	# local menu_width=$(tput cols)
+	while true
+	do
+		printf '\033[K%s' "$(tput sc)$(tput cup 0 0)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-95)) ' ') | $(cpu) | $(memusage) | $(lip) | $(get_date)$(tput sgr0)$(tput rc)"
+		break
+	# for ((i=1; i<=menu_height; i++)); do
+	# 	printf "\n"
+	#	done
+	# sleep 2
+	done
+}
+
+
+#######################################################
+#		PROMPT
+#######################################################
 
 # Sum the number of files and sub-directories at the current prompt
 lsfiledirsum() { 
@@ -487,22 +408,22 @@ function __setprompt
 
 	# Define colors
 	local c1='\[\033[0;30m\]' # Color black
-	local C1='\[\033[1;30m\]' # Bold
+	local C1='\[\033[1;30m\]' # Bold color
 	local c2='\[\033[0;31m\]' # Color red
-	local C2='\[\033[1;31m\]' # Bold
+	local C2='\[\033[1;31m\]' # Bold color
 	local c3='\[\033[0;32m\]' # Color green
-	local C3='\[\033[1;32m\]' # Bold
+	local C3='\[\033[1;32m\]' # Bold color
 	local c4='\[\033[0;33m\]' # Color yellow
-	local C4='\[\033[1;33m\]' # Bold
+	local C4='\[\033[1;33m\]' # Bold color
 	local c5='\[\033[0;34m\]' # Color blue
-	local C5='\[\033[1;34m\]' # Bold
+	local C5='\[\033[1;34m\]' # Bold color
 	local c6='\[\033[0;35m\]' # Color purple
-	local C6='\[\033[1;35m\]' # Bold
+	local C6='\[\033[1;35m\]' # Bold color
 	local c7='\[\033[0;36m\]' # Color cyan
-	local C7='\[\033[1;36m\]' # Bold
+	local C7='\[\033[1;36m\]' # Bold color
 	local c8='\[\033[0;37m\]' # Color white
-	local C8='\[\033[1;37m\]' # Bold
-	local NC='\[\033[0m\]'    # Reset
+	local C8='\[\033[1;37m\]' # Bold color
+	local NC='\[\033[0m\]'    # Default color
 
 	# Define line characters
 	local LINE_BOTTOM='\342\224\200'
@@ -562,7 +483,7 @@ function __setprompt
 
 	# Menu style bar on top of screen
 	PS1+="$(draw_bar)"
-	# PS1+="$(tput sc)\$(tput cup 0)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-95)) ' ') \174 $(cpu) \174 $(memuse) \174 $(lip) \174 $(get_date) $RESET\$(tput rc)"
+	# PS1+="$(tput sc)\$(tput cup 0)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-95)) ' ') \174 $(cpu) \174 $(memusage) \174 $(lip) \174 $(get_date) $RESET\$(tput rc)"
 	
 	# Prompt begins
 	PS1+="\n$LINE_UPPER_CORNER$LINE_STRAIGHT$LINE_STRAIGHT\174$(date +'%-I':%M:%S%P)\174$LINE_STRAIGHT"
