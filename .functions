@@ -1,0 +1,232 @@
+#!/bin/bash
+#
+#  _______
+#  \_   _|
+#    |_|horbits 
+#
+# My bash config, functions portion only
+
+#######################################################
+#		GENERAL FUNCTIONS
+#######################################################
+
+# Automatically do an ls after each cd
+# cd()
+# {
+# 	if [ -n "$1" ]; then
+# 		builtin cd "$@" && ls
+# 	else
+# 		builtin cd ~ && ls
+# 	fi
+# }
+
+# Update system packages depending on the distro
+update() { 
+	local user_id=$(id -u)
+	if [ "$user_id" -eq 0 ]; then
+		case "$(uname -s)" in
+			Linux*)
+				if command -v nala &> /dev/null; then
+					nala update && nala full-upgrade
+				elif command -v pacman &> /dev/null; then
+					pacman -Syyu --needed
+				elif command -v dnf &> /dev/null; then
+					dnf upgrade
+				else
+					echo "Unsupported Linux distribution"
+				fi
+				;;
+		esac
+	else
+		case "$(uname -s)" in
+			Linux*)
+				if command -v sudo &> /dev/null; then
+					if command -v nala &> /dev/null; then
+						sudo nala update && sudo nala full-upgrade
+					elif command -v pacman &> /dev/null; then
+						sudo pacman -Syyu --needed
+					elif command -v dnf &> /dev/null; then
+						sudo dnf upgrade
+					else
+						echo "Unsupported Linux distribution"
+					fi
+				fi
+				;;
+			esac
+	fi
+}
+
+# Extracts any archive(s) to a specified directory, usage: extract -d /path/to/destination archive1.tar.gz archive2.zip
+extract() { 
+	local dest_dir="."  # default destination directory
+	while getopts ":d:" opt; do
+		case $opt in
+			d)
+				dest_dir="$OPTARG"
+				;;
+			\?)
+				echo "Invalid option: -$OPTARG" >&2
+				return 1
+				;;
+		esac
+	done
+
+	shift $((OPTIND - 1))
+
+	for archive in "$@"; do
+		if [ -f "$archive" ]; then
+			echo "Extracting '$archive' to '$dest_dir'..."
+			case $archive in
+				*.tar.bz2)   tar xjf "$archive" -C "$dest_dir" ;;
+				*.tar.gz)    tar xzf "$archive" -C "$dest_dir" ;;
+				*.bz2)       bunzip2 "$archive" ;;
+				*.rar)       unrar x "$archive" "$dest_dir" ;;
+				*.gz)        gunzip "$archive" ;;
+				*.tar)       tar xvf "$archive" -C "$dest_dir" ;;
+				*.tbz2)      tar xjf "$archive" -C "$dest_dir" ;;
+				*.tgz)       tar xzf "$archive" -C "$dest_dir" ;;
+				*.zip)       unzip "$archive" -d "$dest_dir" ;;
+				*.Z)         uncompress "$archive" ;;
+				*.7z)        7z x "$archive" -o"$dest_dir" ;;
+				*.deb)       ar x "$archive" -C "$dest_dir" ;;
+				*.tar.xz)    tar xf "$archive" -C "$dest_dir" ;;
+				*.tar.zst)   unzstd "$archive" -d "$dest_dir" ;;
+				*)
+					echo "Unsupported archive format: '$archive'" >&2
+					continue
+					;;
+			esac
+			echo "Extraction of '$archive' completed successfully."
+		else
+			echo "'$archive' is not a valid file!"
+		fi
+	done
+}
+
+# Display CPU temperature (lm-Sensors)
+get_temp() { 
+	# Check if 'sensors' command is available
+	if command -v sensors &>/dev/null; then
+	# Extract CPU temperature using 'sensors'
+	local cpu_temperature=$(sensors | grep "Core 0" | awk '{print $3}')
+        # Check if temperature is not empty
+        if [ -n "$cpu_temperature" ]; then
+		echo "CPU Temperature: $cpu_temperature"
+        else
+		echo "Unable to retrieve CPU temperature."
+        	fi
+	else
+        echo "Error: 'lm-sensors' is not installed"
+	fi
+}
+
+# Display a progress bar (parallel) usage: parabar 1000 10 0.5
+parabar() { 
+	local range="$1"
+	local jobs="$2"
+	local sleeptime="${3:-1}"  # Default sleep duration is 1 second
+	seq "$range" | parallel -j"$jobs" --bar 'echo {}; sleep '"$sleeptime"'; clear'
+}
+
+# Display a progress bar
+pbar() { 
+	local duration
+	local columns
+	local space_available
+	local fit_to_screen
+	local space_reserved
+
+	space_reserved=6   # reserved for % value
+	duration=${1}
+	columns=$(tput cols)
+	space_available=$(( columns-space_reserved ))
+
+	if (( duration < space_available )); then 
+		fit_to_screen=1;
+	else 
+		fit_to_screen=$(( duration / space_available ));
+		fit_to_screen=$((fit_to_screen+1));
+	fi
+
+	already_done() { for ((done=0; done<(elapsed / fit_to_screen) ; done=done+1 )); do printf ">"; done }
+	remaining() { for (( remain=(elapsed/fit_to_screen) ; remain<(duration/fit_to_screen) ; remain=remain+1 )); do printf " "; done }
+	percentage() { printf "| %s%%" $(( ((elapsed)*100)/(duration)*100/100 )) | lolcat; }
+	clean_line() { printf "\r"; }
+
+	for (( elapsed=1; elapsed<=duration; elapsed=elapsed+1 )); do
+		already_done; remaining; percentage
+		sleep 1
+		clean_line
+	done
+	clean_line
+}
+
+# Colored countdown (figlet lolcat)
+cdown() { 
+    N=$1 # Capture the argument as N
+  # Start a while loop that continues until N is greater than 0
+    while ((N-- > 0)); do
+    # Display the current countdown number using figlet for ASCII art
+    # and lolcat for colored output, then sleep for 1 second
+        echo "$N" | figlet -c | lolcat && sleep 1
+    done
+}
+
+# Copy file with a progress bar (rsync)
+cppb() { 
+    # Check if rsync is available
+     if ! command -v rsync &>/dev/null; then
+	     echo "Error: 'rsync' is not installed"
+	     return 1
+     fi
+    # Check the number of arguments
+     if [[ "$#" -ne 2 ]]; then
+	     echo "Usage: cppb source_file destination_file"
+	     return 1
+     fi
+    # Run rsync with --progress option
+    rsync --progress "$1" "$2"
+}
+
+# Copy file with a progress bar (pv)
+cppv() { 
+    if [ -z "$1" ] || [ -z "$2" ]; then
+        echo "Usage: cppv source_file destination"
+        return 1
+    fi
+    # Check if pv is available
+    if ! command -v pv > /dev/null; then
+        echo "Error: 'pv' is not installed"
+        return 1
+    fi
+    # Use pv to display a progress bar during copy
+    pv "$1" > "$2"
+}
+
+# Copy and go to the directory
+cpg() {
+    local source="$1"
+    local destination="$2"
+
+    if [ -d "$destination" ]; then
+        cp "$source" "$destination" && cd "$destination" || return 1
+    else
+        cp "$source" "$destination" || return 1
+    fi
+}
+
+# Move and go to the directory
+mvg() {
+    local source="$1"
+    local destination="$2"
+
+    if [ -d "$destination" ]; then
+        mv "$source" "$destination" && cd "$destination" || return 1
+    else
+        mv "$source" "$destination" || return 1
+    fi
+}
+
+# Create and go to the directory
+mkcd(){ NAME=$1; mkdir -p "$NAME"; cd "$NAME"; }
+
