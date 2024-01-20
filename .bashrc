@@ -121,12 +121,6 @@ alias reboot='if [ $(id -u) -eq 0 ]; then reboot; else sudo reboot; fi'
 alias nf='neofetch'
 alias vbrc='vim ~/.bashrc'
 
-# Packages management (see 'update' function)
-# alias debupd="if [ $(id -u) -eq 0 ]; then nala update && nala full-upgrade; else sudo -s <<< 'nala update && nala full-upgrade -y'; fi"
-# alias debupd='if [ $(id -u) -eq 0 ]; then nala update && nala full-upgrade; else sudo nala update && sudo nala full-upgrade; fi'
-# alias archupd='if [ $(id -u) -eq 0 ]; then pacman -Syyu --needed; else sudo pacman -Syyu --needed; fi'
-# alias fedupd='if [ $(id -u) -eq 0 ]; then dnf upgrade; else sudo dnf upgrade; fi'
-
 # Github commands
 alias gitcred='git config --global credential.helper store' # verify status with: git config --get-all --global credential.helper
 alias pushbash='cp ~/.bashrc ~/mybashrc/.bashrc && cd ~/mybashrc && git add . && git commit -m "$(w3m whatthecommit.com | head -n 1)" .bashrc && git push -u -f origin main'
@@ -409,14 +403,14 @@ get_date() {
 draw_bar() { 
 	# local menu_height=1
 	# local menu_width=$(tput cols)
-	# while true; do
-		# tput cup 0 0
+	while :;do
 		printf '\033[K%s' "$(tput sc)$(tput cup 0 0)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-95)) ' ') | $(cpu) | $(memuse) | $(lip) | $(get_date)$(tput sgr0)$(tput rc)"
+		break
 	# for ((i=1; i<=menu_height; i++)); do
 	# 	printf "\n"
 	#	done
 	# sleep 2
-	# done
+	done
 }
 
 
