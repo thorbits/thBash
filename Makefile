@@ -5,10 +5,10 @@ all: dotfiles
 
 .PHONY: dotfiles
 dotfiles: ## Installs the dotfiles.
-for file in $(shell find $(CURDIR) -name ".*" -not -name ".gitignore" -not -name ".git" -not -name ".config" -not -name ".github"); do \
-    f=$$(basename $$file); \
-    cp $$file /$$f; \
-done; \
+	@for file in $(shell find $(CURDIR) -name ".*" -not -name ".gitignore" -not -name ".git" -not -name ".config" -not -name ".github"); do \
+	    f=$$(basename $$file); \
+	    cp $$file /$$f; \
+	done
 
 .PHONY: help
 help:
