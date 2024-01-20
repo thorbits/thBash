@@ -124,6 +124,42 @@ alias pushbash='cp ~/.bashrc ~/mybashrc/.bashrc && cd ~/mybashrc && git add . &&
 # 	fi
 # }
 
+# Update system packages depending on the distro
+update() { 
+	local user_id=$(id -u)
+	if [ "$user_id" -eq 0 ]; then
+		case "$(uname -s)" in
+			Linux*)
+				if command -v nala &> /dev/null; then
+					nala update && nala full-upgrade
+				elif command -v pacman &> /dev/null; then
+					pacman -Syyu --needed
+				elif command -v dnf &> /dev/null; then
+					dnf upgrade
+				else
+					echo "Unsupported Linux distribution"
+				fi
+				;;
+		esac
+	else
+		case "$(uname -s)" in
+			Linux*)
+				if command -v sudo &> /dev/null; then
+					if command -v nala &> /dev/null; then
+						sudo nala update && sudo nala full-upgrade
+					elif command -v pacman &> /dev/null; then
+						sudo pacman -Syyu --needed
+					elif command -v dnf &> /dev/null; then
+						sudo dnf upgrade
+					else
+						echo "Unsupported Linux distribution"
+					fi
+				fi
+				;;
+			esac
+	fi
+}
+
 # Extracts any archive(s) to a specified directory, usage: extract -d /path/to/destination archive1.tar.gz archive2.zip
 extract() { 
 	local dest_dir="."  # default destination directory
