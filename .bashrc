@@ -403,8 +403,13 @@ get_date() {
 draw_bar() { 
 	# local menu_height=1
 	# local menu_width=$(tput cols)
-	while :;do
+	while :; do
+		local cursor_position=$(tput sc; tput cup $(( $(tput lines) - 1 )) 0; echo -n)
 		printf '\033[K%s' "$(tput sc)$(tput cup 0 0)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-95)) ' ') | $(cpu) | $(memuse) | $(lip) | $(get_date)$(tput sgr0)$(tput rc)"
+		if [ "$cursor_position" == $'\033[?25l' ]; then
+			clear
+		fi
+		
 		break
 	# for ((i=1; i<=menu_height; i++)); do
 	# 	printf "\n"
@@ -556,8 +561,8 @@ function __setprompt
 	fi
 
 	# Menu style bar on top of screen
-	# PS1+="$(draw_bar)"
-	PS1+="$(tput sc)\$(tput cup 0)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-95)) ' ') \174 $(cpu) \174 $(memuse) \174 $(lip) \174 $(get_date) $RESET\$(tput rc)"
+	PS1+="$(draw_bar)"
+	# PS1+="$(tput sc)\$(tput cup 0)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-95)) ' ') \174 $(cpu) \174 $(memuse) \174 $(lip) \174 $(get_date) $RESET\$(tput rc)"
 	
 	# Prompt begins
 	PS1+="\n$LINE_UPPER_CORNER$LINE_STRAIGHT$LINE_STRAIGHT\174$(date +'%-I':%M:%S%P)\174$LINE_STRAIGHT"
