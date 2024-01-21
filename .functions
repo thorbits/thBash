@@ -172,6 +172,27 @@ cdown() {
     done
 }
 
+# Simple calculator
+calc() { 
+	local result=""
+	result="$(printf "scale=10;%s\\n" "$*" | bc --mathlib | tr -d '\\\n')"
+	#						└─ default (when `--mathlib` is used) is 20
+
+	if [[ "$result" == *.* ]]; then
+		# improve the output for decimal numbers
+		# add "0" for cases like ".5"
+		# add "0" for cases like "-.5"
+		# remove trailing zeros
+		printf "%s" "$result" |
+			sed -e 's/^\./0./'  \
+			-e 's/^-\./-0./' \
+			-e 's/0*$//;s/\.$//'
+	else
+		printf "%s" "$result"
+	fi
+	printf "\\n"
+}
+
 # Use feh to nicely view images
 openimage() {
 	local types='*.jpg *.JPG *.png *.PNG *.gif *.GIF *.jpeg *.JPEG'
@@ -218,6 +239,17 @@ cppv() {
     pv "$1" > "$2"
 }
 
+# Make a temporary directory and enter it, usage: 'tmpd' or 'tmpd mydir'
+tmpd() { 
+	local dir
+	if [ $# -eq 0 ]; then
+		dir=$(mktemp -d)
+	else
+		dir=$(mktemp -d -t "${1}.XXXXXXXXXX")
+	fi
+	cd "$dir" || exit
+}
+
 # Copy and go to the directory
 cpg() {
     local source="$1"
@@ -244,4 +276,26 @@ mvg() {
 
 # Create and go to the directory
 mkcd(){ NAME=$1; mkdir -p "$NAME"; cd "$NAME"; }
+
+# Determine size of a file or total size of a directory
+fdsize() { 
+	local arg
+	if du -b /dev/null > /dev/null 2>&1; then
+		arg=-sbh
+	else
+		arg=-sh
+	fi
+	if [[ -n "$@" ]]; then
+		du $arg -- "$@"
+	else
+		du $arg -- .[^.]* *
+	fi
+}
+
+# Use Git’s colored diff when available
+if hash git &>/dev/null ; then
+	diff() {
+		git diff --no-index --color-words "$@"
+	}
+fi
 
