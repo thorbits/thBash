@@ -16,6 +16,10 @@ iatest=$(expr index "$-" i)
 # Disable the bell
 if [[ $iatest > 0 ]]; then bind "set bell-style visible"; fi
 
+# Set bash as our shell, idk why anyone would use something else ;)
+shell="$(which bash)";
+export SHELL="$shell";
+
 # Expand history size
 export HISTFILESIZE=10000
 export HISTSIZE=500
