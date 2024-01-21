@@ -103,6 +103,19 @@ extract() {
 	done
 }
 
+# Display all functions contained in a script
+fulist() { 
+    local file="$1"
+
+    # Check if the file exists
+    if [ ! -f "$file" ]; then
+        echo "File not found: $file"
+        return 1
+    fi
+    # Use grep to find lines containing "function name()"
+    grep -oE 'function [a-zA-Z_][a-zA-Z0-9_]* *\(\)' "$file" | awk '{print $2}'
+}
+
 # Display CPU temperature (lm-Sensors)
 get_temp() { 
 	# Check if 'sensors' command is available
