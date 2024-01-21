@@ -10,28 +10,6 @@
 #		GENERAL FUNCTIONS
 #######################################################
 
-# Automatically do an ls after each cd
-# cd()
-# {
-# 	if [ -n "$1" ]; then
-# 		builtin cd "$@" && ls
-# 	else
-# 		builtin cd ~ && ls
-# 	fi
-# }
-
-# Display all functions contained in this file
-fulist() { 
-    local file="$1"
-    # Check if the file exists
-    if [ ! -f "$file" ]; then
-        echo "File not found: $file"
-        return 1
-    fi
-    # Use grep to find lines containing "function name()"
-    grep -oE '[a-zA-Z_][a-zA-Z0-9_]**\(\) *{' ".functions" | awk '{print $2}'
-}
-
 # Update system packages depending on the distro
 update() { 
 	local user_id=$(id -u)
