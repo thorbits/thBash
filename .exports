@@ -31,6 +31,7 @@ export MANPAGER="nvim +Man!"
 
 # SHOPT
 shopt -s autocd # change to named directory
+shopt -s dirspell # correct spelling errors for tab-completion
 shopt -s cmdhist # save multi-line commands as single line
 shopt -s expand_aliases # expand aliases
 
@@ -46,11 +47,3 @@ bind '"\e[A": history-search-backward'
 bind '"\e[B": history-search-forward'
 bind '"\e[C": forward-char'
 bind '"\e[D": backward-char'
-
-# Prepend cd to directory names automatically
-shopt -s autocd 2> /dev/null
-# Correct spelling errors during tab-completion
-shopt -s dirspell 2> /dev/null
-# Correct spelling errors in arguments supplied to cd
-shopt -s cdspell 2> /dev/null
-
