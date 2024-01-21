@@ -88,14 +88,14 @@ if [[ -d /etc/bash_completion.d/ ]]; then
 	done
 fi
 
-# Case-insensitive globbing (used in pathname expansion)
+# SHOPT (https://www.computerhope.com/unix/bash/shopt.htm)
 shopt -s nocaseglob
-
-# Append to the Bash history file, rather than overwriting it
-shopt -s histappend
-
-# Autocorrect typos in path names when using `cd`
 shopt -s cdspell
+shopt -s dotglob
+shopt -s autocd
+shopt -s dirspell
+shopt -s cmdhist
+shopt -s expand_aliases
 
 # Enable some Bash 4 features when possible:
 # * `autocd`, e.g. `**/qux` will enter `./foo/bar/baz/qux`
