@@ -29,12 +29,6 @@ export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear"
 # "nvim" as manpager
 export MANPAGER="nvim +Man!"
 
-# SHOPT
-shopt -s autocd # change to named directory
-shopt -s dirspell # correct spelling errors for tab-completion
-shopt -s cmdhist # save multi-line commands as single line
-shopt -s expand_aliases # expand aliases
-
 # Ignore case on auto-completion
 # Note: bind used instead of sticking these in .inputrc
 if [[ $iatest > 0 ]]; then bind "set completion-ignore-case on"; fi
