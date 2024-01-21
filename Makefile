@@ -8,7 +8,8 @@ install: ## Installs the dotfiles.
 	done
 	@echo "Dotfiles installed. Press ENTER to restart your shell."
 	@read -p ""
-	exec ${SHELL}  # Restart the shell
+	@clear
+	@exec ${SHELL}  # Restart the shell
 
 .PHONY: help
 help:
