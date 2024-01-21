@@ -1,4 +1,4 @@
-My bash config, type "make" to install.
+My bash config, installation, type: "make install"
 
 The following packages are required:
 
