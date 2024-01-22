@@ -289,3 +289,18 @@ if hash git &>/dev/null ; then
 	}
 fi
 
+matrix() { 
+    while true; do
+        # Generate a random number between 1 and 35 for the number of spaces
+        num_spaces=$(( (RANDOM % 35) + 1 ))
+
+        # Generate a random number (0 or 1)
+        random_number=$(( RANDOM % 2 ))
+
+        # Print green spaces with the random number
+        printf "\e[32m%s\e[0m%s" "$(printf "%*s" $num_spaces)" "$random_number"
+
+        # Adjust the sleep duration to control the speed of the pattern
+        sleep 2
+    done
+}
