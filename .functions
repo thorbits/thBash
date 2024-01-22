@@ -290,7 +290,31 @@ if hash git &>/dev/null ; then
 fi
 
 # Matrix effect on screen
-matrix() { 
+matrix1() { 
+echo -e "\e[32m"  # Set text color to green
+while :; do
+    for _ in {1..50}; do  # Repeat the animation 50 times for each row
+        for _ in {1..16}; do
+            r=$((RANDOM % 2))
+            if [[ $((RANDOM % 5)) == 1 ]]; then
+                if [[ $((RANDOM % 4)) == 1 ]]; then
+                    v+="\e[1m $r "  # Bold characters
+                else
+                    v+="\e[2m $r "  # Dim characters
+                fi
+            else
+                v+=" "
+            fi
+        done
+        echo -e "$v"
+        v=""
+    done
+    sleep 0.3  # Adjust sleep duration for the desired speed
+done
+}
+
+# Matrix effect on screen
+matrix2() { 
     while true; do
         # Generate a random number between 1 and 35 for the number of spaces
         num_spaces=$(( (RANDOM % 35) + 1 ))
@@ -302,7 +326,26 @@ matrix() {
         printf "\e[32m%s\e[0m%s" "$(printf "%*s" $num_spaces)" "$random_number"
 
         # Adjust the sleep duration to control the speed of the pattern
-        sleep 2
+        sleep 0.3
+    done
+}
+
+matrix3() { 
+    COL=$(( $(tput cols) / 2 ))
+    clear
+    tput setaf 2
+
+    while :; do
+        tput cup $((RANDOM % COL)) $((RANDOM % COL))
+        printf "%$((RANDOM % COL))s" $((RANDOM % 2))
+    done
+}
+
+matrix4() { 
+    echo -ne "\e[32m"
+    while true; do
+        echo -ne "\e[$(($RANDOM % 2 + 1))m"
+        tr -c "[:print:]" " " < /dev/urandom | dd count=1 bs=50 2> /dev/null
     done
 }
 
