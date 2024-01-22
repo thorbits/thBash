@@ -15,5 +15,3 @@ install: ## Installs the dotfiles.
 	@read -p ""
 	@clear
 	@exec ${SHELL}  # Restart the shell
-	@exit 0
-	@exit 0
