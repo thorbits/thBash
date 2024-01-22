@@ -6,10 +6,13 @@ install: ## Installs the dotfiles.
 	    f=$$(basename $$file); \
 	    cp $$file ${HOME}/$$f; \
 	done
+	@seq -s '*' 40 | tr -dc '[*\n]'
 	@echo "Dotfiles installed. Press ENTER to restart your shell."
+	@seq -s '*' 40 | tr -dc '[*\n]'
 	@read -p ""
 	@clear
 	@exec ${SHELL}  # Restart the shell
+	@exit 0
 	@exit 0
 
 .PHONY: help
