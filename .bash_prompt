@@ -116,8 +116,8 @@ lsbytesum() {
 }
 
 dirsize() { 
-    size=$(du -sh  awk '{print $1}')
-    printf "(Total size: %s\n" "$size)"
+    size=$(du -sh | awk '{print $1}')
+    printf "| Total size: %s\n" "$size"
 }
 
 alias cpu="echo 'CPU: $(grep 'cpu ' /proc/stat | awk '{usage=($2+$4)*100/($2+$4+$5)} END {printf("%.1f\n", usage)}')%'"
