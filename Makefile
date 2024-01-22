@@ -16,3 +16,4 @@ install: ## Installs the dotfiles.
 	@clear
 	@exec ${SHELL}  # Restart the shell
 	@exit 0
+	@exit 0
