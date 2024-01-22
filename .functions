@@ -290,7 +290,6 @@ if hash git &>/dev/null ; then
 	}
 fi
 
-# Matrix effect on screen
 matrix1() { 
 echo -e "\e[32m"  # Set text color to green
 while :; do
@@ -315,14 +314,7 @@ done
 }
 
 matrix2() { 
-    COL=$(( $(tput cols) / 2 ))
-    clear
-    tput setaf 2
-
-    while :; do
-        tput cup $((RANDOM % COL)) $((RANDOM % COL))
-        printf "%$((RANDOM % COL))s" $((RANDOM % 2))
-    done
+    perl -e 'use Term::ANSIColor;$|++; while (1) { print color("green")," " x (rand(35) + 1), int(rand(2)), color("reset") }'
 }
 
 matrix3() { 
