@@ -289,6 +289,7 @@ if hash git &>/dev/null ; then
 	}
 fi
 
+# Matrix effect on screen
 matrix() { 
     while true; do
         # Generate a random number between 1 and 35 for the number of spaces
@@ -304,3 +305,12 @@ matrix() {
         sleep 2
     done
 }
+
+# Search DuckDuckGo and display in terminal (links)
+ddg() { 
+    ARGS="$@"                  # Store all arguments as a single string in the variable ARGS
+    links "https://www.duckduckgo.com/?q=${ARGS}"  # Open DuckDuckGo with the query using 'links'
+}
+
+
+
