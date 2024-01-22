@@ -294,7 +294,7 @@ matrix1() {
 echo -e "\e[32m"  # Set text color to green
 while :; do
     for _ in {1..50}; do  # Repeat the animation 50 times for each row
-        for _ in {1..16}; do
+        for _ in {1..80}; do
             r=$((RANDOM % 2))
             if [[ $((RANDOM % 5)) == 1 ]]; then
                 if [[ $((RANDOM % 4)) == 1 ]]; then
@@ -309,28 +309,11 @@ while :; do
         echo -e "$v"
         v=""
     done
-    sleep 0.3  # Adjust sleep duration for the desired speed
+    sleep 0.1  # Adjust sleep duration for the desired speed
 done
 }
 
-# Matrix effect on screen
 matrix2() { 
-    while true; do
-        # Generate a random number between 1 and 35 for the number of spaces
-        num_spaces=$(( (RANDOM % 35) + 1 ))
-
-        # Generate a random number (0 or 1)
-        random_number=$(( RANDOM % 2 ))
-
-        # Print green spaces with the random number
-        printf "\e[32m%s\e[0m%s" "$(printf "%*s" $num_spaces)" "$random_number"
-
-        # Adjust the sleep duration to control the speed of the pattern
-        sleep 0.3
-    done
-}
-
-matrix3() { 
     COL=$(( $(tput cols) / 2 ))
     clear
     tput setaf 2
@@ -341,7 +324,7 @@ matrix3() {
     done
 }
 
-matrix4() { 
+matrix3() { 
     echo -ne "\e[32m"
     while true; do
         echo -ne "\e[$(($RANDOM % 2 + 1))m"
