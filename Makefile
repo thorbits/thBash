@@ -8,8 +8,7 @@ install: ## Installs the dotfiles.
 	done
 	@echo
 	@printf '    '
-	@for item in \\ \| / - \\ \| / - \\ \| / - \\ \| / - \\ \| / - \\ \| / -; do echo -ne "$item \r"; sleep .1; \
-	done
+	@for item in \\ \| / - \\ \| / - \\ \| / - \\ \| / - \\ \| / - \\ \| / -; do echo -ne "$item \r"; sleep .2; done
 	@echo -e "\r    \r"  # Clear the spinner
 	@seq -s '*' 60 | tr -dc '[*\n]'
 	@echo "    Dotfiles installed. Press ENTER to restart the shell."
