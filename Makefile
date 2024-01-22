@@ -7,9 +7,9 @@ install: ## Installs the dotfiles.
 	    cp $$file ${HOME}/$$f; \
 	done
 	@echo
-	@for item in \\ \| / - \\ \| / - \\ \| / - \\ \| / - \\ \| / - \\ \| / -; do echo -ne "$item \r"; sleep .1; \
-	done
-	@echo
+	@printf '    '
+	@for item in \| / - \\; do echo -n "$$item " && sleep 0.1; done
+	@echo -e "\r    \r"  # Clear the spinner
 	@seq -s '*' 60 | tr -dc '[*\n]'
 	@echo "    Dotfiles installed. Press ENTER to restart the shell."
 	@seq -s '*' 60 | tr -dc '[*\n]'
