@@ -48,7 +48,7 @@ draw_bar() {
 	# local menu_width=$(tput cols)
 	while true
 	do
-		printf '\033[K%s' "$(tput sc)$(tput cup 0 0)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-95)) ' ') | $(cpu) | $(memusage) | $(lip) | $(get_date) $(tput sgr0)$(tput rc)"
+		printf '\033[K%s' "$(tput sc)$(tput cup 0 0)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-100)) ' ') | $(cpu) | $(memusage) $(mem%) | $(get_pip) | $(get_date) $(tput sgr0)$(tput rc)"
 	 	break
 	# for ((i=1; i<=menu_height; i++)); do
 	# 	printf "\n"
@@ -116,6 +116,8 @@ lsbytesum() {
 }
 
 alias cpu="echo 'CPU: $(grep 'cpu ' /proc/stat | awk '{usage=($2+$4)*100/($2+$4+$5)} END {printf("%.1f\n", usage)}')%'"
+alais mem%="cat /proc/meminfo | awk -v RS=~ '{printf "(%.0f%%)", $2/1024000, 100-$5/$2*100}'
+"
 alias pwd='pwd | sed "s#\(/[^/]\{1,\}/[^/]\{1,\}/[^/]\{1,\}/\).*\(/[^/]\{1,\}/[^/]\{1,\}\)/\{0,1\}#\1_\2#g"'
 alias lip="ip addr show | grep -oP '(?<=inet\s)\d+(\.\d+){3}' | grep -v '127.0.0.1'"
 alias dirsize="du -cshx | awk 'END {print $1}'"
@@ -201,7 +203,7 @@ function __setprompt
 
 	# Menu style bar on top of screen
 	PS1+="$(draw_bar)"
-	# PS1+="$(tput sc)\$(tput cup 0)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-95)) ' ') \174 $(cpu) \174 $(memusage) \174 $(lip) \174 $(get_date) $RESET\$(tput rc)"
+	# PS1+="$(tput sc)\$(tput cup 0)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-100)) ' ') \174 $(cpu) \174 $(memusage) $(mem%) \174 $(get_pip) \174 $(get_date) $RESET\$(tput rc)"
 	
 	# Prompt begins
 	PS1+="\n$LINE_UPPER_CORNER$LINE_STRAIGHT$LINE_STRAIGHT\174$(date +'%-I':%M:%S%P)\174$LINE_STRAIGHT"
