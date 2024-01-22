@@ -332,11 +332,23 @@ matrix3() {
     done
 }
 
+matrix4() { 
+    while [ 1 -lt 2 ]; do
+        i=0
+        COL=$((RANDOM%$(tput cols)))
+        ROW=$((RANDOM%$(tput cols)))
+
+        while [ $i -lt $COL ]; do
+            tput cup $i $ROW
+            echo -e "\033[0;32m" $(cat /dev/urandom | head -1 | cut -c1-1) 2>/dev/null
+            i=$(expr $i + 1)
+        done
+    done
+}
+
 # Search DuckDuckGo and display in terminal (links)
 ddg() { 
     ARGS="$@"                  # Store all arguments as a single string in the variable ARGS
     links "https://www.duckduckgo.com/?q=${ARGS}"  # Open DuckDuckGo with the query using 'links'
 }
-
-
 
