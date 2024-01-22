@@ -26,17 +26,11 @@ alias l.='eza -a | egrep "^\."'
 alias ld='du -S | sort -n -r | more'
 alias lf='du -h --max-depth=1 | more'
 
-# Test hard drive speed
-alias diskspeed='time (dd if=/dev/zero of=zerofile bs=1M count=500;sync);rm zerofile'
-# 10 most used commands with counts
-alias h10="history | awk '{print \$2}' | sort | uniq -c | sort -nr | head"
-# Generate a 32 characters password
-alias rpwd="tr -dc 'a-zA-Z0-9~!@#$%^&*_()+}{?></\";.,[]=-' < /dev/urandom | fold -w 32 | head -n 1"
-# Display network utilization
-alias netwatch='sudo iftop -i enp2s0'
-# Check latest online kernel version
+alias diskspeed='time (dd if=/dev/zero of=zerofile bs=1M count=500;sync);rm zerofile'   # Test hard drive speed
+alias h10="history | awk '{print \$2}' | sort | uniq -c | sort -nr | head"              # 10 most used commands with counts
+alias netwatch='sudo iftop -i enp2s0'                                                   # Display network utilization
 alias linus="wget -qO - https://raw.githubusercontent.com/torvalds/linux/master/Makefile | head -n5 | grep -E '\ \=\ [0-9]{1,}' | cut -d' ' -f3 | tr '\n' '.' | sed -e "s/\.$//""
-
+                                                                                        # Check latest online kernel version
 # System commands
 alias sudo='sudo '
 alias reboot='if [ $(id -u) -eq 0 ]; then reboot; else sudo reboot; fi'
