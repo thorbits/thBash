@@ -254,4 +254,5 @@ function __setprompt
 	# PS2 is used to continue a command using the \ character
 	PS2="$C1>$NC "
 }
+
 PROMPT_COMMAND="__setprompt; $PROMPT_COMMAND"
