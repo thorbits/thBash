@@ -180,7 +180,6 @@ function __setprompt
 	local LINE_STRAIGHT='\342\224\200'
 	local LINE_UPPER_CORNER='\342\224\214'
 	local LINE_BOTTOM_CORNER='\342\224\224'
-	local LINE_LONG='\342\224\200 \342\224\200 \342\224\200 \342\224\200 \342\224\200 \342\224\200 \342\224\200 \342\224\200'
 
 	local RESET='\[$(tput sgr0)\]'
 	
@@ -243,10 +242,10 @@ function __setprompt
 	PS1+="\174$LINE_STRAIGHT\174$C8\$(pwd)$c8: $(lsfiledirsum) $(lsbytesum)M$(dirsize)$(autojump)"
 
 	# Prompt - change cursor color if normal user or root
-	PS1+="\n$LINE_BOTTOM_CORNER$LINE_LONG"
+	PS1+="\n$LINE_BOTTOM_CORNERLINE_STRAIGHT$LINE_STRAIGHT\174"
 
 	if [[ $EUID -ne 0 ]]; then
-		PS1+=$'\u003E '
+		PS1+=$' \u003E '
 		# PS1+=$'\u2192 '
 	else
 		PS1+="$c2>$RESET "
