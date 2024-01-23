@@ -332,7 +332,6 @@ matrix4() {
 	while true
 	do
 		COL=$((RANDOM%$(tput cols)))
-		ROW=$((RANDOM%$(tput cols)))
 		for ((i=0; i<COL; i++)); do
 			tput cup $i $COL
 			echo -e "\033[0;32m" $(cat /dev/urandom | head -1 | cut -c1-1) 2>/dev/null
