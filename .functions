@@ -342,7 +342,7 @@ xlights() {
 }
 
 # Query Wikipedia via console over DNS
-mwiki () {
+mwiki() { 
     # Replace spaces with underscores in the input argument
     modified_input=$(echo $* | sed 's| *|_|g')
     # Use hosts to query for the article
