@@ -44,18 +44,15 @@ get_date() {
 }
 
 # Menu style bar on top of screen
-draw_bar() { 
-	# local menu_height=1
-	# local menu_width=$(tput cols)
-	while true
-	do
-		printf '\033[K%s' "$(tput sc)$(tput cup 0 0)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-90)) ' ') | $(cpu) | $(memusage) | $(get_pip) | $(get_date) $(tput sgr0)$(tput rc)"
-	 	break
-	# for ((i=1; i<=menu_height; i++)); do
-	# 	printf "\n"
-	#	done
-	# sleep 2
-	done
+draw_bar() {
+    tput sc
+    while true
+    do
+        printf '\033[K%s' "$(tput cup 0 0)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-90)) ' ') | $(cpu) | $(memusage) | $(get_pip) | $(get_date) $(tput sgr0)"
+        printf "\n"
+        tput rc
+        break
+    done
 }
 
 
@@ -118,7 +115,7 @@ lsbytesum() {
 
 dirsize() { 
     size=$(du -sh | awk '{print $1}')
-    printf "| Total size: %s\n" "$size"
+    printf " / Total size: %s\n" "$size"
 }
 
 alias cpu="echo 'CPU: $(grep 'cpu ' /proc/stat | awk '{usage=($2+$4)*100/($2+$4+$5)} END {printf("%.1f\n", usage)}')%'"
@@ -219,7 +216,7 @@ function __setprompt
 	fi
 
 	# Current directory detailed info
-	PS1+="\174$LINE_STRAIGHT\174$C8\$(pwd)$c8: $(lsfiledirsum) $(lsbytesum)Mb / $(dirsize) $(autojump)"
+	PS1+="\174$LINE_STRAIGHT\174$C8\$(pwd)$c8: $(lsfiledirsum) $(lsbytesum)M$(dirsize)$(autojump)"
 
 	# Change cursor color if normal user or root
 	PS1+="\n$LINE_BOTTOM_CORNER$LINE_STRAIGHT$LINE_BOTTOM\174"
