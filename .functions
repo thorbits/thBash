@@ -149,17 +149,17 @@ pbar() {
 		fit_to_screen=$((fit_to_screen+1));
 	fi
 
-	already_done() { for ((done=0; done<(elapsed / fit_to_screen) ; done=done+1 )); do printf ">"; done }
-	remaining() { for (( remain=(elapsed/fit_to_screen) ; remain<(duration/fit_to_screen) ; remain=remain+1 )); do printf " "; done }
-	percentage() { printf "| %s%%" $(( ((elapsed)*100)/(duration)*100/100 )) | lolcat; }
-	clean_line() { printf "\r"; }
+	pbar_done() { for ((done=0; done<(elapsed / fit_to_screen) ; done=done+1 )); do printf ">"; done }
+	pbar_remain() { for (( remain=(elapsed/fit_to_screen) ; remain<(duration/fit_to_screen) ; remain=remain+1 )); do printf " "; done }
+	pbar_percent() { printf "| %s%%" $(( ((elapsed)*100)/(duration)*100/100 )) | lolcat; }
+	pbar_clean() { printf "\r"; }
 
 	for (( elapsed=1; elapsed<=duration; elapsed=elapsed+1 )); do
-		already_done; remaining; percentage
+		pbar_done; pbar_remain; pbar_percent
 		sleep 1
-		clean_line
+		pbar_clean
 	done
-	clean_line
+	pbar_clean
 }
 
 # Colored countdown (figlet lolcat)
