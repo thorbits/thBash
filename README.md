@@ -1,6 +1,4 @@
-##      _______
-##      \_   _/
-##        |_|horbits 
+
       My bash config
 
 > The following packages are suggested:
