@@ -47,6 +47,16 @@ update() {
 	fi
 }
 
+# Align input to the right of the screen
+right() { 
+    local input="$(cat -)"
+    local max_length=$(echo -e "$input" | wc -L)
+
+    while read -r line; do
+        printf "%*s%s\n" "$((max_length - ${#line}))" "" "$line"
+    done <<< "$input"
+}
+
 # Extracts any archive(s) to a specified directory, usage: extract -d /path/to/destination archive1.tar.gz archive2.zip
 extract() { 
 	local dest_dir="."  # default destination directory
@@ -345,7 +355,7 @@ xlights() {
 mwiki() { 
     # Replace spaces with underscores in the input argument
     modified_input=$(echo "$*" | sed 's| |_|g')
-    # Use hosts to query for the article
+    # Use host to query for the article
     host -t txt "${modified_input}.wp.dg.cx"
 }
 
