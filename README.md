@@ -6,4 +6,4 @@ autojump bc curl eza feh figlet git iftop lolcat links lynx lm-sensors lolcat ma
 
 Installation:  go to cloned repo directory and type: make install
 
-Once installed:  to see a list of the included functions go to $HOME directory and type:  fulist
+Once installed, to see a list of the included functions go to $HOME directory and type:  fulist
