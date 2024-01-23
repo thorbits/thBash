@@ -177,19 +177,11 @@ function __setprompt
 	local NC='\[\033[0m\]'    # Default color
 
 	# Define line characters
-	local LINE_BOTTOM='\342\224\200'
-	local LINE_BOTTOM_CORNER='\342\224\224'
 	local LINE_STRAIGHT='\342\224\200'
 	local LINE_UPPER_CORNER='\342\224\214'
+	local LINE_BOTTOM_CORNER='\342\224\224'
 
-	local t1_bg='\[$(tput setab 31)\]'
-	local t1_fg='\[$(tput setaf 31)\]'
-	local t2_bg='\[$(tput setab 69)\]'
-	local t2_fg='\[$(tput setaf 69)\]'
 	local RESET='\[$(tput sgr0)\]'
-
-	local tr1=$(echo -e "${t1_fg}${t2_bg}E0B0${RESET}")
-	local tr2=$(echo -e "${t2_fg}E0B0")
 	
 	# Show error exit code if there is one
 	if [[ $LAST_COMMAND != 0 ]]; then
@@ -236,24 +228,25 @@ function __setprompt
 	# PS1+="$(draw_bar)"
 	# PS1+="$(tput sc)\$(tput cup 0)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-95)) ' ') \174 $(cpu) \174 $(memusage) \174 $(get_pip) \174 $(get_date) $RESET\$(tput rc)"
 	
-	# Prompt begins
+	# Prompt - start
 	PS1+="\n$LINE_UPPER_CORNER$LINE_STRAIGHT$LINE_STRAIGHT\174$(date +'%-I':%M:%S%P)\174$LINE_STRAIGHT"
 
-	# Change username color if normal user or root
+	# Prompt - change username color if normal user or root
 	if [[ $EUID -ne 0 ]]; then
 		PS1+="\174$C8\u$c8@\h"
 	else
 		PS1+="\174$c2\u$c8@\h"
 	fi
 
-	# Current directory detailed info
+	# Prompt - current directory detailed info
 	PS1+="\174$LINE_STRAIGHT\174$C8\$(pwd)$c8: $(lsfiledirsum) $(lsbytesum)M$(dirsize)$(autojump)"
 
-	# Change cursor color if normal user or root
-	PS1+="\n$LINE_BOTTOM_CORNER$LINE_STRAIGHT$LINE_BOTTOM\174"
+	# Prompt - change cursor color if normal user or root
+	PS1+="\n$LINE_BOTTOM_CORNER$LINE_STRAIGHT$LINE_STRAIGHT"
 
 	if [[ $EUID -ne 0 ]]; then
-		PS1+=$'\u2192 '
+		PS1+=$LINE_STRAIGHT$LINE_STRAIGHT\174$'\u003E '
+		# PS1+=$'\u2192 '
 	else
 		PS1+="$c2>$RESET "
 	fi
