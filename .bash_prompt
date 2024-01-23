@@ -55,6 +55,18 @@ draw_bar() {
     done
 }
 
+drew_bar() {
+    while true; do
+        rows=$(tput lines)
+        current_row=$(tput sc; tput cup 0 0; tput rc; tput lines)
+
+        if [ "$current_row" -eq "$(($rows - 1))" ]; then
+            tput cup 0 0
+        printf '\033[K%s' "$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-90)) ' ') | $(cpu) | $(memusage) | $(get_pip) | $(get_date) $(tput sgr0)"
+	fi
+        sleep 1
+    done
+}
 
 #######################################################
 #		PROMPT
