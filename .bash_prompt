@@ -242,7 +242,7 @@ function __setprompt
 	PS1+="\174$LINE_STRAIGHT\174$C8\$(pwd)$c8: $(lsfiledirsum) $(lsbytesum)M$(dirsize)$(autojump)"
 
 	# Prompt - change cursor color if normal user or root
-	PS1+="\n$LINE_BOTTOM_CORNERLINE_STRAIGHT$LINE_STRAIGHT\174"
+	PS1+="\n$LINE_BOTTOM_CORNER$LINE_STRAIGHT$LINE_STRAIGHT\174"
 
 	if [[ $EUID -ne 0 ]]; then
 		PS1+=$' \u003E '
