@@ -362,4 +362,3 @@ ddg() {
 	ARGS="$@"					# Store all arguments as a single string in the variable ARGS
 	links "https://www.duckduckgo.com/?q=${ARGS}"	# Open DuckDuckGo with the query using 'links'
 }
-
