@@ -283,16 +283,9 @@ fdsize() {
 	fi
 }
 
-# Use Git’s colored diff when available
-if hash git &>/dev/null ; then
-	diff() {
-		git diff --no-index --color-words "$@"
-	}
-fi
-
 matrix1() { 
-echo -e "\e[32m"  # Set text color to green
-while :; do
+    echo -e "\e[32m"  # Set text color to green
+    while :; do
     for _ in {1..50}; do  # Repeat the animation 50 times for each row
         for _ in {1..80}; do
             r=$((RANDOM % 2))
@@ -318,6 +311,7 @@ matrix2() {
 }
 
 matrix3() { 
+    clear
     echo -ne "\e[32m"
     while true; do
         echo -ne "\e[$(($RANDOM % 2 + 1))m"
@@ -336,6 +330,14 @@ matrix4() {
             echo -e "\033[0;32m" $(cat /dev/urandom | head -1 | cut -c1-1) 2>/dev/null
             i=$(expr $i + 1)
         done
+    done
+}
+
+xlights() { 
+    clear
+    while :; do
+        echo -ne "\033[$((1+RANDOM%LINES));$((1+RANDOM%COLUMNS))H\033[$((RANDOM%2));3$((RANDOM%8))m$((RANDOM%10))"
+        sleep 0.1
     done
 }
 
