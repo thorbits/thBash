@@ -1,24 +1,28 @@
 #!/bin/bash
 #
-#  _______
-#  \_   _|
-#    |_|horbits 
+#	_______
+#	\_   _/
+#	  |_|horbits 
 #
-# My bash config
+#	My bash config
 
 
 # Record each line as it gets issued
 PROMPT_COMMAND='history -a'
+
 
 #######################################################
 #		DRAW BAR
 #######################################################
 
 # Show some shell infos
-shell_info() { 
+get_shell() { 
 	local bash_name=$(ps -p $$ -o comm=)
 	echo "   | $bash_name v$BASH_VERSION"
 }
+
+# Show CPU usage
+# get_cpu() {}
 
 # Sends a request to the ipinfo.io API to get the public IP address
 get_pip() { 
@@ -28,7 +32,7 @@ get_pip() {
 }
 
 # Show memory usage
-memusage() { 
+get_mem() { 
 	# Use the free command to get memory information
 	local mem_info=$(free --mega -h | grep "Mem:")
 	# Extract used memory and total memory
@@ -40,7 +44,7 @@ memusage() {
 
 # Show current date
 get_date() { 
-	date "+%a-%d-%b"
+	printf "| date \"+%a-%d-%b\""
 }
 
 # Menu style bar on top of screen
@@ -48,7 +52,7 @@ draw_bar() {
 	tput sc
 	while true
 	do
-		printf '\033[K%s' "$(tput cup 0 0)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-90)) ' ') | $(cpu) | $(memusage) | $(get_pip) | $(get_date) $(tput sgr0)"
+		printf '\033[K%s' "$(tput cup 0 0)$(tput rev)$(get_shell)$(printf '%*s' $((COLUMNS-90)) ' ') | $(get_cpu) | $(get_mem) | $(get_pip) | $(get_date) $(tput sgr0)"
 		printf "\n"
 		break
 	done
@@ -73,16 +77,15 @@ drax_bar() {
 		if [ "$current_row" -eq $(($max_row)) ]; then
 			tput cup 0 0
 			tput el
-			printf "$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-90)) ' ') | $(cpu) | $(memusage) | $(get_pip) | $(get_date) $(tput sgr0)"
-			break
+			printf "$(tput rev)$(get_shell)$(printf '%*s' $((COLUMNS-90)) ' ')  | $(get_cpu)  $'\u007C' $(get_mem)  $'\u007C' $(get_pip)  $'\u007C' $(get_date) $(tput sgr0)"
 		else
 			tput cup 0 0
 			tput el
-			printf "$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-90)) ' ') | $(cpu) | $(memusage) | $(get_pip) | $(get_date) $(tput sgr0)"
-			break
+			printf "$(tput rev)$(get_shell)$(printf '%*s' $((COLUMNS-90)) ' ')  | $(get_cpu)  $\u007C $(get_mem)  $\u007C $(get_pip)  '$\u007C' $(get_date) $(tput sgr0)"
 		fi
-	done
 	tput rc
+	break
+	done
 }
 
 
@@ -224,7 +227,7 @@ function __setprompt
 
 	# Menu style bar on top of screen
 	# PS1+="$(draw_bar)"
-	# PS1+="$(tput sc)\$(tput cup 0)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-95)) ' ') \174 $(cpu) \174 $(memusage) \174 $(get_pip) \174 $(get_date) $RESET\$(tput rc)"
+	# PS1+="$(tput sc)\$(tput cup 0)$(tput rev)$(get_shell)$(printf '%*s' $((COLUMNS-95)) ' ') \174 $(get_cpu) \174 $(get_mem) \174 $(get_pip) \174 $(get_date) $RESET\$(tput rc)"
 	
 	# Prompt - start
 	PS1+="\n$LINE_UPPER_CORNER$LINE_STRAIGHT$LINE_STRAIGHT\174 $(date +'%-I':%M:%S%P)\174$LINE_STRAIGHT"
