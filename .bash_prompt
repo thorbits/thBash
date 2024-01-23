@@ -55,15 +55,25 @@ draw_bar() {
     done
 }
 
+curline() {
+    tput sc  # Save cursor position
+    tput cup 0 0  # Move cursor to the top-left corner
+    tput ech  # Erase to the end of the line
+    tput cup 0 0  # Move cursor back to the top-left corner
+    tput el  # Clear the entire line
+    read -r line  # Read the content of the line
+    tput rc  # Restore cursor position
+    echo "$line"
+}
+
 drew_bar() {
     while true; do
         rows=$(tput lines)
-        current_row=$(tput sc; tput cup 0 0; tput rc; tput lines)
-        current_row=$(echo "$current_row" | awk '{print $1}')
+        current_row=$(curline)
 
         if [ "$current_row" -eq $(($rows - 1)) ]; then
             tput cup 0 0
-            printf '%*s\n' "$COLUMNS" | tr ' ' '-'
+            tput el
             printf "$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-90)) ' ') | $(cpu) | $(memusage) | $(get_pip) | $(get_date) $(tput sgr0)"
         fi
 
