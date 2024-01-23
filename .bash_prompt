@@ -65,35 +65,27 @@ curline() {
     echo "$row"
 }
 
-drew_bar() {
+drax_bar() { 
+    tput sc
     while true; do
-        rows=$(tput lines)
+        max_row=50
         current_row=$(curline)
 
-        if [ "$current_row" -eq $(($rows - 1)) ]; then
+        if [ "$current_row" -eq $(($max_row)) ]; then
             tput cup 0 0
             tput el
             printf "$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-90)) ' ') | $(cpu) | $(memusage) | $(get_pip) | $(get_date) $(tput sgr0)"
-        fi
-
-        sleep 1
-    done
-}
-
-drax_bar() {
-    while true; do
-        rows=50
-        current_row=$(curline)
-
-        if [ "$current_row" -eq $(($rows - 1)) ]; then
+            break
+        else
             tput cup 0 0
             tput el
             printf "$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-90)) ' ') | $(cpu) | $(memusage) | $(get_pip) | $(get_date) $(tput sgr0)"
+            break
         fi
-
-        sleep 1
     done
+    tput rc
 }
+
 
 #######################################################
 #		PROMPT
@@ -241,7 +233,7 @@ function __setprompt
 	fi
 
 	# Menu style bar on top of screen
-	PS1+="$(draw_bar)"
+	# PS1+="$(draw_bar)"
 	# PS1+="$(tput sc)\$(tput cup 0)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-95)) ' ') \174 $(cpu) \174 $(memusage) \174 $(get_pip) \174 $(get_date) $RESET\$(tput rc)"
 	
 	# Prompt begins
