@@ -55,12 +55,12 @@ draw_bar() {
     done
 }
 
-drew_bar() { 
+drew_bar() {
     while true; do
         rows=$(tput lines)
         current_row=$(tput sc; tput cup 0 0; tput rc; tput lines)
 
-        if [ "$current_row" -eq "$(($rows - 1))" ]; then
+        if [ "$current_row" -eq $(($rows - 1)) ]; then
             tput cup 0 0
             printf '%*s\n' "$COLUMNS" | tr ' ' '-'
             printf "$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-90)) ' ') | $(cpu) | $(memusage) | $(get_pip) | $(get_date) $(tput sgr0)"
