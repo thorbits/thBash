@@ -58,7 +58,7 @@ draw_bar() {
 drew_bar() {
     while true; do
         rows=$(tput lines)
-        current_row=$(tput sc; tput cup 0 0; tput rc; tput lines)
+        current_row=$(tput sc; tput cup 0 0; tput rc; tput lines | awk '{print $1}')
 
         if [ "$current_row" -eq $(($rows - 1)) ]; then
             tput cup 0 0
