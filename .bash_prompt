@@ -231,9 +231,9 @@ function __setprompt
 
 	# Prompt - change username color if normal user or root
 	if [[ $EUID -ne 0 ]]; then
-		PS1+="\174$C8\u$c8@\h "
+		PS1+="\174$C8\u$c8@\h"
 	else
-		PS1+="\174$c2\u$c8@\h "
+		PS1+="\174$c2\u$c8@\h"
 	fi
 
 	# Prompt - current directory detailed info
