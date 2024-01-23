@@ -229,17 +229,17 @@ function __setprompt
 	# PS1+="$(tput sc)\$(tput cup 0)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-95)) ' ') \174 $(cpu) \174 $(memusage) \174 $(get_pip) \174 $(get_date) $RESET\$(tput rc)"
 	
 	# Prompt - start
-	PS1+="\n$LINE_UPPER_CORNER$LINE_STRAIGHT$LINE_STRAIGHT\174$(date +'%-I':%M:%S%P)\174$LINE_STRAIGHT"
+	PS1+="\n$LINE_UPPER_CORNER$LINE_STRAIGHT$LINE_STRAIGHT\174 $(date +'%-I':%M:%S%P) \174$LINE_STRAIGHT"
 
 	# Prompt - change username color if normal user or root
 	if [[ $EUID -ne 0 ]]; then
-		PS1+="\174$C8\u$c8@\h"
+		PS1+="\174$C8 \u$c8@\h "
 	else
-		PS1+="\174$c2\u$c8@\h"
+		PS1+="\174$c2 \u$c8@\h "
 	fi
 
 	# Prompt - current directory detailed info
-	PS1+="\174$LINE_STRAIGHT\174$C8\$(pwd)$c8: $(lsfiledirsum) $(lsbytesum)M$(dirsize)$(autojump)"
+	PS1+="\174$LINE_STRAIGHT\174$C8 \$(pwd)$c8: $(lsfiledirsum) $(lsbytesum)M$(dirsize)$(autojump)"
 
 	# Prompt - change cursor color if normal user or root
 	PS1+="\n$LINE_BOTTOM_CORNER$LINE_STRAIGHT$LINE_STRAIGHT\174"
