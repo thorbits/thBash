@@ -55,15 +55,14 @@ draw_bar() {
     done
 }
 
-curline() {
-    tput sc  # Save cursor position
-    tput cup 0 0  # Move cursor to the top-left corner
-    tput ech  # Erase to the end of the line
-    tput cup 0 0  # Move cursor back to the top-left corner
-    tput el  # Clear the entire line
-    read -r line  # Read the content of the line
-    tput rc  # Restore cursor position
-    echo "$line"
+curline() { 
+    local row
+    # Query the cursor position
+    IFS=';' read -r -d R -s -p $'\033[6n' row col
+    # Extract the row value
+    row=${row#*[}
+
+    echo "$row"
 }
 
 drew_bar() {
@@ -81,6 +80,20 @@ drew_bar() {
     done
 }
 
+drax_bar() {
+    while true; do
+        rows=50
+        current_row=$(curline)
+
+        if [ "$current_row" -eq $(($rows - 1)) ]; then
+            tput cup 0 0
+            tput el
+            printf "$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-90)) ' ') | $(cpu) | $(memusage) | $(get_pip) | $(get_date) $(tput sgr0)"
+        fi
+
+        sleep 1
+    done
+}
 
 #######################################################
 #		PROMPT
