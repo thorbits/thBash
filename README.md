@@ -1,6 +1,4 @@
-My bash config,
-
-The following packages are suggested for this config:
+My bash config, the following packages are suggested:
 
 autojump bc curl eza feh figlet git iftop lolcat links lynx lm-sensors lolcat make man-db nala neofetch neovim parallel pv rsync sudo tldr vim xdg-utils wget
 
