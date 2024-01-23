@@ -328,21 +328,23 @@ matrix3() {
 }
 
 matrix4() { 
-	while [ 1 -lt 2 ]; do
-		i=0
+	clear
+	while true
+	do
 		COL=$((RANDOM%$(tput cols)))
 		ROW=$((RANDOM%$(tput cols)))
-		while [ $i -lt $COL ]; do
-			tput cup $i $ROW
+		for ((i=0; i<COL; i++)); do
+			tput cup $i $COL
 			echo -e "\033[0;32m" $(cat /dev/urandom | head -1 | cut -c1-1) 2>/dev/null
-			i=$(expr $i + 1)
 		done
+		sleep 0.2  # Adjust to the desired speed
 	done
 }
 
 xlights() { 
 	clear
-	while :; do
+	while :
+	do
 		echo -ne "\033[$((1+RANDOM%LINES));$((1+RANDOM%COLUMNS))H\033[$((RANDOM%2));3$((RANDOM%8))m$((RANDOM%10))"
 		sleep 0.1
 	done
@@ -358,7 +360,7 @@ mwiki() {
 
 # Search DuckDuckGo and display in terminal (links)
 ddg() { 
-	ARGS="$@"                  # Store all arguments as a single string in the variable ARGS
-	links "https://www.duckduckgo.com/?q=${ARGS}"  # Open DuckDuckGo with the query using 'links'
+	ARGS="$@"					# Store all arguments as a single string in the variable ARGS
+	links "https://www.duckduckgo.com/?q=${ARGS}"	# Open DuckDuckGo with the query using 'links'
 }
 
