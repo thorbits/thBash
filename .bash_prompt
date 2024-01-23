@@ -39,12 +39,14 @@ get_mem() {
 	local used_memory=$(echo "$mem_info" | awk '{print $3}')
 	local total_memory=$(echo "$mem_info" | awk '{print $2}')
 	# Display the result
-	echo "MEM: $used_memory / $total_memory"
+	echo "MEM: $used_memory/$total_memory"
 }
 
 # Show current date
 get_date() { 
-	printf "| date \"+%a-%d-%b\""
+	local current_date
+	current_date=$(date "+%a-%d-%b")
+	printf "$current_date"
 }
 
 # Menu style bar on top of screen
@@ -52,8 +54,7 @@ draw_bar() {
 	tput sc
 	while true
 	do
-		printf '\033[K%s' "$(tput cup 0 0)$(tput rev)$(get_shell)$(printf '%*s' $((COLUMNS-90)) ' ') | $(get_cpu) | $(get_mem) | $(get_pip) | $(get_date) $(tput sgr0)"
-		printf "\n"
+		printf '\033[K%s' "$(tput cup 0 0)$(tput rev)$(get_shell)$(printf '%*s' $((COLUMNS-95)) ' ')| $(cpu) | $(get_mem) | $(get_pip) | $(get_date) $(tput sgr0)"
 		break
 	done
 	tput rc
@@ -70,22 +71,20 @@ curline() {
 
 drax_bar() { 
 	tput sc
+	tput cup 0 0
 	while true
 	do
 		max_row=50
 		current_row=$(curline)
 		if [ "$current_row" -eq $(($max_row)) ]; then
-			tput cup 0 0
-			tput el
-			printf "$(tput rev)$(get_shell)$(printf '%*s' $((COLUMNS-90)) ' ')  | $(get_cpu)  $'\u007C' $(get_mem)  $'\u007C' $(get_pip)  $'\u007C' $(get_date) $(tput sgr0)"
+			printf '\033[K%s' "$(tput rev)$(get_shell)$(printf '%*s' $((COLUMNS-95)) ' ')| $(cpu) | $(get_mem) | $(get_pip) | $(get_date) $(tput sgr0)"
+			break
 		else
-			tput cup 0 0
-			tput el
-			printf "$(tput rev)$(get_shell)$(printf '%*s' $((COLUMNS-90)) ' ')  | $(get_cpu)  $\u007C $(get_mem)  $\u007C $(get_pip)  '$\u007C' $(get_date) $(tput sgr0)"
+			printf '\033[K%s' "$(tput rev)$(get_shell)$(printf '%*s' $((COLUMNS-95)) ' ')| $(cpu) | $(get_mem) | $(get_pip) | $(get_date) $(tput sgr0)"
+			break
 		fi
-	tput rc
-	break
 	done
+	tput rc
 }
 
 
