@@ -45,45 +45,44 @@ get_date() {
 
 # Menu style bar on top of screen
 draw_bar() { 
-    tput sc
-    while true
-    do
-        printf '\033[K%s' "$(tput cup 0 0)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-90)) ' ') | $(cpu) | $(memusage) | $(get_pip) | $(get_date) $(tput sgr0)"
-        printf "\n"
-        tput rc
-        break
-    done
+	tput sc
+	while true
+	do
+		printf '\033[K%s' "$(tput cup 0 0)$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-90)) ' ') | $(cpu) | $(memusage) | $(get_pip) | $(get_date) $(tput sgr0)"
+		printf "\n"
+		break
+	done
+	tput rc
 }
 
 curline() { 
-    local row
-    # Query the cursor position
-    IFS=';' read -r -d R -s -p $'\033[6n' row col
-    # Extract the row value
-    row=${row#*[}
-
-    echo "$row"
+	local row
+	# Query the cursor position
+	IFS=';' read -r -d R -s -p $'\033[6n' row col
+	# Extract the row value
+	row=${row#*[}
+	echo "$row"
 }
 
 drax_bar() { 
-    tput sc
-    while true; do
-        max_row=50
-        current_row=$(curline)
-
-        if [ "$current_row" -eq $(($max_row)) ]; then
-            tput cup 0 0
-            tput el
-            printf "$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-90)) ' ') | $(cpu) | $(memusage) | $(get_pip) | $(get_date) $(tput sgr0)"
-            break
-        else
-            tput cup 0 0
-            tput el
-            printf "$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-90)) ' ') | $(cpu) | $(memusage) | $(get_pip) | $(get_date) $(tput sgr0)"
-            break
-        fi
-    done
-    tput rc
+	tput sc
+	while true
+	do
+		max_row=50
+		current_row=$(curline)
+		if [ "$current_row" -eq $(($max_row)) ]; then
+			tput cup 0 0
+			tput el
+			printf "$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-90)) ' ') | $(cpu) | $(memusage) | $(get_pip) | $(get_date) $(tput sgr0)"
+			break
+		else
+			tput cup 0 0
+			tput el
+			printf "$(tput rev)$(shell_info)$(printf '%*s' $((COLUMNS-90)) ' ') | $(cpu) | $(memusage) | $(get_pip) | $(get_date) $(tput sgr0)"
+			break
+		fi
+	done
+	tput rc
 }
 
 
@@ -124,29 +123,28 @@ lsfiledirsum() {
 
 # Sum the number of bytes in the current directory
 lsbytesum() { 
-    local totalBytes=0
+	local totalBytes=0
+	# Use find to get a list of regular files in the current directory
+	while IFS= read -r -d '' file; do
+		if [[ -f "$file" ]]; then
+			# Increment totalBytes by the size of each regular file
+			((totalBytes += $(stat -c %s "$file" 2>/dev/null)))
+		fi
+	done < <(find . -maxdepth 1 -type f -print0)
 
-    # Use find to get a list of regular files in the current directory
-    while IFS= read -r -d '' file; do 
-        if [[ -f "$file" ]]; then
-            # Increment totalBytes by the size of each regular file
-            ((totalBytes += $(stat -c %s "$file" 2>/dev/null)))
-        fi
-    done < <(find . -maxdepth 1 -type f -print0)
-
-    # Check if bc is available before using it
-    if command -v bc &>/dev/null; then
-        # Calculate totalMegabytes and print the result
-        totalMegabytes=$(echo "scale=3; $totalBytes/1048576" | bc)
-        printf "%.3f\n" "$totalMegabytes"
-    else
-        echo "Error: 'bc' is not installed"
-    fi
+	# Check if bc is available before using it
+	if command -v bc &>/dev/null; then
+		# Calculate totalMegabytes and print the result
+		totalMegabytes=$(echo "scale=3; $totalBytes/1048576" | bc)
+		printf "%.3f\n" "$totalMegabytes"
+	else
+		echo "Error: 'bc' is not installed"
+	fi
 }
 
 dirsize() { 
-    size=$(du -sh | awk '{print $1}')
-    printf " / Total size: %s\n" "$size"
+	size=$(du -sh | awk '{print $1}')
+	printf " / Total size: %s\n" "$size"
 }
 
 alias cpu="echo 'CPU: $(grep 'cpu ' /proc/stat | awk '{usage=($2+$4)*100/($2+$4+$5)} END {printf("%.1f\n", usage)}')%'"
