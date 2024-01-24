@@ -3,7 +3,7 @@
 </div>
 
 <div>
-  <p><br>
+  <p><br><br>
   <em>The following packages are suggested,</em>
   </p>
   
@@ -15,12 +15,13 @@
 </div>
 
 <div>
-  <p><br><br></p>
+  <p><br><br>
   <em>To install this config,</em>
+  </p>
   
-*  Go to cloned repo directory and type: make install, once shell is refreshed type exit
+*  Go to cloned repo directory and type: <em>make install</em>, once shell is refreshed type <em>exit</em>
 
-*  Once installed, to see a list of the included functions go to $HOME directory and type:  fulist
+*  Once installed, to see a list of the included functions go to $HOME directory and type:  <em>fulist</em>
 </div>
 
 <div align="center">
@@ -43,7 +44,7 @@
 </div>
 
 <div align="center">
-  <p><br><br></p>
+  <p><br></p>
   <img src="https://img.shields.io/badge/LinkedIn-blue?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn Badge"/>
   <img src="https://img.shields.io/badge/YouTube-red?style=for-the-badge&logo=youtube&logoColor=white" alt="Youtube Badge"/>
   <img src="https://img.shields.io/badge/Twitter-blue?style=for-the-badge&logo=twitter&logoColor=white" alt="Twitter Badge"/>
