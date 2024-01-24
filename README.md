@@ -2,24 +2,21 @@
   <h1><em>Welcome to my bash config</em></h1>
   <img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/t/thorbits/thbashrc">
 </div>
+
 <div>
   <p>.
   
 
+  <em>The following packages are suggested,</em>
   </p>
-  <p>
-  The following packages are suggested,
-  </p>
-
-*  <p><em>Debian</em>
-
+  
+*  Debian
 >      autojump bc curl eza feh figlet git iftop lolcat links lynx lm-sensors lolcat make man-db nala neofetch neovim parallel pv rsync sudo tldr vim xdg-utils wget
-  </p>
 
-*  <p><em>Arch</em>
-
+*  Arch
 >      bc curl eza feh figlet git iftop lolcat links lynx lolcat make man-db neofetch neovim parallel pv rsync sudo tldr vim xdg-utils wget
 </div>
+
 <div>
   <p>.
   
@@ -71,4 +68,3 @@
   </p>
   <img src="https://komarev.com/ghpvc/?username=thorbits&style=flat-square&color=blue" alt=""/>  
 </div>
-
