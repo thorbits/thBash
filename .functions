@@ -6,15 +6,18 @@
 #
 #	My bash config
 
+#
 # Description of the included funtions, () indicate required package(s).
+#
 # SYSTEM UPDATE
 # update	: update your Arch, Debian or Fedora distro, simply type: update (debian pkg: nala)
+#
 # GENERAL COMMANDS
-# cdown		: colored countdown, usage: cdown 10 (figlet lolcat)
 # calc		: simple calculator, usage: calc 2x2
+# cdown		: colored countdown, usage: cdown 10 (figlet lolcat)
+# cpg		: copy and go to the directory, usage: cpg
 # cppr		: copy file with a progress bar, usage: cppr (rsync)
 # cppv		: copy file with a progress bar, usage: cppv (pv)
-# cpg		: copy and go to the directory, usage: cpg
 # extract	: extract any archive(s) to a specified directory, usage: extract -d /path/to/dir archive1.tar.gz archive2.zip
 # fdsize	: display size of a file or total size of a directory, usage: fdsize
 # get_temp	: display CPU temperature (debian pkg: lm-Sensors)
@@ -25,12 +28,15 @@
 # pbar		: display a progress bar, usage: pbar 100
 # right		: align input to the right of the screen, usage: yourcommand | right
 # tmpd		: make a temporary directory and enter it, usage: 'tmpd' or 'tmpd mydir'
+#
 # SEARCH THE WEB
 # ddg		: search DuckDuckGo and display in terminal, usage: ddg mysearch (links)
 # mwiki		: query Wikipedia via console over DNS, usage: mwiki mysearch
+#
 # SCREENSAVERS
 # matrix1-4	: matrix effects, usage: matrix1
 # xlights	: colored lights, usage: xlights
+#
 
 #######################################################
 #		UPDATE ARCH, DEBIAN OR FEDORA
@@ -76,12 +82,77 @@ update() {
 #######################################################
 
 ####
-right() { 
-	local input="$(cat -)"
-	local max_length=$(echo -e "$input" | wc -L)
-	while read -r line; do
-		printf "%*s%s\n" "$((max_length - ${#line}))" "" "$line"
-	done <<< "$input"
+calc() { 
+	local result=""
+	result="$(printf "scale=10;%s\\n" "$*" | bc --mathlib | tr -d '\\\n')"
+	#						└─ default (when `--mathlib` is used) is 20
+
+	if [[ "$result" == *.* ]]; then
+		# improve the output for decimal numbers
+		# add "0" for cases like ".5"
+		# add "0" for cases like "-.5"
+		# remove trailing zeros
+		printf "%s" "$result" |
+			sed -e 's/^\./0./'  \
+			-e 's/^-\./-0./' \
+			-e 's/0*$//;s/\.$//'
+	else
+		printf "%s" "$result"
+	fi
+	printf "\\n"
+}
+
+####
+cdown() { 
+	N=$1 # Capture the argument as N
+	# Start a while loop that continues until N is greater than 0
+	while ((N-- > 0)); do
+		# Display the current countdown number using figlet for ASCII art
+		# and lolcat for colored output, then sleep for 1 second
+		echo "$N" | figlet -c | lolcat && sleep 1
+	done
+}
+
+####
+cppr() { 
+	# Check if rsync is available
+	if ! command -v rsync &>/dev/null; then
+		echo "Error: 'rsync' is not installed"
+		return 1
+	fi
+	# Check the number of arguments
+	if [[ "$#" -ne 2 ]]; then
+		echo "Usage: cppb source_file destination_file"
+		return 1
+	fi
+	# Run rsync with --progress option
+	rsync --progress "$1" "$2"
+}
+
+####
+cppv() { 
+	if [ -z "$1" ] || [ -z "$2" ]; then
+		echo "Usage: cppv source_file destination"
+		return 1
+	fi
+	# Check if pv is available
+	if ! command -v pv > /dev/null; then
+		echo "Error: 'pv' is not installed"
+		return 1
+	fi
+	# Use pv to display a progress bar during copy
+	pv "$1" > "$2"
+}
+
+####
+cpg() { 
+	local source="$1"
+	local destination="$2"
+	if [ -d "$destination" ]; then
+		cp "$source" "$destination" && cd "$destination" || return 1
+	else
+		cp "$source" "$destination" || return 1
+	fi
 }
 
 ####
@@ -132,6 +203,21 @@ extract() {
 }
 
 ####
+fdsize() { 
+	local arg
+	if du -b /dev/null > /dev/null 2>&1; then
+		arg=-sbh
+	else
+		arg=-sh
+	fi
+	if [[ -n "$@" ]]; then
+		du $arg -- "$@"
+	else
+		du $arg -- .[^.]* *
+	fi
+}
+
+####
 get_temp() { 
 	# Check if 'sensors' command is available
 	if command -v sensors &>/dev/null; then
@@ -146,6 +232,35 @@ get_temp() {
 	else
         echo "Error: 'lm-sensors' is not installed"
 	fi
+}
+
+####
+mkcd(){ NAME=$1; mkdir -p "$NAME"; cd "$NAME"; }
+
+####
+mvg() { 
+	local source="$1"
+	local destination="$2"
+	if [ -d "$destination" ]; then
+		mv "$source" "$destination" && cd "$destination" || return 1
+	else
+		mv "$source" "$destination" || return 1
+	fi
+}
+
+####
+openimage() {
+	local types='*.jpg *.JPG *.png *.PNG *.gif *.GIF *.jpeg *.JPEG'
+
+	cd "$(dirname "$1")" || exit
+	local file
+	file=$(basename "$1")
+
+	feh -q "$types" --auto-zoom \
+		--sort filename --borderless \
+		--scale-down --draw-filename \
+		--image-bg black \
+		--start-at "$file"
 }
 
 ####
@@ -190,81 +305,12 @@ pbar() {
 }
 
 ####
-cdown() { 
-	N=$1 # Capture the argument as N
-	# Start a while loop that continues until N is greater than 0
-	while ((N-- > 0)); do
-		# Display the current countdown number using figlet for ASCII art
-		# and lolcat for colored output, then sleep for 1 second
-		echo "$N" | figlet -c | lolcat && sleep 1
-	done
-}
-
-####
-calc() { 
-	local result=""
-	result="$(printf "scale=10;%s\\n" "$*" | bc --mathlib | tr -d '\\\n')"
-	#						└─ default (when `--mathlib` is used) is 20
-
-	if [[ "$result" == *.* ]]; then
-		# improve the output for decimal numbers
-		# add "0" for cases like ".5"
-		# add "0" for cases like "-.5"
-		# remove trailing zeros
-		printf "%s" "$result" |
-			sed -e 's/^\./0./'  \
-			-e 's/^-\./-0./' \
-			-e 's/0*$//;s/\.$//'
-	else
-		printf "%s" "$result"
-	fi
-	printf "\\n"
-}
-
-####
-openimage() {
-	local types='*.jpg *.JPG *.png *.PNG *.gif *.GIF *.jpeg *.JPEG'
-
-	cd "$(dirname "$1")" || exit
-	local file
-	file=$(basename "$1")
-
-	feh -q "$types" --auto-zoom \
-		--sort filename --borderless \
-		--scale-down --draw-filename \
-		--image-bg black \
-		--start-at "$file"
-}
-
-####
-cppr() { 
-	# Check if rsync is available
-	if ! command -v rsync &>/dev/null; then
-		echo "Error: 'rsync' is not installed"
-		return 1
-	fi
-	# Check the number of arguments
-	if [[ "$#" -ne 2 ]]; then
-		echo "Usage: cppb source_file destination_file"
-		return 1
-	fi
-	# Run rsync with --progress option
-	rsync --progress "$1" "$2"
-}
-
-####
-cppv() { 
-	if [ -z "$1" ] || [ -z "$2" ]; then
-		echo "Usage: cppv source_file destination"
-		return 1
-	fi
-	# Check if pv is available
-	if ! command -v pv > /dev/null; then
-		echo "Error: 'pv' is not installed"
-		return 1
-	fi
-	# Use pv to display a progress bar during copy
-	pv "$1" > "$2"
+right() { 
+	local input="$(cat -)"
+	local max_length=$(echo -e "$input" | wc -L)
+	while read -r line; do
+		printf "%*s%s\n" "$((max_length - ${#line}))" "" "$line"
+	done <<< "$input"
 }
 
 ####
@@ -278,45 +324,27 @@ tmpd() {
 	cd "$dir" || exit
 }
 
+#######################################################
+#		SEARCH
+#######################################################
+
 ####
-cpg() { 
-	local source="$1"
-	local destination="$2"
-	if [ -d "$destination" ]; then
-		cp "$source" "$destination" && cd "$destination" || return 1
-	else
-		cp "$source" "$destination" || return 1
-	fi
+ddg() { 
+	ARGS="$@"					# Store all arguments as a single string in the variable ARGS
+	links "https://www.duckduckgo.com/?q=${ARGS}"	# Open DuckDuckGo with the query using 'links'
 }
 
 ####
-mvg() { 
-	local source="$1"
-	local destination="$2"
-	if [ -d "$destination" ]; then
-		mv "$source" "$destination" && cd "$destination" || return 1
-	else
-		mv "$source" "$destination" || return 1
-	fi
+mwiki() { 
+	# Replace spaces with underscores in the input argument
+	modified_input=$(echo "$*" | sed 's| |_|g')
+	# Use host to query for the article
+	host -t txt "${modified_input}.wp.dg.cx"
 }
 
-####
-mkcd(){ NAME=$1; mkdir -p "$NAME"; cd "$NAME"; }
-
-####
-fdsize() { 
-	local arg
-	if du -b /dev/null > /dev/null 2>&1; then
-		arg=-sbh
-	else
-		arg=-sh
-	fi
-	if [[ -n "$@" ]]; then
-		du $arg -- "$@"
-	else
-		du $arg -- .[^.]* *
-	fi
-}
+#######################################################
+#		SCREENSAVERS
+#######################################################
 
 ####
 matrix1() { 
@@ -380,18 +408,4 @@ xlights() {
 		echo -ne "\033[$((1+RANDOM%LINES));$((1+RANDOM%COLUMNS))H\033[$((RANDOM%2));3$((RANDOM%8))m$((RANDOM%10))"
 		sleep 0.1
 	done
-}
-
-####
-mwiki() { 
-	# Replace spaces with underscores in the input argument
-	modified_input=$(echo "$*" | sed 's| |_|g')
-	# Use host to query for the article
-	host -t txt "${modified_input}.wp.dg.cx"
-}
-
-####
-ddg() { 
-	ARGS="$@"					# Store all arguments as a single string in the variable ARGS
-	links "https://www.duckduckgo.com/?q=${ARGS}"	# Open DuckDuckGo with the query using 'links'
 }
