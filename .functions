@@ -8,10 +8,9 @@
 
 
 #######################################################
-#		GENERAL FUNCTIONS
+#		UPDATE ARCH, DEBIAN OR FEDORA
 #######################################################
 
-# Update system packages depending on the distro
 update() { 
 	local user_id=$(id -u)
 	if [ "$user_id" -eq 0 ]; then
@@ -46,6 +45,10 @@ update() {
 			esac
 	fi
 }
+
+#######################################################
+#		GENERAL FUNCTIONS
+#######################################################
 
 # Align input to the right of the screen
 right() { 
