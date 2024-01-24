@@ -30,6 +30,8 @@
 *  Once installed, to see a list of the included functions,<br>go to $HOME directory and type:  <em>fulist</em>
 </div>
 
+  <p><br><br><br><br></p>
+
 <div align="center">
   
   ### Some stats
@@ -42,7 +44,7 @@
 </div>
 
 <div align="center">
-  <p><br></p>
+  <p></p>
   <img src="https://img.shields.io/github/commit-activity/t/thorbits/thbashrc">
   <img src="https://komarev.com/ghpvc/?username=thorbits&style=flat-square&color=blue" alt=""/>
 </div>
