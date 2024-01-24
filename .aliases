@@ -46,3 +46,4 @@ alias rope='if [[ "$i" == "0" ]]; then cd $dir; i=1; else dir=$(pwd); export dir
 # Github commands
 alias gitcred='git config --global credential.helper store' # verify status with: git config --get-all --global credential.helper
 alias gitpush='git add . && git commit -m "$(w3m whatthecommit.com | head -n 1)" --all && git push -u -f origin main'
+alias gitpull='git pull origin https://github.com/thorbits/mybashrc.git'
