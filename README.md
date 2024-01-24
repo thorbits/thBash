@@ -6,12 +6,14 @@
 
 <div align="center">
 
-  ### Welcome to my bash config
+## Welcome to my bash config
 </div>
 
 <div>
   <p><br><br>
-  <em>The following packages are suggested,</em><br><br>
+
+#### The following packages are suggested,
+<br>
 
 *  <img src="https://listimg.pinclipart.com/picdir/s/344-3444076_arch-linux-logo-png-clipart.png" width="32" height="32"> <b> </b>
 >      bc curl eza feh figlet git iftop lolcat links lynx lolcat make man-db neofetch neovim parallel pv rsync sudo tldr vim xdg-utils wget
@@ -25,8 +27,9 @@
 </div>
 
 <div>
-  <p><br><br>
-  <em>To install this config,</em>
+  <p><br>
+    
+#### To install this config,
 
 *  Go to cloned repo directory and type: <em>make install</em><br>After shell is refreshed type: <em>exit</em>
 
@@ -37,7 +40,7 @@
 <div align="center">
   <p><br><br><br><br></p>
   
-  ### Some stats
+## About me
 </div>
 
 <div align="center">
