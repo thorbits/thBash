@@ -1,12 +1,9 @@
-<div id="header" align="center">
+<div id="header" align="center"><br>
   <h1><em>Welcome to my bash config</em></h1>
-  <img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/t/thorbits/thbashrc">
 </div>
 
 <div>
-  <p>.
-  
-
+  <p><br>
   <em>The following packages are suggested,</em>
   </p>
   
@@ -18,10 +15,7 @@
 </div>
 
 <div>
-  <p>.
-  
-
-  </p>
+  <p><br><br></p>
   <em>To install this config,</em>
   
 *  Go to cloned repo directory and type: make install, once shell is refreshed type exit
@@ -30,41 +24,27 @@
 </div>
 
 <div align="center">
-  <p>.
-  
-
-  </p>
+  <p><br><br></p>
     <img src="https://github.com/devicons/devicon/blob/master/icons/bash/bash-plain.svg"/>
 </div>
 
 <div align="center">
-  <p>.
   
-
-  </p>
-    <a href="https://git.io/streak-stats"><img src="https://github-readme-streak-stats.herokuapp.com?user=thorbits&theme=transparent&date_format=j%20M%5B%20Y%5D&mode=weekly" alt="GitHub Streak" /></a>
+  ### About me:
+  <p><br></p>
+  <img src="http://github-readme-streak-stats.herokuapp.com?user=thorbits&theme=transparent"/><br><br>
+  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=thorbits&layout=compact&theme=transparent"/>
 </div>
 
 <div align="center">
-  <p>.
-  
-
-  </p>
-    <a href="your-linkedin-URL">
-      <img src="https://img.shields.io/badge/LinkedIn-blue?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn Badge"/>
-      </a>
-    <a href="your-youtube-URL">
-      <img src="https://img.shields.io/badge/YouTube-red?style=for-the-badge&logo=youtube&logoColor=white" alt="Youtube Badge"/>
-      </a>
-    <a href="your-twitter-URL">
-      <img src="https://img.shields.io/badge/Twitter-blue?style=for-the-badge&logo=twitter&logoColor=white" alt="Twitter Badge"/>      
-    </a>
+  <p><br></p>
+  <img src="https://img.shields.io/github/commit-activity/t/thorbits/thbashrc">
+  <img src="https://komarev.com/ghpvc/?username=thorbits&style=flat-square&color=blue" alt=""/>
 </div>
 
 <div align="center">
-  <p>.
-  
-
-  </p>
-  <img src="https://komarev.com/ghpvc/?username=thorbits&style=flat-square&color=blue" alt=""/>  
+  <p><br><br></p>
+  <img src="https://img.shields.io/badge/LinkedIn-blue?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn Badge"/>
+  <img src="https://img.shields.io/badge/YouTube-red?style=for-the-badge&logo=youtube&logoColor=white" alt="Youtube Badge"/>
+  <img src="https://img.shields.io/badge/Twitter-blue?style=for-the-badge&logo=twitter&logoColor=white" alt="Twitter Badge"/>
 </div>
