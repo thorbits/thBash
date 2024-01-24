@@ -1,16 +1,17 @@
-<div id="header" align="center"><br>
-  <h1><em>Welcome to my bash config</em></h1>
+<div align="center">
+
+  ### Welcome to my bash config
 </div>
 
 <div>
-  <p><br><br>
+  <p><br>
   <em>The following packages are suggested,</em>
   </p>
   
-*  Debian
+*  <b>Debian</b>
 >      autojump bc curl eza feh figlet git iftop lolcat links lynx lm-sensors lolcat make man-db nala neofetch neovim parallel pv rsync sudo tldr vim xdg-utils wget
 
-*  Arch
+*  <b>Arch</b>
 >      bc curl eza feh figlet git iftop lolcat links lynx lolcat make man-db neofetch neovim parallel pv rsync sudo tldr vim xdg-utils wget
 </div>
 
@@ -19,9 +20,9 @@
   <em>To install this config,</em>
   </p>
   
-*  Go to cloned repo directory and type: <em>make install</em>, once shell is refreshed type <em>exit</em>
+*  Go to cloned repo directory and type: <em>make install</em><br>After shell is refreshed type: <em>exit</em>
 
-*  Once installed, to see a list of the included functions go to $HOME directory and type:  <em>fulist</em>
+*  Once installed, to see a list of the included functions,<br>go to $HOME directory and type:  <em>fulist</em>
 </div>
 
 <div align="center">
@@ -31,7 +32,10 @@
 
 <div align="center">
   
-  ### About me:
+  ### Some stats
+</div>
+
+<div align="center">
   <p><br></p>
   <img src="http://github-readme-streak-stats.herokuapp.com?user=thorbits&theme=transparent"/><br><br>
   <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=thorbits&layout=compact&theme=transparent"/>
@@ -44,8 +48,15 @@
 </div>
 
 <div align="center">
-  <p><br></p>
+  <p></p>
   <img src="https://img.shields.io/badge/LinkedIn-blue?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn Badge"/>
   <img src="https://img.shields.io/badge/YouTube-red?style=for-the-badge&logo=youtube&logoColor=white" alt="Youtube Badge"/>
   <img src="https://img.shields.io/badge/Twitter-blue?style=for-the-badge&logo=twitter&logoColor=white" alt="Twitter Badge"/>
+</div>
+
+<div align="center">
+  <p></p>
+  
+  ``Thanks for visiting!``
+<br>
 </div>
