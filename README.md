@@ -38,6 +38,13 @@
 
   </p>
     <img src="https://github.com/devicons/devicon/blob/master/icons/bash/bash-plain.svg"/>
+</div>
+
+<div align="center">
+  <p>.
+  
+
+  </p>
     <a href="https://git.io/streak-stats"><img src="https://github-readme-streak-stats.herokuapp.com?user=thorbits&theme=transparent&date_format=j%20M%5B%20Y%5D&mode=weekly" alt="GitHub Streak" /></a>
 </div>
 
