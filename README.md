@@ -9,15 +9,15 @@
 </div>
 
 <div>
-  <p><br>
+  <p><br>                                    
   <em>The following packages are suggested,</em>
   </p>
 
-*  <b>Arch</b>
+*  <img src="https://img.favpng.com/0/5/16/arch-linux-logo-olinuxino-png-favpng-YdPM1gQpreneQ4B5CdevaF4L3_t.jpg" width="32" height="32"> <b>Arch</b>
 >      bc curl eza feh figlet git iftop lolcat links lynx lolcat make man-db neofetch neovim parallel pv rsync sudo tldr vim xdg-utils wget
 </div>
 
-*  <b>Debian</b>
+*  <img src="https://github.com/devicons/devicon/blob/master/icons/debian/debian-original.svg" width="32" height="32"> <b>Debian</b>
 >      autojump bc curl eza feh figlet git iftop lolcat links lynx lm-sensors lolcat make man-db nala neofetch neovim parallel pv rsync sudo tldr vim xdg-utils wget
 <div>
   <p><br><br>
