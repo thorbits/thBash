@@ -1,5 +1,6 @@
 <div id="header" align="center">
 <h1><em>Welcome to my bash config</em></h1>
+<img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/t/thorbits/thbashrc">
 </div>
 <p>.
   
@@ -21,14 +22,21 @@
 
 </p>
 
-- [ ] Installation:  go to cloned repo directory and type: make install, once shell is refreshed type exit
+<div>
+  <em>To install this config,</em>
+  
+*  Go to cloned repo directory and type: make install, once shell is refreshed type exit
 
-- [ ] Once installed, to see a list of the included functions go to $HOME directory and type:  fulist
+*  Once installed, to see a list of the included functions go to $HOME directory and type:  fulist
+
 <p>.
   
 
 </p>
+</div>
+
 <p>
+  <img src="https://github.com/devicons/devicon/blob/master/icons/bash/bash-plain.svg"/>
 <div id="badges" align="center">
 <a href="your-linkedin-URL">
   <img src="https://img.shields.io/badge/LinkedIn-blue?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn Badge"/>
@@ -40,5 +48,10 @@
   <img src="https://img.shields.io/badge/Twitter-blue?style=for-the-badge&logo=twitter&logoColor=white" alt="Twitter Badge"/>
 </a>
 </p>
-  <img src="https://komarev.com/ghpvc/?username=thorbits&style=flat-square&color=blue" alt=""/>
+<p>.
+  
+
+</p>
+  <img src="https://komarev.com/ghpvc/?username=thorbits&style=flat-square&color=blue" alt=""/>  
 </div>
+
