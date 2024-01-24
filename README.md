@@ -1,6 +1,7 @@
 <div align="center">
-  <p></p>
+  <p>
     <img src="https://github.com/devicons/devicon/blob/master/icons/bash/bash-plain.svg" width="128" height="128">
+  </p>
 </div>
 
 <div align="center">
@@ -9,9 +10,8 @@
 </div>
 
 <div>
-  <p><br>                                    
-  <em>The following packages are suggested,</em>
-  </p>
+  <p><br><br>
+  <em>The following packages are suggested,</em><br><br>
 
 *  <img src="https://listimg.pinclipart.com/picdir/s/344-3444076_arch-linux-logo-png-clipart.png" width="32" height="32"> <b> </b>
 >      bc curl eza feh figlet git iftop lolcat links lynx lolcat make man-db neofetch neovim parallel pv rsync sudo tldr vim xdg-utils wget
@@ -21,21 +21,21 @@
 
 *  <img src="https://github.com/devicons/devicon/blob/master/icons/fedora/fedora-original.svg" width="32" height="32"> <b> </b>
 >      autojump bc curl eza feh figlet git iftop lolcat links lynx lm-sensors lolcat make man-db nala neofetch neovim parallel pv rsync sudo tldr vim xdg-utils wget
+  </p>
 </div>
 
 <div>
   <p><br><br>
   <em>To install this config,</em>
-  </p>
-  
+
 *  Go to cloned repo directory and type: <em>make install</em><br>After shell is refreshed type: <em>exit</em>
 
 *  Once installed, to see a list of the included functions,<br>go to $HOME directory and type:  <em>fulist</em>
+  </p>
 </div>
 
-  <p><br><br><br><br></p>
-
 <div align="center">
+  <p><br><br><br><br></p>
   
   ### Some stats
 </div>
