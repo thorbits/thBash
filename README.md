@@ -39,7 +39,7 @@
 <div align="center">
   <p><br></p>
   <img src="http://github-readme-streak-stats.herokuapp.com?user=thorbits&theme=transparent"/><br>
-  <img src="https://github-readme-stats.vercel.app/api?username=thorbits&show_icons=true&theme=transparent"/><br>
+  <img src="https://github-readme-stats.vercel.app/api?username=thorbits&show_icons=true&theme=transparent&rank_icon=github"/><br>
   <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=thorbits&layout=compact&theme=transparent"/><br>
 </div>
 
