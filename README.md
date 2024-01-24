@@ -14,7 +14,6 @@
   <p><br><br>
 
 #### The following packages are suggested,
-<br>
 
 *  <img src="https://listimg.pinclipart.com/picdir/s/344-3444076_arch-linux-logo-png-clipart.png" width="32" height="32"> <b> </b>
 >      bc curl eza feh figlet git iftop lolcat links lynx lolcat make man-db neofetch neovim parallel pv rsync sudo tldr vim xdg-utils wget
@@ -69,8 +68,9 @@
 </div>
 
 <div align="center">
-  <p></p>
+  <p><br>
   
   ``Thanks for visiting!``
-<br>
+  
+  </p>
 </div>
