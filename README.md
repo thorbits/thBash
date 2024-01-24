@@ -12,14 +12,13 @@
   <p><br>
   <em>The following packages are suggested,</em>
   </p>
-  
-*  <b>Debian</b>
->      autojump bc curl eza feh figlet git iftop lolcat links lynx lm-sensors lolcat make man-db nala neofetch neovim parallel pv rsync sudo tldr vim xdg-utils wget
 
 *  <b>Arch</b>
 >      bc curl eza feh figlet git iftop lolcat links lynx lolcat make man-db neofetch neovim parallel pv rsync sudo tldr vim xdg-utils wget
 </div>
 
+*  <b>Debian</b>
+>      autojump bc curl eza feh figlet git iftop lolcat links lynx lm-sensors lolcat make man-db nala neofetch neovim parallel pv rsync sudo tldr vim xdg-utils wget
 <div>
   <p><br><br>
   <em>To install this config,</em>
