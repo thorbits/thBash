@@ -6,6 +6,31 @@
 #
 #	My bash config
 
+# Description of the included funtions, () indicate required package(s).
+# SYSTEM UPDATE
+# update	: update your Arch, Debian or Fedora distro, simply type: update (debian pkg: nala)
+# GENERAL COMMANDS
+# cdown		: colored countdown, usage: cdown 10 (figlet lolcat)
+# calc		: simple calculator, usage: calc 2x2
+# cppr		: copy file with a progress bar, usage: cppr (rsync)
+# cppv		: copy file with a progress bar, usage: cppv (pv)
+# cpg		: copy and go to the directory, usage: cpg
+# extract	: extract any archive(s) to a specified directory, usage: extract -d /path/to/dir archive1.tar.gz archive2.zip
+# fdsize	: display size of a file or total size of a directory, usage: fdsize
+# get_temp	: display CPU temperature (debian pkg: lm-Sensors)
+# mkcd		: create and go to the directory, usage: mkcd mydir
+# mvg		: move and go to the directory, usage: mvg
+# openimage	: use feh to nicely view images, usage: openimage myfile.ext
+# parabar	: display a progress bar, usage: parabar 1000 10 0.5 (parallel)
+# pbar		: display a progress bar, usage: pbar 100
+# right		: align input to the right of the screen, usage: yourcommand | right
+# tmpd		: make a temporary directory and enter it, usage: 'tmpd' or 'tmpd mydir'
+# SEARCH THE WEB
+# ddg		: search DuckDuckGo and display in terminal, usage: ddg mysearch (links)
+# mwiki		: query Wikipedia via console over DNS, usage: mwiki mysearch
+# SCREENSAVERS
+# matrix1-4	: matrix effects, usage: matrix1
+# xlights	: colored lights, usage: xlights
 
 #######################################################
 #		UPDATE ARCH, DEBIAN OR FEDORA
@@ -50,7 +75,7 @@ update() {
 #		GENERAL FUNCTIONS
 #######################################################
 
-# Align input to the right of the screen
+####
 right() { 
 	local input="$(cat -)"
 	local max_length=$(echo -e "$input" | wc -L)
@@ -59,7 +84,7 @@ right() {
 	done <<< "$input"
 }
 
-# Extracts any archive(s) to a specified directory, usage: extract -d /path/to/destination archive1.tar.gz archive2.zip
+####
 extract() { 
 	local dest_dir="."  # default destination directory
 	while getopts ":d:" opt; do
@@ -106,7 +131,7 @@ extract() {
 	done
 }
 
-# Display CPU temperature (lm-Sensors)
+####
 get_temp() { 
 	# Check if 'sensors' command is available
 	if command -v sensors &>/dev/null; then
@@ -123,7 +148,7 @@ get_temp() {
 	fi
 }
 
-# Display a progress bar (parallel) usage: parabar 1000 10 0.5
+####
 parabar() { 
 	local range="$1"
 	local jobs="$2"
@@ -131,7 +156,7 @@ parabar() {
 	seq "$range" | parallel -j"$jobs" --bar 'echo {}; sleep '"$sleeptime"'; clear'
 }
 
-# Display a progress bar
+####
 pbar() { 
 	local duration
 	local columns
@@ -164,7 +189,7 @@ pbar() {
 	pbar_clean
 }
 
-# Colored countdown (figlet lolcat)
+####
 cdown() { 
 	N=$1 # Capture the argument as N
 	# Start a while loop that continues until N is greater than 0
@@ -175,7 +200,7 @@ cdown() {
 	done
 }
 
-# Simple calculator
+####
 calc() { 
 	local result=""
 	result="$(printf "scale=10;%s\\n" "$*" | bc --mathlib | tr -d '\\\n')"
@@ -196,7 +221,7 @@ calc() {
 	printf "\\n"
 }
 
-# Use feh to nicely view images
+####
 openimage() {
 	local types='*.jpg *.JPG *.png *.PNG *.gif *.GIF *.jpeg *.JPEG'
 
@@ -211,8 +236,8 @@ openimage() {
 		--start-at "$file"
 }
 
-# Copy file with a progress bar (rsync)
-cppb() { 
+####
+cppr() { 
 	# Check if rsync is available
 	if ! command -v rsync &>/dev/null; then
 		echo "Error: 'rsync' is not installed"
@@ -227,7 +252,7 @@ cppb() {
 	rsync --progress "$1" "$2"
 }
 
-# Copy file with a progress bar (pv)
+####
 cppv() { 
 	if [ -z "$1" ] || [ -z "$2" ]; then
 		echo "Usage: cppv source_file destination"
@@ -242,7 +267,7 @@ cppv() {
 	pv "$1" > "$2"
 }
 
-# Make a temporary directory and enter it, usage: 'tmpd' or 'tmpd mydir'
+####
 tmpd() { 
 	local dir
 	if [ $# -eq 0 ]; then
@@ -253,7 +278,7 @@ tmpd() {
 	cd "$dir" || exit
 }
 
-# Copy and go to the directory
+####
 cpg() { 
 	local source="$1"
 	local destination="$2"
@@ -264,7 +289,7 @@ cpg() {
 	fi
 }
 
-# Move and go to the directory
+####
 mvg() { 
 	local source="$1"
 	local destination="$2"
@@ -275,10 +300,10 @@ mvg() {
 	fi
 }
 
-# Create and go to the directory
+####
 mkcd(){ NAME=$1; mkdir -p "$NAME"; cd "$NAME"; }
 
-# Determine size of a file or total size of a directory
+####
 fdsize() { 
 	local arg
 	if du -b /dev/null > /dev/null 2>&1; then
@@ -293,6 +318,7 @@ fdsize() {
 	fi
 }
 
+####
 matrix1() { 
 	echo -e "\e[32m"  # Set text color to green
 	while :; do
@@ -316,10 +342,12 @@ matrix1() {
 	done
 }
 
+####
 matrix2() { 
 	perl -e 'use Term::ANSIColor;$|++; while (1) { print color("green")," " x (rand(35) + 1), int(rand(2)), color("reset") }'
 }
 
+####
 matrix3() { 
 	clear
 	echo -ne "\e[32m"
@@ -330,6 +358,7 @@ matrix3() {
 	done
 }
 
+####
 matrix4() { 
 	clear
 	while true
@@ -343,6 +372,7 @@ matrix4() {
 	done
 }
 
+####
 xlights() { 
 	clear
 	while :
@@ -352,7 +382,7 @@ xlights() {
 	done
 }
 
-# Query Wikipedia via console over DNS
+####
 mwiki() { 
 	# Replace spaces with underscores in the input argument
 	modified_input=$(echo "$*" | sed 's| |_|g')
@@ -360,7 +390,7 @@ mwiki() {
 	host -t txt "${modified_input}.wp.dg.cx"
 }
 
-# Search DuckDuckGo and display in terminal (links)
+####
 ddg() { 
 	ARGS="$@"					# Store all arguments as a single string in the variable ARGS
 	links "https://www.duckduckgo.com/?q=${ARGS}"	# Open DuckDuckGo with the query using 'links'
