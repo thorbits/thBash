@@ -34,8 +34,7 @@ alias rnews="links `lynx -dump -listonly "http://cbc.ca/news" | grep -Eo "(http|
 
 # System commands
 alias sudo='sudo '
-alias nala_search='if [ $(id -u) -eq 0 ]; then nala search; else sudo nala search; fi'
-alias nala_install='if [ $(id -u) -eq 0 ]; then nala install; else sudo nala install; fi'
+alias nala='if [ $(id -u) -eq 0 ]; then nala; else sudo nala; fi'
 alias reboot='if [ $(id -u) -eq 0 ]; then reboot; else sudo reboot; fi'
 alias nf='clear; neofetch'
 alias vbrc='vim ~/.bash_prompt'
