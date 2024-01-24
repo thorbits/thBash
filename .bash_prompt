@@ -50,16 +50,6 @@ get_date() {
 }
 
 # Menu style bar on top of screen
-draw_bar() { 
-	tput sc
-	while true
-	do
-		printf '\033[K%s' "$(tput cup 0 0)$(tput rev)$(get_shell)$(printf '%*s' $((COLUMNS-95)) ' ')| $(cpu) | $(get_mem) | $(get_pip) | $(get_date) $(tput sgr0)"
-		break
-	done
-	tput rc
-}
-
 curline() { 
 	local row
 	# Query the cursor position
@@ -69,7 +59,7 @@ curline() {
 	echo "$row"
 }
 
-drax_bar() { 
+draw_bar() { 
 	tput sc
 	tput cup 0 0
 	while true
