@@ -1,4 +1,9 @@
 <div align="center">
+  <p><br><br></p>
+    <img src="https://github.com/devicons/devicon/blob/master/icons/bash/bash-plain.svg" width="128" height="128">
+</div>
+
+<div align="center">
 
   ### Welcome to my bash config
 </div>
@@ -23,11 +28,6 @@
 *  Go to cloned repo directory and type: <em>make install</em><br>After shell is refreshed type: <em>exit</em>
 
 *  Once installed, to see a list of the included functions,<br>go to $HOME directory and type:  <em>fulist</em>
-</div>
-
-<div align="center">
-  <p><br><br></p>
-    <img src="https://github.com/devicons/devicon/blob/master/icons/bash/bash-plain.svg"/>
 </div>
 
 <div align="center">
