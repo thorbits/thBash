@@ -26,15 +26,8 @@ alias l.='eza -a | egrep "^\."'
 alias ld='du -S | sort -n -r | more'
 alias lf='du -h --max-depth=1 | more'
 
-alias diskspeed='time (dd if=/dev/zero of=zerofile bs=1M count=500;sync);rm zerofile'   # Test hard drive speed
-alias h10="history | awk '{print \$2}' | sort | uniq -c | sort -nr | head"              # 10 most used commands with counts
-alias netwatch='sudo iftop -i enp2s0'                                                   # Display network utilization
-alias linus="wget -qO - https://raw.githubusercontent.com/torvalds/linux/master/Makefile | head -n5 | grep -E '\ \=\ [0-9]{1,}' | cut -d' ' -f3 | tr '\n' '.' | sed -e "s/\.$//""
-alias rnews="links `lynx -dump -listonly "http://cbc.ca/news" | grep -Eo "(http|https)://[a-zA-Z0-9./?=_-]*" | grep -v "cbc.ca/news" | sort -R | uniq | head -n1`"
-
 # System commands
 alias sudo='sudo '
-alias nala='if [ $(id -u) -eq 0 ]; then nala; else sudo nala; fi'
 alias reboot='if [ $(id -u) -eq 0 ]; then reboot; else sudo reboot; fi'
 alias nf='clear; neofetch'
 alias vbrc='vim ~/.bash_prompt'
@@ -46,3 +39,10 @@ alias rope='if [[ "$i" == "0" ]]; then cd $dir; i=1; else dir=$(pwd); export dir
 alias gitcred='git config --global credential.helper store' # verify status with: git config --get-all --global credential.helper
 alias gitpush='git add . && git commit -m "$(w3m whatthecommit.com | head -n 1)" --all && git push -u -f origin main'
 alias gitpull='git pull origin main'
+
+# Fun commands
+alias h10="history | awk '{print \$2}' | sort | uniq -c | sort -nr | head"              # 10 most used commands with counts
+alias diskspeed='time (dd if=/dev/zero of=zerofile bs=1M count=500;sync);rm zerofile'   # Test hard drive speed
+alias netwatch='sudo iftop -i enp2s0'                                                   # Display network utilization
+alias linus="wget -qO - https://raw.githubusercontent.com/torvalds/linux/master/Makefile | head -n5 | grep -E '\ \=\ [0-9]{1,}' | cut -d' ' -f3 | tr '\n' '.' | sed -e "s/\.$//""
+alias rnews="links `lynx -dump -listonly "http://cbc.ca/news" | grep -Eo "(http|https)://[a-zA-Z0-9./?=_-]*" | grep -v "cbc.ca/news" | sort -R | uniq | head -n1`"
