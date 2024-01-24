@@ -30,7 +30,7 @@
 
 *  Go to cloned repo directory and type: <em>make install</em><br>After shell is refreshed type: <em>exit</em>
 
-*  Once installed, to see a list of the included functions,<br>go to $HOME directory and type:  <em>fulist</em>
+*  Once installed, to see a list of the included functions, simply type:  <em>fulist</em>
   </p>
 </div>
 
