@@ -1,5 +1,5 @@
 <div align="center">
-  <p><br><br></p>
+  <p></p>
     <img src="https://github.com/devicons/devicon/blob/master/icons/bash/bash-plain.svg" width="128" height="128">
 </div>
 
