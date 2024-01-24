@@ -11,7 +11,8 @@
 #		ALIASES
 #######################################################
 
-# alias fulist="builtin declare -f | command grep -E '^[a-zA-Z1-9_]+\ \(\)' | sed 's/()//'" | sed -n 5,8p ~/.functions
+alias fulist="sed -n 9,33p ~/.functions"
+# alias fulist="builtin declare -f | command grep -E '^[a-zA-Z1-9_]+\ \(\)' | sed 's/()//'"
 
 # To temporarily bypass an alias, we precede the command with a \
 # EG: the ls command is aliased, but to use the normal ls command you would type \ls
