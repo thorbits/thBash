@@ -12,4 +12,5 @@ install: ## Installs the dotfiles.
 	@seq -s '*' 60 | tr -dc '[*\n]'
 	@read -p ""
 	@clear
+	@exit 0
 	@exec ${SHELL}  # Restart the shell
