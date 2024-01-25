@@ -446,7 +446,19 @@ ddg() {
 }
 
 ####
+mwiki() { 
+	# Replace spaces with underscores in the input argument
+	modified_input=$(echo "$*" | sed 's| |_|g')
+	# Use host to query for the article
+	host -t txt "${modified_input}.wp.dg.cx"
+}
 
+####
+translate() { 
+	local url="http://ajax.googleapis.com/ajax/services/language/translate?v=1.0&q=$1&langpair=$2|${3:-en}"
+	local translated_text=$(wget -qO- "$url" | sed 's/.*"translatedText":"\([^"]*\)".*}/\1\n/')
+	echo "$translated_text"
+}
 
 ####
 youplay0() { 
@@ -474,21 +486,6 @@ youplay00() {
 
 	# Play the video using mplayer in fullscreen
 	mplayer -fs "$video_url"
-}
-
-####
-mwiki() { 
-	# Replace spaces with underscores in the input argument
-	modified_input=$(echo "$*" | sed 's| |_|g')
-	# Use host to query for the article
-	host -t txt "${modified_input}.wp.dg.cx"
-}
-
-####
-translate() { 
-	local url="http://ajax.googleapis.com/ajax/services/language/translate?v=1.0&q=$1&langpair=$2|${3:-en}"
-	local translated_text=$(wget -qO- "$url" | sed 's/.*"translatedText":"\([^"]*\)".*}/\1\n/')
-	echo "$translated_text"
 }
 
 #######################################################
