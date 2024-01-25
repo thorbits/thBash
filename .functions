@@ -19,9 +19,9 @@
 # cpg		: copy and go to the directory, usage: cpg source destination
 # cppr		: copy file with a progress bar, usage: cppr source destination (rsync)
 # cppv		: copy file with a progress bar, usage: cppv source destination (pv)
+# cputemp	: display CPU temperature, Debian only, usage: get_temp (lm-Sensors)
 # extract	: extract any archive(s) to a specified directory, usage: extract -d /path/to/dir archive1.tar.gz archive2.zip
-# fdsize	: display size of a file or total size of a directory, usage: fdsize
-# get_temp	: display CPU temperature, Debian only, usage: get_temp (lm-Sensors)
+# fds		: display total disk size of file(s) and sub-directories, usage: fds
 # mkcd		: create and go to the directory, usage: mkcd mydir
 # mvg		: move and go to the directory, usage: mvg source destination
 # openimage	: use feh to nicely view images, usage: openimage myfile.ext
@@ -167,6 +167,23 @@ cpg() {
 }
 
 ####
+cputemp() { 
+	# Check if 'sensors' command is available
+	if command -v sensors &>/dev/null; then
+	# Extract CPU temperature using 'sensors'
+	local cpu_temperature=$(sensors | grep "Core 0" | awk '{print $3}')
+        # Check if temperature is not empty
+        if [ -n "$cpu_temperature" ]; then
+		echo "CPU Temperature: $cpu_temperature"
+        else
+		echo "Unable to retrieve CPU temperature."
+        	fi
+	else
+        echo "Error: 'lm-sensors' is not installed"
+	fi
+}
+
+####
 extract() { 
 	local dest_dir="."  # default destination directory
 	while getopts ":d:" opt; do
@@ -214,7 +231,7 @@ extract() {
 }
 
 ####
-fdsize() { 
+fds() { 
 	local arg
 	if du -b /dev/null > /dev/null 2>&1; then
 		arg=-sbh
@@ -225,23 +242,6 @@ fdsize() {
 		du $arg -- "$@"
 	else
 		du $arg -- .[^.]* *
-	fi
-}
-
-####
-get_temp() { 
-	# Check if 'sensors' command is available
-	if command -v sensors &>/dev/null; then
-	# Extract CPU temperature using 'sensors'
-	local cpu_temperature=$(sensors | grep "Core 0" | awk '{print $3}')
-        # Check if temperature is not empty
-        if [ -n "$cpu_temperature" ]; then
-		echo "CPU Temperature: $cpu_temperature"
-        else
-		echo "Unable to retrieve CPU temperature."
-        	fi
-	else
-        echo "Error: 'lm-sensors' is not installed"
 	fi
 }
 
