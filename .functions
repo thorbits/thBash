@@ -391,6 +391,109 @@ matrix1() {
 
 ####
 matrix2() { 
+	# Check if Term::ReadKey is installed
+	if ! perl -e 'use Term::ReadKey' 2>/dev/null; then
+		echo "Term::ReadKey is not installed."
+
+		# Ask the user if they want to install
+		read -p "Do you want to install it? (yes/no): " answer
+
+		if [ "$answer" == "yes" ]; then
+			# Install Term::ReadKey with or without sudo
+			if command -v sudo >/dev/null 2>&1; then
+				sudo cpan Term::ReadKey
+			else
+				cpan Term::ReadKey
+			fi
+
+			# Check again if installation was successful
+			if perl -e 'use Term::ReadKey' 2>/dev/null; then
+			    echo "Term::ReadKey has been installed."
+			else
+				echo "Installation failed. Please install Term::ReadKey manually."
+				return 1
+			fi
+		else
+			echo "Installation canceled. Exiting."
+			return 1
+		fi
+	fi
+
+	# Term::ReadKey is installed, proceed with the modified function
+	perl -MTime::HiRes -e '
+		use Term::ANSIColor;
+		use Term::ReadKey;
+
+		$|++;
+		$SIG{INT} = sub { exit; };
+
+		# Set the terminal to raw mode
+		system "stty -icanon min 0 time 0";
+
+		while (1) {
+			# Print matrix
+			print color("green"), " " x (rand(35) + 1), int(rand(2)), color("reset");
+
+			# Non-blocking input reading
+			my $key;
+			if (defined(ReadKey(-1))) {
+				$key = ReadKey(0);
+			}
+
+			# Check for ESC key press
+			if (defined $key and ord($key) == 27) {
+				last;
+			}
+
+			Time::HiRes::usleep(100000); # Adjust to the desired speed
+		}
+
+		# Restore the terminal settings
+		system "stty icanon echo";
+	'
+}
+
+####
+matrix02() { 
+	perl -MTerm::ReadKey -e '
+		use Term::ANSIColor;
+		$|++;
+		ReadMode 4;  # Turn off buffering
+
+		while (1) {
+			print color("green"), " " x (rand(35) + 1), int(rand(2)), color("reset");
+			select(undef, undef, undef, 0.1);  # Sleep for 0.1 seconds
+
+			if (defined($key = ReadKey(-1))) {
+				if (ord($key) == 27) {
+					last;
+				}
+			}
+		}
+
+		ReadMode 0;  # Restore original terminal mode
+		print "\n";  # Print a newline to clear any residual text
+	'
+}
+
+####
+matrix002() { 
+	perl -e '
+		use Term::ANSIColor;
+		$|++;
+		while (1) {
+			print color("green"), " " x (rand(35) + 1), int(rand(2)), color("reset");
+			select(undef, undef, undef, 0.1);  # Sleep for 0.1 seconds
+			$key = <STDIN>;
+			if ($key && $key =~ /\e/) {
+				last;
+			}
+		}
+	'
+}
+
+####
+matrix0002() { 
 	perl -e 'use Term::ANSIColor;$|++; while (1) { print color("green")," " x (rand(35) + 1), int(rand(2)), color("reset") }'
 }
 
@@ -402,11 +505,68 @@ matrix3() {
 	do
 		echo -ne "\e[$(($RANDOM % 2 + 1))m"
 		tr -c "[:print:]" " " < /dev/urandom | dd count=1 bs=50 2> /dev/null
+	# Check for ESC key press
+	read -n 1 -s -t 0.1 key
+	if [[ $key == $'\e' ]]; then
+		clear
+		break
+	fi
+	done
+}
+
+####
+matrix03() { 
+	clear
+	echo -ne "\e[32m"
+	while true
+	do
+		echo -ne "\e[$(($RANDOM % 2 + 1))m"
+		tr -c "[:print:]" " " < /dev/urandom | dd count=1 bs=50 2> /dev/null
 	done
 }
 
 ####
 matrix4() { 
+	clear
+	while true
+	do
+		COL=$((RANDOM % $(tput cols)))
+		ROW=$((RANDOM % $(tput lines)))
+		
+		tput cup $ROW $COL
+		echo -e "\033[0;32m" $(cat /dev/urandom | head -1 | cut -c1-1) 2>/dev/null
+		# Check for ESC key press
+		read -n 1 -s -t 0.1 key
+		if [[ $key == $'\e' ]]; then
+			clear
+			break
+		fi
+                sleep 0.001  # Adjust to the desired speed
+	done
+}
+
+####
+matrix04() { 
+	clear
+	while true; do
+		COL=$((RANDOM % $(tput cols)))
+		for ((i = 0; i < COL; i++)); do
+			tput cup $i $COL
+			echo -e "\033[0;32m" $(cat /dev/urandom | head -1 | cut -c1-1) 2>/dev/null
+		done
+		# Check for ESC key press
+		read -n 1 -s -t 0.1 key
+		if [[ $key == $'\e' ]]; then
+			clear
+			break
+		fi
+
+		sleep 0.2  # Adjust to the desired speed
+	done
+}
+
+####
+matrix004() { 
 	clear
 	while true
 	do
