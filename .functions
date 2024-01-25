@@ -232,6 +232,23 @@ extract() {
 }
 
 ####
+fds2() { 
+	local arg
+	if du -b /dev/null > /dev/null 2>&1; then
+		arg=(-sbh)
+	else
+		arg=(-sh)
+	fi
+
+	if [[ -n "$@" ]]; then
+		find "$@" -maxdepth 1 -type d -exec du "${arg[@]}" {} + \
+			-o -type f -exec du "${arg[@]}" {} +
+	else
+		find . -maxdepth 1 \( -type d -o -type f \) -exec du "${arg[@]}" {} +
+	fi | sort -k2
+}
+
+####
 fds1() { 
 	local arg
 	if du -b /dev/null > /dev/null 2>&1; then
