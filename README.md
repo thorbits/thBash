@@ -15,13 +15,13 @@
 
 #### The following packages are suggested,
 
-*  <img src="https://listimg.pinclipart.com/picdir/s/344-3444076_arch-linux-logo-png-clipart.png" width="32" height="32">
+- <img src="https://listimg.pinclipart.com/picdir/s/344-3444076_arch-linux-logo-png-clipart.png" width="32" height="32">
 >      bc curl eza feh figlet git iftop lolcat links lynx lolcat make man-db neofetch neovim parallel pv rsync sudo tldr vim xdg-utils wget
 
-*  <img src="https://github.com/devicons/devicon/blob/master/icons/debian/debian-original.svg" width="32" height="32">
+- <img src="https://github.com/devicons/devicon/blob/master/icons/debian/debian-original.svg" width="32" height="32">
 >      autojump bc curl eza feh figlet git iftop lolcat links lynx lm-sensors lolcat make man-db nala neofetch neovim parallel pv rsync sudo tldr vim xdg-utils wget
 
-*  <img src="https://github.com/devicons/devicon/blob/master/icons/fedora/fedora-original.svg" width="32" height="32">
+- <img src="https://github.com/devicons/devicon/blob/master/icons/fedora/fedora-original.svg" width="32" height="32">
 >      autojump bc curl eza feh figlet git iftop lolcat links lynx lm-sensors lolcat make man-db nala neofetch neovim parallel pv rsync sudo tldr vim xdg-utils wget
 
 </div>
@@ -30,10 +30,10 @@
   <br>
     
 #### To install this config,
-
-*  Go to cloned repo directory and type: *make install*.
-*  After shell is refreshed type: *exit*
-*  Once installed, to see a description of the included functions, simply type:  *fulist*
+-
+  -  Go to cloned repo directory and type: *make install*.
+  -  After shell is refreshed type: *exit*
+  -  Once installed, to see a description of the included functions, simply type:  *fulist*
 
 </div>
 
