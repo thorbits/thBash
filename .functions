@@ -232,7 +232,89 @@ extract() {
 }
 
 ####
+fds1() { 
+	local arg
+	if du -b /dev/null > /dev/null 2>&1; then
+		arg=(-sbh)
+	else
+		arg=(-sh)
+	fi
+
+	find "$@" -maxdepth 1 -exec du "${arg[@]}" {} + | sort -k2
+}
+
+####
 fds() { 
+	local arg
+	if du -b /dev/null > /dev/null 2>&1; then
+		arg=(-sbh)
+	else
+		arg=(-sh)
+	fi
+
+	if [[ -n "$@" ]]; then
+		(find "$@" -maxdepth 1 -type d -exec du "${arg[@]}" {} +; \
+			find "$@" -maxdepth 1 -type f -exec du "${arg[@]}" {} +) | sort -k2
+	else
+		find . -maxdepth 1 \( -type d -o -type f \) -exec du "${arg[@]}" {} + | sort -k2
+	fi
+}
+
+####
+fds0() { 
+	local arg
+	if du -b /dev/null > /dev/null 2>&1; then
+		arg=(-sbh)
+	else
+		arg=(-sh)
+	fi
+
+	if [[ -n "$@" ]]; then
+		find "$@" -maxdepth 1 -type d -exec du "${arg[@]}" {} + \
+			-o -type f -exec du "${arg[@]}" {} + | sort -k2
+	else
+		find . -maxdepth 1 \( -type d -o -type f \) -exec du "${arg[@]}" {} + | sort -k2
+	fi
+}
+
+####
+fds00() { 
+	local arg
+	if du -b /dev/null > /dev/null 2>&1; then
+		arg=(-sbh)
+	else
+		arg=(-sh)
+	fi
+
+	if [[ -n "$@" ]]; then
+		find "$@" -maxdepth 1 -type d -exec du "${arg[@]}" {} + \
+			-o -type f -exec du "${arg[@]}" {} + | sort -k2
+	else
+		find . -maxdepth 1 -type d -exec du "${arg[@]}" {} + \
+			-o -type f -exec du "${arg[@]}" {} + | sort -k2
+	fi
+}
+
+####
+fds000() { 
+	local arg
+	if du -b /dev/null > /dev/null 2>&1; then
+		arg=(-sbh)
+	else
+		arg=(-sh)
+	fi
+
+	if [[ -n "$@" ]]; then
+		find "$@" -maxdepth 1 -type d -exec du "${arg[@]}" {} +
+		find "$@" -maxdepth 1 -type f -exec du "${arg[@]}" {} +
+	else
+		find . -maxdepth 1 -type d -exec du "${arg[@]}" {} +
+		find . -maxdepth 1 -type f -exec du "${arg[@]}" {} +
+	fi
+}
+
+####
+fds0000() { 
 	local arg
 	if du -b /dev/null > /dev/null 2>&1; then
 		arg=-sbh
@@ -347,6 +429,37 @@ ddg() {
 }
 
 ####
+
+
+####
+youplay0() { 
+	local video_id="$1"
+	local video_url
+
+	# Use youtube-dl to get the video URL
+	video_url=$(yt-dlp -g "https://www.youtube.com/watch?v=$video_id")
+
+	# Play the video using mpv in fullscreen
+	mpv --fs "$video_url"
+}
+
+####
+youplay00() { 
+	local video_id="$1"
+	local video_info
+	
+	# Get video info from YouTube
+	video_info=$(curl -s "http://www.youtube.com/get_video_info?&video_id=$video_id")
+	
+	# Extract video URL from the response
+	local video_url
+	video_url=$(echo -e "$video_info" | sed 's/%/\\x/g;s/.*\(v[0-9]\.lscache.*\)/http:\/\/\1/g' | grep -oP '^[^|,]*')
+
+	# Play the video using mplayer in fullscreen
+	mplayer -fs "$video_url"
+}
+
+####
 mwiki() { 
 	# Replace spaces with underscores in the input argument
 	modified_input=$(echo "$*" | sed 's| |_|g')
@@ -430,6 +543,9 @@ matrix2() {
 		# Set the terminal to raw mode
 		system "stty -icanon min 0 time 0";
 
+		# Clear the screen
+		system "clear";
+
 		while (1) {
 			# Print matrix
 			print color("green"), " " x (rand(35) + 1), int(rand(2)), color("reset");
@@ -445,7 +561,7 @@ matrix2() {
 				last;
 			}
 
-			Time::HiRes::usleep(100000); # Adjust to the desired speed
+			Time::HiRes::usleep(2500000); # Adjust to the desired speed
 		}
 
 		# Restore the terminal settings
