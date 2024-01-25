@@ -34,6 +34,7 @@
 # ddg		: search DuckDuckGo and display in terminal, usage: ddg mysearch (links)
 # mwiki		: query Wikipedia via console over DNS, usage: mwiki mysearch
 # translate	: google Translate, usage: translate "Hello" "en|fr"
+# youplay	: play a youtube link in 1080p fullscreen, to quit press q, usage: youplay https://www.youtube.com/watch?v=example  (mpv ytdl)
 #
 # SCREENSAVERS
 # matrix1-5	: matrix effects, usage: matrix1
