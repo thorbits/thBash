@@ -10,7 +10,7 @@
 # Description of the included funtions, () indicate required package(s).
 #
 # SYSTEM UPDATE
-# update	: update your Arch, Debian or Fedora distro, simply type: update (debian pkg: nala)
+# update	: update your Arch, Debian or Fedora distro, simply type: update (debian req: nala)
 #
 # GENERAL COMMANDS
 # calc		: simple calculator, usage: calc 2x2
@@ -21,7 +21,7 @@
 # cppv		: copy file with a progress bar, usage: cppv source destination (pv)
 # extract	: extract any archive(s) to a specified directory, usage: extract -d /path/to/dir archive1.tar.gz archive2.zip
 # fdsize	: display size of a file or total size of a directory, usage: fdsize
-# get_temp	: display CPU temperature, usage: get_temp (debian pkg: lm-Sensors)
+# get_temp	: display CPU temperature, Debian only, usage: get_temp (lm-Sensors)
 # mkcd		: create and go to the directory, usage: mkcd mydir
 # mvg		: move and go to the directory, usage: mvg source destination
 # openimage	: use feh to nicely view images, usage: openimage myfile.ext
