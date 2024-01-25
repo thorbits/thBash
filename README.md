@@ -22,7 +22,7 @@
 >      autojump bc curl eza feh figlet git iftop lolcat links lynx lm-sensors lolcat make man-db nala neofetch neovim parallel pv rsync sudo tldr vim xdg-utils wget
 
 - <img src="https://github.com/devicons/devicon/blob/master/icons/fedora/fedora-original.svg" width="32" height="32">
->      autojump bc curl eza feh figlet git iftop lolcat links lynx lm-sensors lolcat make man-db nala neofetch neovim parallel pv rsync sudo tldr vim xdg-utils wget
+>      autojump bc curl eza feh figlet git iftop lolcat links lynx lolcat make man-db neofetch neovim parallel pv rsync sudo tldr vim xdg-utils wget
 
 </div>
 
