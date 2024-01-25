@@ -24,7 +24,7 @@
 # fds		: display total disk size of file(s) and sub-directories, usage: fds
 # mkcd		: create and go to the directory, usage: mkcd mydir
 # mvg		: move and go to the directory, usage: mvg source destination
-# openimage	: use feh to nicely view images, usage: openimage myfile.ext
+# openimg	: use feh to nicely view images, usage: openimage /path/to/image.jpg (feh)
 # parabar	: display a progress bar, usage: parabar 1000 10 0.5 (parallel)
 # pbar		: display a progress bar, usage: pbar 100
 # right		: align input to the right of the screen, usage: yourcommand | right
@@ -233,60 +233,7 @@ extract() {
 }
 
 ####
-fds0() { 
-	local arg
-	if du -b /dev/null > /dev/null 2>&1; then
-		arg=(-sbh)
-	else
-		arg=(-sh)
-	fi
-
-	if [[ -n "$@" ]]; then
-		find "$@" -maxdepth 1 -type d -exec du "${arg[@]}" {} + \
-			-o -type f -exec du "${arg[@]}" {} + | sort -k2
-	else
-		find . -maxdepth 1 \( -type d -o -type f \) -exec du "${arg[@]}" {} + | sort -k2
-	fi
-}
-
-####
-fds00() { 
-	local arg
-	if du -b /dev/null > /dev/null 2>&1; then
-		arg=(-sbh)
-	else
-		arg=(-sh)
-	fi
-
-	if [[ -n "$@" ]]; then
-		find "$@" -maxdepth 1 -type d -exec du "${arg[@]}" {} + \
-			-o -type f -exec du "${arg[@]}" {} + | sort -k2
-	else
-		find . -maxdepth 1 -type d -exec du "${arg[@]}" {} + \
-			-o -type f -exec du "${arg[@]}" {} + | sort -k2
-	fi
-}
-
-####
-fds000() { 
-	local arg
-	if du -b /dev/null > /dev/null 2>&1; then
-		arg=(-sbh)
-	else
-		arg=(-sh)
-	fi
-
-	if [[ -n "$@" ]]; then
-		find "$@" -maxdepth 1 -type d -exec du "${arg[@]}" {} +
-		find "$@" -maxdepth 1 -type f -exec du "${arg[@]}" {} +
-	else
-		find . -maxdepth 1 -type d -exec du "${arg[@]}" {} +
-		find . -maxdepth 1 -type f -exec du "${arg[@]}" {} +
-	fi
-}
-
-####
-fds0000() { 
+fds() { 
 	local arg
 	if du -b /dev/null > /dev/null 2>&1; then
 		arg=-sbh
@@ -315,7 +262,7 @@ mvg() {
 }
 
 ####
-openimage() {
+openimg() { 
 	local types='*.jpg *.JPG *.png *.PNG *.gif *.GIF *.jpeg *.JPEG'
 
 	cd "$(dirname "$1")" || exit
