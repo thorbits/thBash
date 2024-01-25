@@ -241,9 +241,9 @@ fds() {
 		arg=-sh
 	fi
 	if [[ -n "$@" ]]; then
-		du $arg -- "$@"
+		du $arg -- "$@" | sort -k2
 	else
-		du $arg -- .[^.]* *
+		du $arg -- .[^.]* * | sort -k2
 	fi
 }
 
