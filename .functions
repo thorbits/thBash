@@ -461,19 +461,13 @@ translate() {
 }
 
 ####
-youplay0() { 
+youplay() { 
 	local video_id="$1"
-	local video_url
-
-	# Use youtube-dl to get the video URL
-	video_url=$(yt-dlp -g "https://www.youtube.com/watch?v=$video_id")
-
-	# Play the video using mpv in fullscreen
-	mpv --fs "$video_url"
+	mpv --no-config --fs --vo=drm --no-audio --ytdl "$video_id"
 }
 
 ####
-youplay00() { 
+youplay0() { 
 	local video_id="$1"
 	local video_info
 	
