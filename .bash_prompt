@@ -10,7 +10,6 @@
 # Record each line as it gets issued
 PROMPT_COMMAND='history -a'
 
-
 #######################################################
 #		DRAW BAR
 #######################################################
@@ -24,13 +23,6 @@ get_shell() {
 # Show CPU usage
 # get_cpu() {}
 
-# Sends a request to the ipinfo.io API to get the public IP address
-get_pip() { 
-	local ip
-	ip=$(curl -sS ipinfo.io/ip 2>/dev/null) || { echo "Error fetching public IP address"; return 1; }
-	echo "$ip"
-}
-
 # Show memory usage
 get_mem() { 
 	# Use the free command to get memory information
@@ -38,8 +30,14 @@ get_mem() {
 	# Extract used memory and total memory
 	local used_memory=$(echo "$mem_info" | awk '{print $3}')
 	local total_memory=$(echo "$mem_info" | awk '{print $2}')
-	# Display the result
 	echo "MEM: $used_memory/$total_memory"
+}
+
+# Sends a request to the ipinfo.io API to get the public IP address
+get_pip() { 
+	local ip
+	ip=$(curl -sS ipinfo.io/ip 2>/dev/null) || { echo "Error fetching public IP address"; return 1; }
+	echo "$ip"
 }
 
 # Show current date
@@ -49,34 +47,32 @@ get_date() {
 	printf "$current_date"
 }
 
-# Menu style bar on top of screen
-curline() { 
+# Get cursor line position
+get_line() { 
 	local row
-	# Query the cursor position
 	IFS=';' read -r -d R -s -p $'\033[6n' row col
 	# Extract the row value
 	row=${row#*[}
 	echo "$row"
 }
 
+# Menu style bar on top of screen
 draw_bar() { 
 	tput sc
 	tput cup 0 0
 	while true
 	do
 		max_row=50
-		current_row=$(curline)
+		current_row=$(get_line)
 		if [ "$current_row" -eq $(($max_row)) ]; then
 			printf '\033[K%s' "$(tput rev)$(get_shell)$(printf '%*s' $((COLUMNS-95)) ' ')| $(cpu) | $(get_mem) | $(get_pip) | $(get_date) $(tput sgr0)"
-			break
 		else
 			printf '\033[K%s' "$(tput rev)$(get_shell)$(printf '%*s' $((COLUMNS-95)) ' ')| $(cpu) | $(get_mem) | $(get_pip) | $(get_date) $(tput sgr0)"
-			break
 		fi
 	done
+	break
 	tput rc
 }
-
 
 #######################################################
 #		PROMPT
