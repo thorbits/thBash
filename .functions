@@ -33,7 +33,7 @@
 # SEARCH THE WEB
 # ddg		: search DuckDuckGo and display in terminal, usage: ddg mysearch (links)
 # mwiki		: query Wikipedia via console over DNS, usage: mwiki mysearch
-# translate	: google Translate, usage: translate "Hello" "en|fr"
+# translt	: google Translate, usage: translate "Hello" "en|fr"
 # youplay	: play a youtube link in 1080p fullscreen, to quit press q, usage: youplay https://www.youtube.com/watch?v=example  (mpv ytdl)
 #
 # SCREENSAVERS
@@ -356,10 +356,10 @@ mwiki() {
 }
 
 ####
-translate() { 
-	local url="http://ajax.googleapis.com/ajax/services/language/translate?v=1.0&q=$1&langpair=$2|${3:-en}"
-	local translated_text=$(wget -qO- "$url" | sed 's/.*"translatedText":"\([^"]*\)".*}/\1\n/')
-	echo "$translated_text"
+translt() {
+    local url="http://ajax.googleapis.com/ajax/services/language/translate?v=1.0&q=$1&langpair=$2%7C${3:-en}"
+    local translated_text=$(wget -qO- "$url" | sed 's/.*"translatedText":"\([^"]*\)".*}/\1\n/')
+    echo "$translated_text"
 }
 
 ####
