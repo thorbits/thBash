@@ -14,15 +14,16 @@
 #
 # GENERAL COMMANDS
 # calc		: simple calculator, usage: calc 2x2
+# cdg		: change directory easily, to go up two directories for example usage: cdg 2 
 # cdown		: colored countdown, usage: cdown 10 (figlet lolcat)
-# cpg		: copy and go to the directory, usage: cpg
-# cppr		: copy file with a progress bar, usage: cppr (rsync)
-# cppv		: copy file with a progress bar, usage: cppv (pv)
+# cpg		: copy and go to the directory, usage: cpg source destination
+# cppr		: copy file with a progress bar, usage: cppr source destination (rsync)
+# cppv		: copy file with a progress bar, usage: cppv source destination (pv)
 # extract	: extract any archive(s) to a specified directory, usage: extract -d /path/to/dir archive1.tar.gz archive2.zip
 # fdsize	: display size of a file or total size of a directory, usage: fdsize
-# get_temp	: display CPU temperature (debian pkg: lm-Sensors)
+# get_temp	: display CPU temperature, usage: get_temp (debian pkg: lm-Sensors)
 # mkcd		: create and go to the directory, usage: mkcd mydir
-# mvg		: move and go to the directory, usage: mvg
+# mvg		: move and go to the directory, usage: mvg source destination
 # openimage	: use feh to nicely view images, usage: openimage myfile.ext
 # parabar	: display a progress bar, usage: parabar 1000 10 0.5 (parallel)
 # pbar		: display a progress bar, usage: pbar 100
@@ -100,6 +101,16 @@ calc() {
 		printf "%s" "$result"
 	fi
 	printf "\\n"
+}
+
+####
+cdg() { 
+	range=$(eval "echo '{1..$1}'")
+	toPrint="'../%.0s' $range"
+	printfToEval=$(echo "printf $toPrint")
+	toCd=$(eval $printfToEval)
+	eval "cd $toCd"
+	pwd
 }
 
 ####
