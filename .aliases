@@ -46,6 +46,5 @@ alias gitpull='git pull origin main'
 alias p10="ps aux | sort -nk +4 | tail"                                                 # top ten running processes by memory usage
 alias h10="history | awk '{print \$2}' | sort | uniq -c | sort -nr | head"              # 10 most used commands by counts
 alias diskspeed='time (dd if=/dev/zero of=zerofile bs=1M count=500;sync);rm zerofile'   # Test hard drive speed
-alias netwatch='sudo iftop -i enp2s0'                                                   # display network utilization
+alias netwatch='sudo iftop -i enp2s0'                                                   # display network utilization (iftop)
 alias linus="wget -qO - https://raw.githubusercontent.com/torvalds/linux/master/Makefile | head -n5 | grep -E '\ \=\ [0-9]{1,}' | cut -d' ' -f3 | tr '\n' '.' | sed -e "s/\.$//""    # check latest online kernel version
-alias rnews="links `lynx -dump -listonly "http://cbc.ca/news" | grep -Eo "(http|https)://[a-zA-Z0-9./?=_-]*" | grep -v "cbc.ca/news" | sort -R | uniq | head -n1`"                   # get random news from a given site
