@@ -355,6 +355,11 @@ mwiki() {
 }
 
 ####
+rnews() { 
+links $( a=( $( lynx -dump -listonly "https://radiocanadamini.ca/a-la-une/articles/" | grep -Eo "(http|https)://[a-zA-Z0-9./?=_-]*" | grep -v "radiocanadamini.ca/a-la-une/articles/" | sort | uniq ) ) ; amax=${#a[@]} ; n=$(( `date '+%s'` % $amax )) ; echo ${a[n]} )
+}
+
+####
 youplay() { 
 	local video_id="$1"
 	mpv --no-config --fs --vo=drm --no-audio --ytdl-format='bestvideo[width<=1920][height<=1080]+bestaudio/best' "$video_id"
