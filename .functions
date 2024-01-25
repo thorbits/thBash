@@ -232,52 +232,6 @@ extract() {
 }
 
 ####
-fds2() { 
-	local arg
-	if du -b /dev/null > /dev/null 2>&1; then
-		arg=(-sbh)
-	else
-		arg=(-sh)
-	fi
-
-	if [[ -n "$@" ]]; then
-		find "$@" -maxdepth 1 -type d -exec du "${arg[@]}" {} + \
-			-o -type f -exec du "${arg[@]}" {} +
-	else
-		find . -maxdepth 1 \( -type d -o -type f \) -exec du "${arg[@]}" {} +
-	fi | sort -k2
-}
-
-####
-fds1() { 
-	local arg
-	if du -b /dev/null > /dev/null 2>&1; then
-		arg=(-sbh)
-	else
-		arg=(-sh)
-	fi
-
-	find "$@" -maxdepth 1 -exec du "${arg[@]}" {} + | sort -k2
-}
-
-####
-fds() { 
-	local arg
-	if du -b /dev/null > /dev/null 2>&1; then
-		arg=(-sbh)
-	else
-		arg=(-sh)
-	fi
-
-	if [[ -n "$@" ]]; then
-		(find "$@" -maxdepth 1 -type d -exec du "${arg[@]}" {} +; \
-			find "$@" -maxdepth 1 -type f -exec du "${arg[@]}" {} +) | sort -k2
-	else
-		find . -maxdepth 1 \( -type d -o -type f \) -exec du "${arg[@]}" {} + | sort -k2
-	fi
-}
-
-####
 fds0() { 
 	local arg
 	if du -b /dev/null > /dev/null 2>&1; then
@@ -463,23 +417,7 @@ translate() {
 ####
 youplay() { 
 	local video_id="$1"
-	mpv --no-config --fs --vo=drm --no-audio --ytdl "$video_id"
-}
-
-####
-youplay0() { 
-	local video_id="$1"
-	local video_info
-	
-	# Get video info from YouTube
-	video_info=$(curl -s "http://www.youtube.com/get_video_info?&video_id=$video_id")
-	
-	# Extract video URL from the response
-	local video_url
-	video_url=$(echo -e "$video_info" | sed 's/%/\\x/g;s/.*\(v[0-9]\.lscache.*\)/http:\/\/\1/g' | grep -oP '^[^|,]*')
-
-	# Play the video using mplayer in fullscreen
-	mplayer -fs "$video_url"
+	mpv --no-config --fs --vo=drm --no-audio --ytdl-format='bestvideo[width<=1920][height<=1080]+bestaudio/best' "$video_id"
 }
 
 #######################################################
