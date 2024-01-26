@@ -34,7 +34,7 @@
 # sduck		: search DuckDuckGo and display in terminal, usage: ddg mysearch (links)
 # swiki		: query Wikipedia via console over DNS, usage: mwiki your query (bind9-host)
 # snews		: display latest news from a pre-given site, usage: snews (links)
-# youplay	: play a youtube link in 1080p fullscreen, to quit press q, usage: youplay https://www.youtube.com/watch?v=example  (mpv yt-dlp)
+# youplay	: play a youtube link in 1080p fullscreen, to quit press q, usage: youplay https://www.youtube.com/watch?v=example (mpv yt-dlp)
 #
 # SCREENSAVERS
 # matrix1-5	: matrix effects, usage: matrix1
