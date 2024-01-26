@@ -120,15 +120,6 @@ matrix5() {
 N_LINE=$(( $(tput lines) - 1));
 N_COLUMN=$(tput cols);
 
-matrix6() { 
-    tput setab 000 #Background Black
-    clear
-    while true; do
-        m6draw & #Parallel
-        sleep 0.5;
-    done
-}
-
 function m6get {
     RANDOM_U=$(echo $(( (RANDOM % 9) + 0)));
     RANDOM_D=$(echo $(( (RANDOM % 9) + 0)));
@@ -180,6 +171,15 @@ function m6draw {
     for i in $(seq $[i-$RANDOM_LINE_SIZE] $N_LINE); do 
         m6erase $i
         sleep $SPEED;
+    done
+}
+
+matrix6() { 
+    tput setab 000 #Background Black
+    clear
+    while true; do
+        m6draw & #Parallel
+        sleep 0.5;
     done
 }
 
