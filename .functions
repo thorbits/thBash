@@ -32,7 +32,8 @@
 #
 # SEARCH THE WEB
 # ddg		: search DuckDuckGo and display in terminal, usage: ddg mysearch (links)
-# mwiki		: query Wikipedia via console over DNS, usage: mwiki mysearch
+# mwiki		: query Wikipedia via console over DNS, usage: mwiki mysearch (links)
+# rnews		: display random news from a pre-given site (links)
 # youplay	: play a youtube link in 1080p fullscreen, to quit press q, usage: youplay https://www.youtube.com/watch?v=example  (mpv yt-dlp)
 #
 # SCREENSAVERS
@@ -333,13 +334,13 @@ tmpd() {
 #######################################################
 
 ####
-ddg() { 
-	ARGS="$@"					# Store all arguments as a single string in the variable ARGS
-	links "https://www.duckduckgo.com/?q=${ARGS}"	# Open DuckDuckGo with the query using 'links'
+sduck() { 
+	ARGS="$@"
+	links "https://www.duckduckgo.com/?q=${ARGS}"
 }
 
 ####
-mwiki() { 
+swiki() { 
 	# Replace spaces with underscores in the input argument
 	modified_input=$(echo "$*" | sed 's| |_|g')
 	# Use host to query for the article
@@ -347,7 +348,7 @@ mwiki() {
 }
 
 ####
-rnews() { 
+snews() { 
 links $( a=( $( lynx -dump -listonly "https://radiocanadamini.ca/a-la-une/articles/" | grep -Eo "(http|https)://[a-zA-Z0-9./?=_-]*" | grep -v "radiocanadamini.ca/a-la-une/articles/" | sort | uniq ) ) ; amax=${#a[@]} ; n=$(( `date '+%s'` % $amax )) ; echo ${a[n]} )
 }
 
