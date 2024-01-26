@@ -380,7 +380,13 @@ matrix1() {
 			echo -e "$v"
 			v=""
 		done
-		sleep 0.1  # Adjust for sleep duration
+		# Check for ESC key press
+		read -n 1 -s -t 0.1 key
+		if [[ $key == $'\e' ]]; then
+			clear
+			break
+		fi
+		sleep 0.1  # Adjust to desired speed	
 	done
 }
 
@@ -415,19 +421,21 @@ matrix3() {
 	do
 		echo -ne "\e[$(($RANDOM % 2 + 1))m"
 		tr -c "[:print:]" " " < /dev/urandom | dd count=1 bs=50 2> /dev/null
-	# Check for ESC key press
-	read -n 1 -s -t 0.1 key
-	if [[ $key == $'\e' ]]; then
-		clear
-		break
-	fi
+		# Check for ESC key press
+		read -n 1 -s -t 0.1 key
+		if [[ $key == $'\e' ]]; then
+			clear
+			break
+		fi
+		sleep 0.1 # Adjust to desired speed
 	done
 }
 
 ####
 matrix4() { 
 	clear
-	while true; do
+	while true
+	do
 		COL=$((RANDOM % $(tput cols)))
 		for ((i = 0; i < COL; i++)); do
 			tput cup $i $COL
@@ -439,14 +447,23 @@ matrix4() {
 			clear
 			break
 		fi
-
-		sleep 0.2  # Adjust to the desired speed
+		sleep 0.2  # Adjust to desired speed
 	done
 }
 
 ####
 matrix5() { 
-	tr -c "[:digit:]" " " < /dev/urandom | dd cbs=$COLUMNS conv=unblock | GREP_COLOR="1;32" grep --color "[^ ]"
+	while :
+	do
+		tr -c "[:digit:]" " " < /dev/urandom | dd cbs=$COLUMNS conv=unblock | GREP_COLOR="1;32" grep --color "[^ ]"
+		# Check for ESC key press
+		read -n 1 -s -t 0.1 key
+		if [[ $key == $'\e' ]]; then
+			clear
+			break
+		fi
+		sleep 0.1 # Adjust to desired speed
+	done
 }
 
 ####
@@ -455,6 +472,13 @@ xlights() {
 	while :
 	do
 		echo -ne "\033[$((1+RANDOM%LINES));$((1+RANDOM%COLUMNS))H\033[$((RANDOM%2));3$((RANDOM%8))m$((RANDOM%10))"
-		sleep 0.1
+		# Check for ESC key press
+		read -n 1 -s -t 0.1 key
+		if [[ $key == $'\e' ]]; then
+			clear
+			break
+		fi
+		sleep 0.01 # Adjust to desired speed
 	done
 }
+
