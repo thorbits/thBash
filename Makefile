@@ -13,4 +13,4 @@ install: ## Installs the dotfiles.
 	read -p ""; \
 	clear; \
 	exec ${SHELL}; \
-	exit
+	@exit 0
