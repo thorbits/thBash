@@ -103,7 +103,7 @@ matrix4() {
 
 ####
 matrix5() { 
-	while tue
+	while true
 	do
 		tr -c "[:alnum:][:punct:]" " " < /dev/urandom | dd cbs=$COLUMNS conv=unblock | GREP_COLOR="1;32" grep --color "[^ ]"
 		# Check for ESC key press
@@ -112,20 +112,8 @@ matrix5() {
 			clear
 			break
 		fi
-		sleep 0.1 # Adjust to desired speed
+		sleep 0.001 # Adjust to desired speed
 	done
-}
-
-####
-matrix6() { 
-    while true
-do
-echo -e "\033[2J\033[?25l"; R=`tput lines` C=`tput cols`;: $[R--] ; while true 
-do ( e=echo\ -e s=sleep j=$[RANDOM%C] d=$[RANDOM%R];for i in `eval $e {1..$R}`;
-do c=`printf '\\\\0%o' $[RANDOM%57+33]` ### http://bruxy.regnet.cz/web/linux ###
-$e "\033[$[i-1];${j}H\033[32m$c\033[$i;${j}H\033[37m"$c; $s 0.1;if [ $i -ge $d ]
-then $e "\033[$[i-d];${j}H ";fi;done;for i in `eval $e {$[i-d]..$R}`; #[mat!rix]
-do echo -e "\033[$i;${j}f ";$s 0.1;done)& sleep 0.05;done
 }
 
 ####
