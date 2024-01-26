@@ -8,7 +8,7 @@
 
 
 #######################################################
-#                   SCREENSAVERS
+#
 #######################################################
 
 ####
@@ -78,7 +78,6 @@ matrix3() {
 			clear
 			break
 		fi
-		sleep 0.01 # Adjust to desired speed
 	done
 }
 
@@ -115,6 +114,73 @@ matrix5() {
 		fi
 		sleep 0.1 # Adjust to desired speed
 	done
+}
+
+####
+N_LINE=$(( $(tput lines) - 1));
+N_COLUMN=$(tput cols);
+
+matrix6() { 
+    tput setab 000 #Background Black
+    clear
+    while true; do
+        m6draw & #Parallel
+        sleep 0.5;
+    done
+}
+
+function m6get {
+    RANDOM_U=$(echo $(( (RANDOM % 9) + 0)));
+    RANDOM_D=$(echo $(( (RANDOM % 9) + 0)));
+    
+    #https://unicode-table.com/en/#kangxi-radicals
+    CHAR_TYPE="\u04"
+
+    printf "%s" "$CHAR_TYPE$RANDOM_D$RANDOM_U";
+}
+
+function m6cursor {
+    echo "\033[$1;${RANDOM_COLUMN}H";
+}
+
+function m6write {
+    CHAR=$(m6get);
+    m6print $1 $2 $CHAR
+}
+
+function m6erase { 
+    CHAR="\u0020" #Space char
+    m6print $1 $2 $CHAR
+}
+
+function m6print {
+    CURSOR=$(m6cursor $1);
+    echo -e "$CURSOR$2$3";
+}
+
+function m6draw {    
+    RANDOM_COLUMN=$[RANDOM%N_COLUMN];
+    RANDOM_LINE_SIZE=$(echo $(( (RANDOM % $N_LINE) + 1)));
+    SPEED=0.05
+
+    COLOR="\033[32m"; #GREEN
+    COLOR_HEAD="\033[37m"; #WHITE
+
+    #Draw Line
+    for i in $(seq 1 $N_LINE ); do 
+        m6write $[i-1] $COLOR;
+        m6write $i $COLOR_HEAD;
+        sleep $SPEED;
+        if [ $i -ge $RANDOM_LINE_SIZE ]; then 
+            m6erase $[i-RANDOM_LINE_SIZE]; 
+        fi;
+    done;
+
+    #Erase Line
+    for i in $(seq $[i-$RANDOM_LINE_SIZE] $N_LINE); do 
+        m6erase $i
+        sleep $SPEED;
+    done
 }
 
 ####
