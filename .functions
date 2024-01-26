@@ -365,7 +365,7 @@ matrix1() {
 	echo -e "\e[32m"  # Set text color to green
 	while :; do
 		for _ in {1..50}; do  # Repeat the animation 50 times for each row
-			for _ in {1..80}; do
+			for _ in {1..160}; do
 				r=$((RANDOM % 2))
 				if [[ $((RANDOM % 5)) == 1 ]]; then
 					if [[ $((RANDOM % 4)) == 1 ]]; then
@@ -386,7 +386,7 @@ matrix1() {
 			clear
 			break
 		fi
-		sleep 0.1  # Adjust to desired speed	
+		sleep 0.2  # Adjust to desired speed	
 	done
 }
 
@@ -420,14 +420,14 @@ matrix3() {
 	while true
 	do
 		echo -ne "\e[$(($RANDOM % 2 + 1))m"
-		tr -c "[:print:]" " " < /dev/urandom | dd count=1 bs=50 2> /dev/null
+		tr -c "[:alnum:][:punct:]" " " < /dev/urandom | dd count=1 bs=50 2> /dev/null
 		# Check for ESC key press
 		read -n 1 -s -t 0.1 key
 		if [[ $key == $'\e' ]]; then
 			clear
 			break
 		fi
-		sleep 0.1 # Adjust to desired speed
+		sleep 0.01 # Adjust to desired speed
 	done
 }
 
@@ -455,7 +455,7 @@ matrix4() {
 matrix5() { 
 	while :
 	do
-		tr -c "[:digit:]" " " < /dev/urandom | dd cbs=$COLUMNS conv=unblock | GREP_COLOR="1;32" grep --color "[^ ]"
+		tr -c "[:alnum:][:punct:]" " " < /dev/urandom | dd cbs=$COLUMNS conv=unblock | GREP_COLOR="1;32" grep --color "[^ ]"
 		# Check for ESC key press
 		read -n 1 -s -t 0.1 key
 		if [[ $key == $'\e' ]]; then
