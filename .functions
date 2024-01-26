@@ -21,8 +21,8 @@
 # cppv		: copy file with a progress bar, usage: cppv source destination (pv)
 # cputemp	: display CPU temperature, Debian only, usage: get_temp (lm-Sensors)
 # extract	: extract any archive(s) to a specified directory, usage: extract -d /path/to/dir archive1.tar.gz archive2.zip
-# fds		: display total disk size of file(s) and sub-directories, usage: fds
-# mkcd		: create and go to the directory, usage: mkcd mydir
+# fds		: display total disk size of file(s) and sub-directories, usage: fds /path/to/dir
+# mkcd		: create and go to the directory, usage: mkcd /path/to/dir
 # mvg		: move and go to the directory, usage: mvg source destination
 # openimg	: use feh to nicely view images, usage: openimage /path/to/image.jpg (feh)
 # parabar	: display a progress bar, usage: parabar 1000 10 0.5 (parallel)
