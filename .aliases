@@ -11,7 +11,7 @@
 #		ALIASES
 #######################################################
 
-alias fulist="sed -n 9,42p ~/.functions | pv -qL 150"
+alias fulist="sed -n 9,42p ~/.functions | pv -qL 200"
 # alias fulist="grep -oE '[a-zA-Z_][a-zA-Z0-9_]* *\(\)' "~/.functions" | awk '{print $1}' | sed 's/()//'"
 # alias fulist="builtin declare -f | command grep -E '^[a-zA-Z1-9_]+\ \(\)' | sed 's/()//'"
 
