@@ -34,8 +34,6 @@ alias lf='du -h --max-depth=1 | more'
 alias sudo='sudo '
 alias reboot='if [ $(id -u) -eq 0 ]; then reboot; else sudo reboot; fi'
 alias nf='clear; neofetch'
-alias vbrc='vim ~/.bash_prompt'
-alias rope='if [[ "$i" == "0" ]]; then cd $dir; i=1; else dir=$(pwd); export dir; i=0; fi'  # tie a directory to another
 
 # Github commands
 alias gitcred='git config --global credential.helper store' # verify status with: git config --get-all --global credential.helper
@@ -46,5 +44,5 @@ alias gitpull='git pull origin main'
 alias p10="ps aux | sort -nk +4 | tail"                                                 # top ten running processes by memory usage
 alias h10="history | awk '{print \$2}' | sort | uniq -c | sort -nr | head"              # 10 most used commands by counts
 alias diskspeed='time (dd if=/dev/zero of=zerofile bs=1M count=500;sync);rm zerofile'   # Test hard drive speed
-alias netwatch='sudo iftop -i enp2s0'                                                   # display network utilization (iftop)
+alias rope='if [[ "$i" == "0" ]]; then cd $dir; i=1; else dir=$(pwd); export dir; i=0; fi'  # tie a directory to another
 alias linus="wget -qO - https://raw.githubusercontent.com/torvalds/linux/master/Makefile | head -n5 | grep -E '\ \=\ [0-9]{1,}' | cut -d' ' -f3 | tr '\n' '.' | sed -e "s/\.$//""    # check latest online kernel version
