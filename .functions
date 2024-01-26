@@ -10,7 +10,7 @@
 # Description of the included funtions, () indicate required package(s).
 #
 # SYSTEM UPDATE
-# update	: update your Arch, Debian or Fedora distro, simply type: update (debian req: nala)
+# update	: update your Arch, Debian or Fedora distro, simply type: update (debian: nala)
 #
 # GENERAL COMMANDS
 # calc		: simple calculator, usage: calc 2x2
@@ -30,10 +30,10 @@
 # right		: align input to the right of the screen, usage: yourcommand | right
 # tmpd		: make a temporary directory and enter it, usage: 'tmpd' or 'tmpd mydir'
 #
-# SEARCH THE WEB
-# ddg		: search DuckDuckGo and display in terminal, usage: ddg mysearch (links)
-# mwiki		: query Wikipedia via console over DNS, usage: mwiki mysearch (links)
-# rnews		: display random news from a pre-given site (links)
+# WEB COMMANDS
+# sduck		: search DuckDuckGo and display in terminal, usage: ddg mysearch (links)
+# swiki		: query Wikipedia via console over DNS, usage: mwiki your query (bind9-host)
+# snews		: display latest news from a pre-given site, usage: snews (links)
 # youplay	: play a youtube link in 1080p fullscreen, to quit press q, usage: youplay https://www.youtube.com/watch?v=example  (mpv yt-dlp)
 #
 # SCREENSAVERS
@@ -81,7 +81,7 @@ update() {
 }
 
 #######################################################
-#		GENERAL FUNCTIONS
+#		GENERAL
 #######################################################
 
 ####
@@ -330,7 +330,7 @@ tmpd() {
 }
 
 #######################################################
-#		SEARCH
+#		WEB
 #######################################################
 
 ####
