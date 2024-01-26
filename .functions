@@ -436,26 +436,6 @@ matrix3() {
 ####
 matrix4() { 
 	clear
-	while true
-	do
-		COL=$((RANDOM % $(tput cols)))
-		ROW=$((RANDOM % $(tput lines)))
-		
-		tput cup $ROW $COL
-		echo -e "\033[0;32m" $(cat /dev/urandom | head -1 | cut -c1-1) 2>/dev/null
-		# Check for ESC key press
-		read -n 1 -s -t 0.1 key
-		if [[ $key == $'\e' ]]; then
-			clear
-			break
-		fi
-                sleep 0.001  # Adjust to the desired speed
-	done
-}
-
-####
-matrix04() { 
-	clear
 	while true; do
 		COL=$((RANDOM % $(tput cols)))
 		for ((i = 0; i < COL; i++)); do
@@ -469,20 +449,6 @@ matrix04() {
 			break
 		fi
 
-		sleep 0.2  # Adjust to the desired speed
-	done
-}
-
-####
-matrix004() { 
-	clear
-	while true
-	do
-		COL=$((RANDOM%$(tput cols)))
-		for ((i=0; i<COL; i++)); do
-			tput cup $i $COL
-			echo -e "\033[0;32m" $(cat /dev/urandom | head -1 | cut -c1-1) 2>/dev/null
-		done
 		sleep 0.2  # Adjust to the desired speed
 	done
 }
