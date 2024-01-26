@@ -112,7 +112,7 @@ matrix5() {
 			clear
 			break
 		fi
-		sleep 0.001 # Adjust to desired speed
+		sleep 0.0000001 # Adjust to desired speed
 	done
 }
 
@@ -130,5 +130,14 @@ xlights() {
 		fi
 		sleep 0.01 # Adjust to desired speed
 	done
+}
+
+####
+xblocks() { 
+    for i in {0..7}; do
+        for j in 91 92 93 88; do
+            echo -en "\E[3${i}m\u25$j"
+        done
+    done
 }
 
