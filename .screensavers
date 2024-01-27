@@ -37,7 +37,7 @@ matrix1() {
 			clear
 			break
 		fi
-		sleep 0.2  # Adjust to desired speed	
+		sleep 0.5  # Adjust to desired speed	
 	done
 }
 
@@ -55,7 +55,7 @@ matrix2() {
 			clear
 			break
 		fi
-		sleep 0.1  # Adjust to desired speed
+		sleep 0.0001  # Adjust to desired speed
 	done
 }
 
@@ -74,7 +74,7 @@ matrix3() {
 			clear
 			break
 		fi
-		sleep 0.1  # Adjust to desired speed
+		sleep 0.0001  # Adjust to desired speed
 	done
 }
 
