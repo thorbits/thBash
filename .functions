@@ -37,12 +37,12 @@
 # youplay	: play a youtube link in 1080p fullscreen, to quit press q, usage: youplay https://www.youtube.com/watch?v=example (mpv yt-dlp)
 #
 # SCREENSAVERS
-# matrix1-5	: matrix effects, usage: matrix1
-# xlights	: colored lights, usage: xlights
+# matrix1-6	: matrix effects, usage: matrix1
+# xlights1-2	: colored lights, usage: xlights1
 ################################################################################################################################################
 
 if [ -n "${BASH_VERSION}" ]; then
-  filepath="${HOME}/.screensavers"
+  filepath="${HOME}/.fun_tions"
   if [ -f "$filepath" ]; then
     source "$filepath"
   fi
