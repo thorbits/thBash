@@ -105,17 +105,9 @@ for option in autocd globstar; do
 	shopt -s "$option" 2> /dev/null
 done
 
-for file in ~/.{bash_prompt,aliases,exports,functions}; do
+for file in ~/.{bash_prompt,aliases,exports,functions,screensavers}; do
 	if [[ -r "$file" ]] && [[ -f "$file" ]]; then
 		source "$file"
 	fi
 done
-
-# if [ -n "${BASH_VERSION}" ]; then
-#  filepath="${HOME}/.screensavers"
-#  if [ -f "$filepath" ]; then
-#    source "$filepath"
-#  fi
-# fi
-
 unset file
