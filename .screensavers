@@ -211,7 +211,6 @@ matrix() {
 
     # Check if the script exists in the home directory
     if [ -f "$script_path" ]; then
-        echo "Executing existing script: $script_name"
         bash "$script_path"
     else
         # Download the script from the URL
