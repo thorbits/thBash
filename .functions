@@ -38,8 +38,9 @@
 # youplay	: play a youtube link, usage: youplay https://www.youtube.com/watch?v=example (mpv yt-dlp)
 #
 # SCREENSAVERS
-# matrix1-6	: matrix style effects, usage: matrix1
-# xlights1-2	: colored lights, usage: xlights1
+#fire		: a bash script, usage: fire
+# matrix	: a bash script, usage: matrix
+# xlights	: random colored blocks, usage: xlights
 ####################################################################################################
 
 
