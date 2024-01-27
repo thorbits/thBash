@@ -43,6 +43,56 @@ matrix1() {
 
 ####
 matrix2() { 
+	clear
+	echo -ne "\e[32m"
+	while true
+	do
+		echo -ne "\e[$(($RANDOM % 2 + 1))m"
+		tr -c "[:alnum:][:punct:]" " " < /dev/urandom | dd count=1 bs=50 2> /dev/null
+		# Check for ESC key press
+		read -n 1 -s -t 0.1 key
+		if [[ $key == $'\e' ]]; then
+			clear
+			break
+		fi
+	done
+}
+
+####
+matrix3() { 
+	while true
+	do
+		tr -c "[:alnum:][:punct:]" " " < /dev/urandom | dd cbs=$COLUMNS conv=unblock | GREP_COLOR="1;32" grep --color "[^ ]"
+		# Check for ESC key press
+		read -n 1 -s -t 0.1 key
+		if [[ $key == $'\e' ]]; then
+			clear
+			break
+		fi
+	done
+}
+
+####
+matrix4() { 
+	local COL=$(( $(tput cols) / 2 ))
+	clear
+	tput setaf 2
+
+	while true
+	do
+		tput cup $((RANDOM%COL)) $((RANDOM%COL))
+		printf "%$((RANDOM%COL))s" $((RANDOM%2))
+		# Check for ESC key press
+		read -n 1 -s -t 0.1 key
+		if [[ $key == $'\e' ]]; then
+			clear
+			break
+		fi
+	done
+}
+
+####
+matrix5() { 
 	perl -MTerm::ReadKey -e '
 		use Term::ANSIColor;
 		$|++;
@@ -62,85 +112,6 @@ matrix2() {
 		ReadMode 0;  # Restore original terminal mode
 		print "\n";  # Print a newline to clear any residual text
 	'
-}
-
-####
-matrix3() { 
-	clear
-	echo -ne "\e[32m"
-	while true
-	do
-		echo -ne "\e[$(($RANDOM % 2 + 1))m"
-		tr -c "[:alnum:][:punct:]" " " < /dev/urandom | dd count=1 bs=50 2> /dev/null
-		# Check for ESC key press
-		read -n 1 -s -t 0.1 key
-		if [[ $key == $'\e' ]]; then
-			clear
-			break
-		fi
-	done
-}
-
-####
-matrix4() { 
-	clear
-	while true
-	do
-		COL=$((RANDOM % $(tput cols)))
-		for ((i = 0; i < COL; i++)); do
-			tput cup $i $COL
-			echo -e "\033[0;32m" $(cat /dev/urandom | head -1 | cut -c1-1) 2>/dev/null
-	done
-	# Check for ESC key press
-	read -n 1 -s -t 0.1 key
-	if [[ $key == $'\e' ]]; then
-		clear
-		break
-	fi
-	sleep 0.2  # Adjust to desired speed
-	clear
-	done
-}
-
-####
-matrix5() { 
-	while true
-	do
-		tr -c "[:alnum:][:punct:]" " " < /dev/urandom | dd cbs=$COLUMNS conv=unblock | GREP_COLOR="1;32" grep --color "[^ ]"
-		# Check for ESC key press
-		read -n 1 -s -t 0.1 key
-	done
-	# Check for ESC key press
-	read -n 1 -s -t 0.1 key
-	if [[ $key == $'\e' ]]; then
-		clear
-		break
-	fi
-	sleep 0.5  # Adjust to desired speed
-	clear
-	done
-}
-
-####
-matrix6() { 
-	local COL=$(( $(tput cols) / 2 ))
-	clear
-	tput setaf 2
-
-	while true
-	do
-		tput cup $((RANDOM%COL)) $((RANDOM%COL))
-		printf "%$((RANDOM%COL))s" $((RANDOM%2))
-	done
-	# Check for ESC key press
-	read -n 1 -s -t 0.1 key
-	if [[ $key == $'\e' ]]; then
-		clear
-		break
-	fi
-	sleep 0.5  # Adjust to desired speed
-	clear
-	done
 }
 
 ####
