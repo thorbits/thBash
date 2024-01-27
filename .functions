@@ -313,10 +313,15 @@ pbar() {
 
 ####
 right() { 
-	local input="$(cat -)"
-	local max_length=$(echo -e "$input" | wc -L)
+	local max_length=0
+	local input="$(eval "$@")"  # Execute the command and capture its output
+	# Find the maximum length of lines
 	while read -r line; do
-		printf "%*s%s\n" "$((max_length - ${#line}))" "" "$line"
+		(( ${#line} > max_length )) && max_length=${#line}
+	done <<< "$input"
+	# Print the aligned output
+	while read -r line; do
+		printf "%*s%s\n" "$((COLUMNS - max_length))" "" "$line"
 	done <<< "$input"
 }
 
