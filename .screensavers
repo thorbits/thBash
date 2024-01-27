@@ -118,150 +118,149 @@ matrix5() {
 
 ####
 matrix6() { 
-    local COL=$(( $(tput cols) / 2 ))
-    clear
-    tput setaf 2
-    
-    while :
-    do
-        tput cup $((RANDOM%COL)) $((RANDOM%COL))
-        printf "%$((RANDOM%COL))s" $((RANDOM%2))
-    done
+	local COL=$(( $(tput cols) / 2 ))
+	clear
+	tput setaf 2
+
+	while :
+	do
+		tput cup $((RANDOM%COL)) $((RANDOM%COL))
+		printf "%$((RANDOM%COL))s" $((RANDOM%2))
+	done
 }
 
 ####
 xlights() { 
-    clear
-    while true
-    do
-        for i in {0..7}; do
-            x=$(($RANDOM % $(tput cols)))
-            y=$(($RANDOM % $(tput lines)))
+	clear
+	while true
+	do
+		for i in {0..7}; do
+			x=$(($RANDOM % $(tput cols)))
+			y=$(($RANDOM % $(tput lines)))
+		for j in 91 92 93 88; do
+			tput cup $y $x
+			echo -en "\E[3${i}m\u25$j"
+			x=$((x + 1))
+		if [ $x -ge $(tput cols) ]; then
+			x=0
+			y=$((y + 1))
+		fi
+		done
+	done
+	# Check for ESC key press
+	read -n 1 -s -t 0.1 key
+	if [[ $key == $'\e' ]]; then
+		clear
+		break
+	fi
+	sleep 0.5  # Adjust to desired speed
+	clear
+	done
+}
 
-            for j in 91 92 93 88; do
-                tput cup $y $x
-                echo -en "\E[3${i}m\u25$j"
-                x=$((x + 1))
-                if [ $x -ge $(tput cols) ]; then
-                    x=0
-                    y=$((y + 1))
-                fi
-            done
-        done
-        # Check for ESC key press
-        read -n 1 -s -t 0.1 key
-        if [[ $key == $'\e' ]]; then
-            clear
-            break
-        fi
-        sleep 0.5  # Adjust to desired speed
-        clear
-    done
+
+####
+matrix() { 
+	local script_name="matrix.sh"
+	local script_url="https://bruxy.regnet.cz/linux/matrix/matrix.sh"
+	local home_directory="$HOME"
+	local script_path="$home_directory/$script_name"
+
+	# Check if the script exists in the home directory
+	if [ -f "$script_path" ]; then
+		bash "$script_path"
+	else
+		wget -O "$script_path" "$script_url"
+		if [ $? -eq 0 ]; then
+			bash "$script_path"
+		fi
+	fi
 }
 
 ####
-matrix() {
-    local script_name="matrix.sh"
-    local script_url="https://bruxy.regnet.cz/linux/matrix/matrix.sh"
-    local home_directory="$HOME"
-    local script_path="$home_directory/$script_name"
+fire() { 
+	local script_name="fire.sh"
+	local script_url="https://bruxy.regnet.cz/linux/flames/fire.sh"
+	local home_directory="$HOME"
+	local script_path="$home_directory/$script_name"
 
-    # Check if the script exists in the home directory
-    if [ -f "$script_path" ]; then
-        bash "$script_path"
-    else
-        wget -O "$script_path" "$script_url"
-        if [ $? -eq 0 ]; then
-            bash "$script_path"
-        fi
-    fi
-}
-
-####
-fire() {
-    local script_name="fire.sh"
-    local script_url="https://bruxy.regnet.cz/linux/flames/fire.sh"
-    local home_directory="$HOME"
-    local script_path="$home_directory/$script_name"
-
-    # Check if the script exists in the home directory
-    if [ -f "$script_path" ]; then
-        bash "$script_path"
-    else
-        wget -O "$script_path" "$script_url"
-        if [ $? -eq 0 ]; then
-            bash "$script_path"
-        fi
-    fi
+	# Check if the script exists in the home directory
+	if [ -f "$script_path" ]; then
+		bash "$script_path"
+	else
+		wget -O "$script_path" "$script_url"
+		if [ $? -eq 0 ]; then
+			bash "$script_path"
+		fi
+	fi
 }
 
 ####
 xtest() { 
-    clear
-    symbols="!@#$%^&*()-=_+[]{}|;:',.<>/?"
-    letters="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+	clear
+	symbols="!@#$%^&*()-=_+[]{}|;:',.<>/?"
+	letters="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 
-    while true; do
-        x=$(($RANDOM % $(tput cols)))
-        y=$(($RANDOM % $(tput lines)))
+	while true
+	do
+		x=$(($RANDOM % $(tput cols)))
+		y=$(($RANDOM % $(tput lines)))
+		for i in {1..4}; do
+			tput cup $y $x
+			if [ $((RANDOM % 2)) -eq 0 ]; then
+				# Display a random symbol
+				random_symbol=${symbols:$((RANDOM % ${#symbols})):1}
+				echo -en "\E[36m$random_symbol"
+			else
+				# Display a random letter
+				random_letter=${letters:$((RANDOM % ${#letters})):1}
+				echo -en "\E[32m$random_letter"
+			fi
+		x=$((x + 1))
+		if [ $x -ge $(tput cols) ]; then
+			x=0
+			y=$((y + 1))
+		fi
+		done
 
-        for i in {1..4}; do
-            tput cup $y $x
-
-            if [ $((RANDOM % 2)) -eq 0 ]; then
-                # Display a random symbol
-                random_symbol=${symbols:$((RANDOM % ${#symbols})):1}
-                echo -en "\E[36m$random_symbol"
-            else
-                # Display a random letter
-                random_letter=${letters:$((RANDOM % ${#letters})):1}
-                echo -en "\E[32m$random_letter"
-            fi
-
-            x=$((x + 1))
-            if [ $x -ge $(tput cols) ]; then
-                x=0
-                y=$((y + 1))
-            fi
-        done
-        # Check for ESC key press
-        read -n 1 -s -t 0.1 key
-        if [[ $key == $'\e' ]]; then
-            clear
-            break
-        fi
-        sleep 0.5  # Adjust to desired speed
-        clear
-    done
+	# Check for ESC key press
+	read -n 1 -s -t 0.1 key
+	if [[ $key == $'\e' ]]; then
+		clear
+		break
+	fi
+	sleep 0.5  # Adjust to desired speed
+	clear
+	done
 }
 
 ####
 xanim() { 
-    local anim_name="animate.ANS"
-    local anim_url="url"
-    local home_directory="$HOME"
-    local anim_path="$home_directory/$anim_name"
+	local anim_name="animate.ANS"
+	local anim_url="url"
+	local home_directory="$HOME"
+	local anim_path="$home_directory/$anim_name"
+	local SPEED=".005" # wait this time each line
 
-    local SPEED=".005" # wait this time each line
-
-    # Check if the script exists in the home directory
-    if [ -f "$anim_path" ]; then
-        # Disable cursor
-        printf "\e[?25l"
-        # Download, convert, display slow == play animation
-        curl --silent "$anim_url" | iconv -f cp437 -t utf-8 | awk "{system(\"sleep $SPEED\");print}"
-        # Enable cursor
-        printf "\e[?12l\e[?25h"
-    else
-        # Download the script from the URL
-        wget -O "$anim_path" "$anim_url"
-        if [ $? -eq 0 ]; then
-            # Disable cursor
-            printf "\e[?25l"
-            # Download, convert, display slow == play animation
-            curl --silent "$anim_url" | iconv -f cp437 -t utf-8 | awk "{system(\"sleep $SPEED\");print}"
-            # Enable cursor
-            printf "\e[?12l\e[?25h"
-        fi
-    fi
+	# Check if the script exists in the home directory
+	if [ -f "$anim_path" ]; then
+		# Disable cursor
+		printf "\e[?25l"
+		# Download, convert, display slow == play animation
+		curl --silent "$anim_url" | iconv -f cp437 -t utf-8 | awk "{system(\"sleep $SPEED\");print}"
+		# Enable cursor
+		printf "\e[?12l\e[?25h"
+	else
+		# Download the script from the URL
+		wget -O "$anim_path" "$anim_url"
+		if [ $? -eq 0 ]; then
+			# Disable cursor
+			printf "\e[?25l"
+			# Download, convert, display slow == play animation
+			curl --silent "$anim_url" | iconv -f cp437 -t utf-8 | awk "{system(\"sleep $SPEED\");print}"
+			# Enable cursor
+			printf "\e[?12l\e[?25h"
+		fi
+	fi
 }
+
