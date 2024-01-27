@@ -105,9 +105,15 @@ for option in autocd globstar; do
 	shopt -s "$option" 2> /dev/null
 done
 
+# if [ -n "${BASH_VERSION}" ]; then
+#  filepath="${HOME}/.screensavers"
+#  if [ -f "$filepath" ]; then
+#    source "$filepath"
+#  fi
+# fi
+
 for file in ~/.{bash_prompt,aliases,exports,functions}; do
 	if [[ -r "$file" ]] && [[ -f "$file" ]]; then
-		# shellcheck source=/dev/null
 		source "$file"
 	fi
 done
