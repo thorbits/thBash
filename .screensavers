@@ -158,22 +158,17 @@ xlights() {
 	done
 }
 
-
 ####
 matrix() { 
 	local script_name="matrix.sh"
 	local script_url="https://bruxy.regnet.cz/linux/matrix/matrix.sh"
-	local home_directory="$HOME"
-	local script_path="$home_directory/$script_name"
+	local home_dir="$HOME"
+	local script_path="$home_dir/$script_name"
 
-	# Check if the script exists in the home directory
 	if [ -f "$script_path" ]; then
 		bash "$script_path"
 	else
-		wget -O "$script_path" "$script_url"
-		if [ $? -eq 0 ]; then
-			bash "$script_path"
-		fi
+		wget -O "$script_path" "$script_url" && bash "$script_path"
 	fi
 }
 
@@ -181,17 +176,13 @@ matrix() {
 fire() { 
 	local script_name="fire.sh"
 	local script_url="https://bruxy.regnet.cz/linux/flames/fire.sh"
-	local home_directory="$HOME"
-	local script_path="$home_directory/$script_name"
+	local home_dir="$HOME"
+	local script_path="$home_dir/$script_name"
 
-	# Check if the script exists in the home directory
 	if [ -f "$script_path" ]; then
 		bash "$script_path"
 	else
-		wget -O "$script_path" "$script_url"
-		if [ $? -eq 0 ]; then
-			bash "$script_path"
-		fi
+		wget -O "$script_path" "$script_url" && bash "$script_path"
 	fi
 }
 
