@@ -262,7 +262,7 @@ fire() {
 ####
 anim() { 
     local anim_name="animate.ANS"
-    local anim_url="https://16colo.rs/pack/acdu1092/raw/BRTRACD2.ANS"
+    local anim_url="url"
     local home_directory="$HOME"
     local anim_path="$home_directory/$anim_name"
 
