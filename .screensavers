@@ -130,23 +130,7 @@ matrix6() {
 }
 
 ####
-xlights1() { 
-	clear
-	while :
-	do
-		echo -ne "\033[$((1+RANDOM%LINES));$((1+RANDOM%COLUMNS))H\033[$((RANDOM%2));3$((RANDOM%8))m$((RANDOM%10))"
-		# Check for ESC key press
-		read -n 1 -s -t 0.1 key
-		if [[ $key == $'\e' ]]; then
-			clear
-			break
-		fi
-		sleep 0.01 # Adjust to desired speed
-	done
-}
-
-####
-xlights2() { 
+xlights() { 
     clear
     while true
     do
@@ -176,7 +160,43 @@ xlights2() {
 }
 
 ####
-xblocks() { 
+matrix() {
+    local script_name="matrix.sh"
+    local script_url="https://bruxy.regnet.cz/linux/matrix/matrix.sh"
+    local home_directory="$HOME"
+    local script_path="$home_directory/$script_name"
+
+    # Check if the script exists in the home directory
+    if [ -f "$script_path" ]; then
+        bash "$script_path"
+    else
+        wget -O "$script_path" "$script_url"
+        if [ $? -eq 0 ]; then
+            bash "$script_path"
+        fi
+    fi
+}
+
+####
+fire() {
+    local script_name="fire.sh"
+    local script_url="https://bruxy.regnet.cz/linux/flames/fire.sh"
+    local home_directory="$HOME"
+    local script_path="$home_directory/$script_name"
+
+    # Check if the script exists in the home directory
+    if [ -f "$script_path" ]; then
+        bash "$script_path"
+    else
+        wget -O "$script_path" "$script_url"
+        if [ $? -eq 0 ]; then
+            bash "$script_path"
+        fi
+    fi
+}
+
+####
+xtest() { 
     clear
     symbols="!@#$%^&*()-=_+[]{}|;:',.<>/?"
     letters="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
@@ -216,51 +236,7 @@ xblocks() {
 }
 
 ####
-matrix() {
-    local script_name="matrix.sh"
-    local script_url="https://bruxy.regnet.cz/linux/matrix/matrix.sh"
-    local home_directory="$HOME"
-    local script_path="$home_directory/$script_name"
-
-    # Check if the script exists in the home directory
-    if [ -f "$script_path" ]; then
-        bash "$script_path"
-    else
-        # Download the script from the URL
-        wget -O "$script_path" "$script_url"
-        if [ $? -eq 0 ]; then
-            # Make the script executable
-            # chmod +x "$script_path"
-            # Execute the downloaded script
-            bash "$script_path"
-        fi
-    fi
-}
-
-####
-fire() {
-    local script_name="fire.sh"
-    local script_url="https://bruxy.regnet.cz/linux/flames/fire.sh"
-    local home_directory="$HOME"
-    local script_path="$home_directory/$script_name"
-
-    # Check if the script exists in the home directory
-    if [ -f "$script_path" ]; then
-        bash "$script_path"
-    else
-        # Download the script from the URL
-        wget -O "$script_path" "$script_url"
-        if [ $? -eq 0 ]; then
-            # Make the script executable
-            # chmod +x "$script_path"
-            # Execute the downloaded script
-            bash "$script_path"
-        fi
-    fi
-}
-
-####
-anim() { 
+xanim() { 
     local anim_name="animate.ANS"
     local anim_url="url"
     local home_directory="$HOME"
