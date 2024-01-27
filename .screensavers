@@ -117,7 +117,7 @@ matrix5() {
 }
 
 ####
-xlights() { 
+xlights1() { 
 	clear
 	while :
 	do
@@ -133,16 +133,7 @@ xlights() {
 }
 
 ####
-xblocks() { 
-    for i in {0..7}; do
-        for j in 91 92 93 88; do
-            echo -en "\E[3${i}m\u25$j"
-        done
-    done
-}
-
-####
-xblocks1() { 
+xlights2() { 
     clear
     while true
     do
@@ -171,7 +162,8 @@ xblocks1() {
     done
 }
 
-xblocks2() { 
+####
+xblocks() { 
     clear
     symbols="!@#$%^&*()-=_+[]{}|;:',.<>/?"
     letters="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
@@ -208,5 +200,28 @@ xblocks2() {
         sleep 0.5  # Adjust to desired speed
         clear
     done
+}
+
+####
+matrix() {
+    local script_name="matrix.sh"
+    local script_url="https://github.com/victorhundo/matrix-script/blob/master/matrix.sh"
+    local home_directory="$HOME"
+    local script_path="$home_directory/$script_name"
+
+    # Check if the script exists in the home directory
+    if [ -f "$script_path" ]; then
+        echo "Executing existing script: $script_name"
+        bash "$script_path"
+    else
+        # Download the script from the URL
+        wget -O "$script_path" "$script_url"
+        if [ $? -eq 0 ]; then
+            # Make the script executable
+            # chmod +x "$script_path"
+            # Execute the downloaded script
+            bash "$script_path"
+        fi
+    fi
 }
 
