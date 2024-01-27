@@ -141,3 +141,32 @@ xblocks() {
     done
 }
 
+####
+xblocks1() { 
+    clear
+    while true
+    do
+        for i in {0..7}; do
+            x=$(($RANDOM % $(tput cols)))
+            y=$(($RANDOM % $(tput lines)))
+
+            for j in 91 92 93 88; do
+                tput cup $y $x
+                echo -en "\E[3${i}m\u25$j"
+                x=$((x + 1))
+                if [ $x -ge $(tput cols) ]; then
+                    x=0
+                    y=$((y + 1))
+                fi
+            done
+        done
+		# Check for ESC key press
+		read -n 1 -s -t 0.1 key
+		if [[ $key == $'\e' ]]; then
+			clear
+			break
+		fi
+        sleep 0.5  # Adjust to desired speed
+        clear
+    done
+}
