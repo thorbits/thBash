@@ -205,7 +205,7 @@ xblocks() {
 ####
 matrix() {
     local script_name="matrix.sh"
-    local script_url="https://github.com/victorhundo/matrix-script/blob/master/matrix.sh"
+    local script_url="https://bruxy.regnet.cz/linux/matrix/matrix.sh"
     local home_directory="$HOME"
     local script_path="$home_directory/$script_name"
 
