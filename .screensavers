@@ -160,13 +160,53 @@ xblocks1() {
                 fi
             done
         done
-		# Check for ESC key press
-		read -n 1 -s -t 0.1 key
-		if [[ $key == $'\e' ]]; then
-			clear
-			break
-		fi
+        # Check for ESC key press
+        read -n 1 -s -t 0.1 key
+        if [[ $key == $'\e' ]]; then
+            clear
+            break
+        fi
         sleep 0.5  # Adjust to desired speed
         clear
     done
 }
+
+xblocks2() { 
+    clear
+    symbols="!@#$%^&*()-=_+[]{}|;:',.<>/?"
+    letters="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+
+    while true; do
+        x=$(($RANDOM % $(tput cols)))
+        y=$(($RANDOM % $(tput lines)))
+
+        for i in {1..4}; do
+            tput cup $y $x
+
+            if [ $((RANDOM % 2)) -eq 0 ]; then
+                # Display a random symbol
+                random_symbol=${symbols:$((RANDOM % ${#symbols})):1}
+                echo -en "\E[36m$random_symbol"
+            else
+                # Display a random letter
+                random_letter=${letters:$((RANDOM % ${#letters})):1}
+                echo -en "\E[32m$random_letter"
+            fi
+
+            x=$((x + 1))
+            if [ $x -ge $(tput cols) ]; then
+                x=0
+                y=$((y + 1))
+            fi
+        done
+        # Check for ESC key press
+        read -n 1 -s -t 0.1 key
+        if [[ $key == $'\e' ]]; then
+            clear
+            break
+        fi
+        sleep 0.5  # Adjust to desired speed
+        clear
+    done
+}
+
