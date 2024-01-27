@@ -55,29 +55,15 @@ matrix2() {
 			clear
 			break
 		fi
+		sleep 0.1  # Adjust to desired speed
 	done
 }
 
 ####
 matrix3() { 
-	while true
-	do
-		tr -c "[:alnum:][:punct:]" " " < /dev/urandom | dd cbs=$COLUMNS conv=unblock | GREP_COLOR="1;32" grep --color "[^ ]"
-		# Check for ESC key press
-		read -n 1 -s -t 0.1 key
-		if [[ $key == $'\e' ]]; then
-			clear
-			break
-		fi
-	done
-}
-
-####
-matrix4() { 
 	local COL=$(( $(tput cols) / 2 ))
 	clear
 	tput setaf 2
-
 	while true
 	do
 		tput cup $((RANDOM%COL)) $((RANDOM%COL))
@@ -88,11 +74,12 @@ matrix4() {
 			clear
 			break
 		fi
+		sleep 0.1  # Adjust to desired speed
 	done
 }
 
 ####
-matrix5() { 
+matrix4() { 
 	perl -MTerm::ReadKey -e '
 		use Term::ANSIColor;
 		$|++;
