@@ -225,3 +225,48 @@ matrix() {
     fi
 }
 
+####
+fire() {
+    local script_name="matrix.sh"
+    local script_url="https://bruxy.regnet.cz/linux/flames/fire.sh"
+    local home_directory="$HOME"
+    local script_path="$home_directory/$script_name"
+
+    # Check if the script exists in the home directory
+    if [ -f "$script_path" ]; then
+        echo "Executing existing script: $script_name"
+        bash "$script_path"
+    else
+        # Download the script from the URL
+        wget -O "$script_path" "$script_url"
+        if [ $? -eq 0 ]; then
+            # Make the script executable
+            # chmod +x "$script_path"
+            # Execute the downloaded script
+            bash "$script_path"
+        fi
+    fi
+}
+
+####
+anim() { 
+    local anim_name="animate.ANS"
+    local anim_url="https://16colo.rs/pack/acdu1092/raw/BRTRACD2.ANS"
+    local home_directory="$HOME"
+    local anim_path="$home_directory/$script_name"
+
+    local SPEED="$.005" # wait this time each line
+
+    # Check if the script exists in the home directory
+    if [ -f "$script_path" ]; then
+        echo "Executing existing script: $script_name"
+        bash "$script_path"
+    else
+    # Disable cursor
+    printf "\e[?25l"
+    # Download, convert, display slow == play animation
+    curl --silent "$ANIMATION" | iconv -f cp437 -t utf-8 | awk "{system(\"sleep $SPEED\");print}"
+
+    # 3. Enable cursor settings
+    printf "\e[?12l\e[?25h"
+}
