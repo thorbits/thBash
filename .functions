@@ -42,7 +42,7 @@
 ##############################################################################################################
 
 if [ -n "${BASH_VERSION}" ]; then
-  filepath="${HOME}/.fun_tions"
+  filepath="${HOME}/.fun_ctions"
   if [ -f "$filepath" ]; then
     source "$filepath"
   fi
