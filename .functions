@@ -6,7 +6,7 @@
 #
 #	My bash config
 
-##############################################################################################################
+####################################################################################################
 # Description of the included funtions, () indicate required package(s).
 #
 # SYSTEM UPDATE
@@ -20,8 +20,8 @@
 # cppr		: copy file with a progress bar, usage: cppr source destination (rsync)
 # cppv		: copy file with a progress bar, usage: cppv source destination (pv)
 # cputemp	: display CPU temperature, Debian only, usage: get_temp (lm-Sensors)
-# extract	: extract any archive(s) to a specified directory, usage: extract -d /path/to/dir archive1.tar.gz archive2.zip
-# fds		: display sorted total disk size of file(s) and sub-directories, usage: fds /path/to/dir
+# extract	: extract any archive(s), usage: extract -d /path/to/dir archive1.tar.gz archive2.zip
+# fds		: display total disk size of file(s) and sub-directories, usage: fds /path/to/dir
 # mkcd		: create and go to the directory, usage: mkcd /path/to/dir
 # mvg		: move and go to the directory, usage: mvg source destination
 # openimg	: use feh to nicely view images, usage: openimage /path/to/image.jpg (feh)
@@ -34,12 +34,12 @@
 # sduck		: search DuckDuckGo and display in terminal, usage: ddg mysearch (links)
 # swiki		: query Wikipedia via console over DNS, usage: mwiki your query (bind9-host)
 # snews		: display latest news from a pre-given site, usage: snews (links)
-# youplay	: play a youtube link in 1080p fullscreen, to quit press q, usage: youplay https://www.youtube.com/watch?v=example (mpv yt-dlp)
+# youplay	: play a youtube link, usage: youplay https://www.youtube.com/watch?v=example (mpv yt-dlp)
 #
 # SCREENSAVERS
-# matrix1-6	: matrix effects, usage: matrix1
+# matrix1-6	: matrix style effects, usage: matrix1
 # xlights1-2	: colored lights, usage: xlights1
-##############################################################################################################
+####################################################################################################
 
 if [ -n "${BASH_VERSION}" ]; then
   filepath="${HOME}/.screensavers"
