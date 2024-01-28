@@ -159,6 +159,20 @@ fire() {
 }
 
 ####
+unimatrix() { 
+	local script_name="unimatrix.py"
+	local script_url="https://github.com/will8211/unimatrix/blob/master/unimatrix.py"
+	local home_dir="$HOME"
+	local script_path="$home_dir/$script_name"
+
+	if [ -f "$script_path" ]; then
+		python3 "$script_path"
+	else
+		wget -O "$script_path" "$script_url" && python3 "$script_path"
+	fi
+}
+
+####
 xtest() { 
 	clear
 	symbols="!@#$%^&*()-=_+[]{}|;:',.<>/?"
