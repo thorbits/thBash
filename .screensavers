@@ -227,20 +227,3 @@ xanim() {
 	fi
 }
 
-####
-create() [ 
-echo 'echo "
-#!/bin/bash
-e=echo\ -e X=$1 Y=$[(X*5)/16] M=`eval $e {1..$[X*Y]}`  ####### 
-P=`eval $e {1..$X}}`;for i in $M; do S=$S"0";done;u=0;  ######
-B=(" " "\E[0;31m."  "\E[0;31m:" "\E[1;31m+" "\E[0;33m+"  #####
-"\E[1;33mU" "\E[1;33mW");$e "\E[2J\E[?25l";while true;do  ####
-p='';for j in $P;do p=$p$[$RANDOM%2*9];done; [ $u -gt 0 ] \
-&&O=${C:0:$[X*(Y-1)]}$p; [ $[u++] -eq 0 ] && O=$S$p;C=''  ####
-S=''; for p in $M; do a=${O:$[p+X-1]:1} b=${O:$[p+X]:1}  #####
-c=${O:$[p+X+1]:1}  d=${O:$[p+X+X]:1} v=$[ (a+b+c+d)/4]  ######
-C=$C$v S=$S${B[$v]}; done; $e "\E[1;1f";$e "$S";done   #BruXy#
-"' > script.sh
-chmod +x script.sh
-./script.sh
-}
