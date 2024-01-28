@@ -28,7 +28,7 @@
 # openimg	: use feh to nicely view images, usage: openimage /path/to/image.jpg (feh)
 # parabar	: display a progress bar, usage: parabar 1000 10 0.5 (parallel)
 # pbar		: display a progress bar, usage: pbar 100
-# right		: align input to the right of the screen, usage: yourcommand | right
+# right		: right align output of a command, usage: right ls -a
 # tmpd		: make a temporary directory and enter it, usage: 'tmpd' or 'tmpd mydir'
 #
 # WEB COMMANDS
@@ -366,7 +366,7 @@ swiki() {
 
 ####
 snews() { 
-links $( a=( $( lynx -dump -listonly "https://radiocanadamini.ca/a-la-une/articles/" | grep -Eo "(http|https)://[a-zA-Z0-9./?=_-]*" | grep -v "radiocanadamini.ca/a-la-une/articles/" | sort | uniq ) ) ; amax=${#a[@]} ; n=$(( `date '+%s'` % $amax )) ; echo ${a[n]} )
+	links $( a=( $( lynx -dump -listonly "https://radiocanadamini.ca/a-la-une/articles/" | grep -Eo "(http|https)://[a-zA-Z0-9./?=_-]*" | grep -v "radiocanadamini.ca/a-la-une/articles/" | sort | uniq ) ) ; amax=${#a[@]} ; n=$(( `date '+%s'` % $amax )) ; echo ${a[n]} )
 }
 
 ####
