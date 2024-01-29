@@ -164,8 +164,7 @@ xansi() {
     local download_url=$(curl -s "$ans_url" | grep -oE 'href="[^"]+\.ans"' | cut -d'"' -f2 | shuf -n 1)
     local ans_name=$(basename "$download_url")
     local home_directory="$HOME"
-    local ans_path="$home_directory/$ans_name"
-    local SPEED=".005" # wait this time each line
+    local ans_path="$home_directory/ansi/$ans_name"
 
     # Download the .ans file
     wget -O "$ans_path" "${ans_url}${download_url}"
@@ -234,21 +233,21 @@ xanim() {
 
 	# Check if the script exists in the home directory
 	if [ -f "$anim_path" ]; then
-		# Disable cursor
+		# disable cursor
 		printf "\e[?25l"
-		# Download, convert, display slow == play animation
-		curl --silent "$anim_url" | iconv -f cp437 -t utf-8 | awk "{system(\"sleep $SPEED\");print}"
-		# Enable cursor
+		# play animation
+		curl --silent "$anim_path" | iconv -f cp437 -t utf-8 | awk "{system(\"sleep $SPEED\");print}"
+		# enable cursor
 		printf "\e[?12l\e[?25h"
 	else
-		# Download the script from the URL
+		# download the script from the URL
 		wget -O "$anim_path" "$anim_url"
 		if [ $? -eq 0 ]; then
-			# Disable cursor
+			# disable cursor
 			printf "\e[?25l"
-			# Download, convert, display slow == play animation
-			curl --silent "$anim_url" | iconv -f cp437 -t utf-8 | awk "{system(\"sleep $SPEED\");print}"
-			# Enable cursor
+			# play animation
+			curl --silent "$anim_path" | iconv -f cp437 -t utf-8 | awk "{system(\"sleep $SPEED\");print}"
+			# enable cursor
 			printf "\e[?12l\e[?25h"
 		fi
 	fi
