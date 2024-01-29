@@ -164,92 +164,19 @@ xansi() {
     local download_url=$(curl -s "$ans_url" | grep -oE 'href="[^"]+\.ans"' | cut -d'"' -f2 | shuf -n 1)
     local ans_name=$(basename "$download_url")
     local home_directory="$HOME"
-    local ans_path="$home_directory/ansi/$ans_name"
+    local ans_path="$home_directory/$ans_name"
+    local SPEED=".005" # wait this time each line
 
     # Download the .ans file
-    wget -O "$ans_path" "${ans_url}${download_url}"
+    wget -O "$ans_path" "$ans_url$download_url"
 
     # Play the downloaded .ans file
     if [ -f "$ans_path" ]; then
-        xanim() {
-            # Disable cursor
-            printf "\e[?25l"
-            # Play animation
-            cat "$ans_path" | iconv -f cp437 -t utf-8 | awk "{system(\"sleep $SPEED\");print}"
-            # Enable cursor
-            printf "\e[?12l\e[?25h"
-        }
-
-        xanim
+        # Disable cursor
+        printf "\e[?25l"
+        # Play animation
+        cat "$ans_path" | iconv -f cp437 -t utf-8 | awk "{system(\"sleep $SPEED\");print}"
+        # Enable cursor
+        printf "\e[?12l\e[?25h"
     fi
 }
-
-####
-xtest() { 
-	clear
-	symbols="!@#$%^&*()-=_+[]{}|;:',.<>/?"
-	letters="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-
-	while true
-	do
-		x=$(($RANDOM % $(tput cols)))
-		y=$(($RANDOM % $(tput lines)))
-		for i in {1..4}; do
-			tput cup $y $x
-			if [ $((RANDOM % 2)) -eq 0 ]; then
-				# Display a random symbol
-				random_symbol=${symbols:$((RANDOM % ${#symbols})):1}
-				echo -en "\E[36m$random_symbol"
-			else
-				# Display a random letter
-				random_letter=${letters:$((RANDOM % ${#letters})):1}
-				echo -en "\E[32m$random_letter"
-			fi
-		x=$((x + 1))
-		if [ $x -ge $(tput cols) ]; then
-			x=0
-			y=$((y + 1))
-		fi
-		done
-
-	# Check for ESC key press
-	read -n 1 -s -t 0.1 key
-	if [[ $key == $'\e' ]]; then
-		clear
-		break
-	fi
-	sleep 0.5  # Adjust to desired speed
-	clear
-	done
-}
-
-####
-xanim() { 
-	local anim_name="animate.ANS"
-	local anim_url="url"
-	local home_directory="$HOME"
-	local anim_path="$home_directory/$anim_name"
-	local SPEED=".005" # wait this time each line
-
-	# Check if the script exists in the home directory
-	if [ -f "$anim_path" ]; then
-		# disable cursor
-		printf "\e[?25l"
-		# play animation
-		curl --silent "$anim_path" | iconv -f cp437 -t utf-8 | awk "{system(\"sleep $SPEED\");print}"
-		# enable cursor
-		printf "\e[?12l\e[?25h"
-	else
-		# download the script from the URL
-		wget -O "$anim_path" "$anim_url"
-		if [ $? -eq 0 ]; then
-			# disable cursor
-			printf "\e[?25l"
-			# play animation
-			curl --silent "$anim_path" | iconv -f cp437 -t utf-8 | awk "{system(\"sleep $SPEED\");print}"
-			# enable cursor
-			printf "\e[?12l\e[?25h"
-		fi
-	fi
-}
-
