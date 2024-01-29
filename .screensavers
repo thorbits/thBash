@@ -159,17 +159,30 @@ fire() {
 }
 
 ####
-unimatrix() { 
-	local script_name="unimatrix.py"
-	local script_url="https://github.com/will8211/unimatrix/blob/master/unimatrix.py"
-	local home_dir="$HOME"
-	local script_path="$home_dir/$script_name"
+xansi() { 
+    local ans_url="http://artscene.textfiles.com/ansi/welcomes/"
+    local download_url=$(curl -s "$ans_url" | grep -oE 'href="[^"]+\.ans"' | cut -d'"' -f2 | shuf -n 1)
+    local ans_name=$(basename "$download_url")
+    local home_directory="$HOME"
+    local ans_path="$home_directory/$ans_name"
+    local SPEED=".005" # wait this time each line
 
-	if [ -f "$script_path" ]; then
-		python3 "$script_path"
-	else
-		wget -O "$script_path" "$script_url" && python3 "$script_path"
-	fi
+    # Download the .ans file
+    wget -O "$ans_path" "${ans_url}${download_url}"
+
+    # Play the downloaded .ans file
+    if [ -f "$ans_path" ]; then
+        xanim() {
+            # Disable cursor
+            printf "\e[?25l"
+            # Play animation
+            cat "$ans_path" | iconv -f cp437 -t utf-8 | awk "{system(\"sleep $SPEED\");print}"
+            # Enable cursor
+            printf "\e[?12l\e[?25h"
+        }
+
+        xanim
+    fi
 }
 
 ####
