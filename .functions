@@ -29,6 +29,7 @@
 # parabar	: display a progress bar, usage: parabar 1000 10 0.5 (parallel)
 # pbar		: display a progress bar, usage: pbar 100
 # right		: right align output of a command, usage: right ls -a
+# search	: search the whole disk for a given input, usage: search filename*
 # tmpd		: make a temporary directory and enter it, usage: 'tmpd' or 'tmpd mydir'
 #
 # WEB COMMANDS
@@ -333,6 +334,12 @@ right() {
 	while read -r line; do
 		printf "%*s%s\n" "$((COLUMNS - max_length))" "" "$line"
 	done <<< "$input"
+}
+
+####
+search() { 
+    local filename="$1"
+    find / -type f -iname $filename*
 }
 
 ####
