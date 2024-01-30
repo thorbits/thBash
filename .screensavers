@@ -15,11 +15,13 @@
 matrix1() { 
 	clear
 	echo -e "\e[32m"  # Set text color to green
-	while :; do
+	while true
+	do
 		for _ in {1..160}; do
-			r=$((RANDOM % 2))
+			r=$(echo -e "\x$(printf %x $((RANDOM % 93 + 33)))")
+			# r=$((RANDOM % 2))
 			if [[ $((RANDOM % 5)) == 1 ]]; then
-				if [[ $((RANDOM % 4)) == 1 ]]; then
+				if [[ $((RANDOM % 3)) == 1 ]]; then
 					v+="\e[1m $r "  # Bold characters
 				else
 					v+="\e[2m $r "  # Dim characters
@@ -32,12 +34,12 @@ matrix1() {
 			v=""
 			
 		# Check for ESC key press
-		read -n 1 -s -t 0.1 key
+		read -n 1 -s -t 0.00001 key
 		if [[ $key == $'\e' ]]; then
 			clear
 			break
 		fi
-		sleep 0.05  # Adjust to desired speed	
+		sleep 0.00001  # Adjust to desired speed	
 	done
 }
 
@@ -50,12 +52,12 @@ matrix2() {
 		echo -ne "\e[$(($RANDOM % 2 + 1))m"
 		tr -c "[:alnum:][:punct:]" " " < /dev/urandom | dd count=1 bs=50 2> /dev/null
 		# Check for ESC key press
-		read -n 1 -s -t 0.1 key
+		read -n 1 -s -t 0.009 key
 		if [[ $key == $'\e' ]]; then
 			clear
 			break
 		fi
-		sleep 0.0001  # Adjust to desired speed
+		sleep 0.009  # Adjust to desired speed
 	done
 }
 
@@ -67,7 +69,9 @@ matrix3() {
 	while true
 	do
 		tput cup $((RANDOM%COL)) $((RANDOM%COL))
-		printf "%$((RANDOM%COL))s" $((RANDOM%2))
+		# Generate a random character (letter, number, or symbol)
+		random_char=$(echo -e "\x$(printf %x $((RANDOM % 93 + 33)))")
+		printf "%$((RANDOM%COL))s"  "$random_char"
 		# Check for ESC key press
 		read -n 1 -s -t 0.0001 key
 		if [[ $key == $'\e' ]]; then
