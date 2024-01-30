@@ -169,11 +169,20 @@ xansi() {
 
 	# Download the .ans file
 	wget -O "$ans_path" "$ans_url$download_url"
-	# Disable cursor
-	printf "\e[?25l"
-	# Play animation
-	# cat "basename" | iconv -f cp437 -t utf-8 | awk "{system(\"sleep $SPEED\");print}"
-	# Enable cursor
-        printf "\e[?12l\e[?25h"
+
+	# Play the downloaded .ans file
+	if [ -f "$ans_path" ]; then
+		xanim() {
+			# Disable cursor
+			printf "\e[?25l"
+			# Play animation
+			cat "$ans_path" | iconv -f cp437 -t utf-8 | awk "{system(\"sleep $SPEED\");print}"
+			# Enable cursor
+			printf "\e[?12l\e[?25h"
+		}
+
+		xanim
+	fi
 }
+
 
