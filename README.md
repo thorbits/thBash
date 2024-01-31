@@ -22,7 +22,7 @@
 >      autojump bc bind9-host curl eza feh figlet git lolcat links lynx lm-sensors lolcat make man-db mpv nala neofetch neovim parallel pv rsync sudo tldr vim yt-dlp wget
 
 - <img src="https://github.com/devicons/devicon/blob/master/icons/fedora/fedora-original.svg" width="32" height="32">
->      bc bind9-host curl eza feh figlet git lolcat links lynx lolcat make man-db mpv neofetch neovim parallel pv rsync sudo tldr vim yt-dlp wget
+>      bc curl eza feh figlet git lolcat links lynx lolcat make man-db mpv neofetch neovim parallel pv rsync sudo tldr vim yt-dlp wget
 
 </div>
 
