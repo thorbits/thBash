@@ -69,8 +69,8 @@ draw_bar() {
 		else
 			printf '\033[K%s' "$(tput rev)$(get_shell)$(printf '%*s' $((COLUMNS-95)) ' ')| $(cpu) | $(get_mem) | $(get_pip) | $(get_date) $(tput sgr0)"
 		fi
-	done
 	break
+	done
 	tput rc
 }
 
