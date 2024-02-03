@@ -45,7 +45,7 @@ alias lf='du -h --max-depth=1 | more'
 alias sudo='sudo '
 alias reboot='if [ $(id -u) -eq 0 ]; then reboot; else sudo reboot; fi'
 alias poweroff='if [ $(id -u) -eq 0 ]; then poweroff; else sudo poweroff; fi'
-alias nf='echo -e '\e[2J\n'; neofetch'
+alias nf='clear; neofetch'
 
 # Github commands
 alias gitcred='git config --global credential.helper store' # verify status with: git config --get-all --global credential.helper
