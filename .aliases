@@ -44,6 +44,7 @@ alias lf='du -h --max-depth=1 | more'
 # System commands
 alias sudo='sudo '
 alias reboot='if [ $(id -u) -eq 0 ]; then reboot; else sudo reboot; fi'
+alias poweroff='if [ $(id -u) -eq 0 ]; then poweroff; else sudo poweroff; fi'
 alias nf='echo -e '\e[2J\n'; neofetch'
 
 # Github commands
