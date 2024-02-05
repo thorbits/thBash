@@ -39,7 +39,7 @@
 # youplay	: play a youtube link, usage: youplay https://www.youtube.com/watch?v=example (mpv yt-dlp)
 #
 # SCREENSAVERS
-#fire		: a bash script, usage: fire
+# fire		: a bash script, usage: fire
 # matrix	: a bash script, usage: matrix
 # xlights	: random colored blocks, usage: xlights
 ####################################################################################################
