@@ -88,7 +88,7 @@ autojump() {
 			elif [ -f "/usr/share/autojump/autojump.bash" ]; then
 				. /usr/share/autojump/autojump.bash
 			else
-				echo "Can't find the autojump script."
+				echo " - Autojump script not installed."
 			fi
 			;;
 		"arch")
