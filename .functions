@@ -15,7 +15,7 @@
 #
 # GENERAL COMMANDS
 # calc		: simple calculator, usage: calc 2x2
-# cdg		: change directory easily, to go up two directories for example usage: cdg 2 
+# cdg		: change directory easily, for example to go up two directories: cdg 2 
 # cdown		: colored countdown, usage: cdown 10 (figlet lolcat)
 # cpg		: copy and go to the directory, usage: cpg source destination
 # cppr		: copy file with a progress bar, usage: cppr source destination (rsync)
