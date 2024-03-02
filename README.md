@@ -16,7 +16,7 @@
 #### The following packages are suggested,
 
 - <img src="https://listimg.pinclipart.com/picdir/s/344-3444076_arch-linux-logo-png-clipart.png" width="32" height="32">
->      bc bind9-host curl eza feh figlet git lolcat links lynx lolcat make man-db mpv neofetch neovim parallel pv rsync sudo tldr vim yt-dlp wget
+>      bc curl eza feh figlet git lolcat links lynx lolcat make man-db mpv neofetch neovim parallel pv rsync sudo tldr vim yt-dlp wget
 
 - <img src="https://github.com/devicons/devicon/blob/master/icons/debian/debian-original.svg" width="32" height="32">
 >      autojump bc bind9-host curl eza feh figlet git lolcat links lynx lm-sensors lolcat make man-db mpv nala neofetch neovim parallel pv rsync sudo tldr vim yt-dlp wget
