@@ -25,7 +25,7 @@
 
 </div>
 <div>
-  <p><br><br></p>
+  <p><br></p>
   
 #### The following dependencies can be installed with setup.sh
 
