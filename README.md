@@ -25,7 +25,7 @@
   <p><br><br><br></p>
 
 #### The following dependencies can be installed with setup.sh
-
+</div>
 - <img src="https://github.com/devicons/devicon/blob/master/icons/archlinux/archlinux-original.svg" width="32" height="32">
 >      bc curl eza feh figlet git lolcat links lynx lolcat make man-db mpv fastfetch neovim parallel pv rsync sudo tldr vim yt-dlp wget
 
