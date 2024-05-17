@@ -9,7 +9,7 @@
 
 </div>
 <div>
-  <p><br><br></p>
+  <p><br></p>
   
 #### To install this config
 
