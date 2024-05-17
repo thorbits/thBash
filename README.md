@@ -8,7 +8,7 @@
 ## *Welcome to my bash config*
 
 </div>
-<div align="center">
+<div>
   <p><br><br></p>
   
 #### To install this config
@@ -23,7 +23,7 @@
   -  Once installed, to see a description of the included functions, simply type:  *fulist*
 
 </div>
-<div align="center">
+<div>
   <p><br><br></p>
   
 #### The following dependencies can be installed with setup.sh
