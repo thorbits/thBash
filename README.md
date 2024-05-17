@@ -13,7 +13,18 @@
 <div>
   <br><br>
 
-#### The following packages are suggested,
+#### To install this config,
+-
+  -  Go to cloned repo directory and type: *make install*.
+  -  After shell is refreshed type: *exit*
+  -  Once installed, to see a description of the included functions, simply type:  *fulist*
+
+</div>
+
+<div align="center">
+  <p><br><br><br><br></p>
+
+#### The following dependencies can be installed with setup.sh
 
 - <img src="https://github.com/devicons/devicon/blob/master/icons/archlinux/archlinux-original.svg" width="32" height="32">
 >      bc curl eza feh figlet git lolcat links lynx lolcat make man-db mpv fastfetch neovim parallel pv rsync sudo tldr vim yt-dlp wget
@@ -31,18 +42,7 @@
 
 <div>
   <br>
-    
-#### To install this config,
--
-  -  Go to cloned repo directory and type: *make install*.
-  -  After shell is refreshed type: *exit*
-  -  Once installed, to see a description of the included functions, simply type:  *fulist*
 
-</div>
-
-<div align="center">
-  <p><br><br><br><br></p>
-  
 ## *About me*
 
 </div>
