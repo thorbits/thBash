@@ -10,8 +10,8 @@
 
 </div>
 
-<div>
-  <br><br>
+<div align="center">
+  <p><br><br><br></p>
 
 #### To install this config,
 -
