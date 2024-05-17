@@ -22,7 +22,7 @@
 </div>
 
 <div align="center">
-  <p><br><br><br><br></p>
+  <p><br><br><br></p>
 
 #### The following dependencies can be installed with setup.sh
 
