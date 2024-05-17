@@ -18,6 +18,7 @@
 </div>
 
 <div>
+  
 - 
   -  Go to cloned repo directory and type: *make install*.
   -  After shell is refreshed type: *exit*
