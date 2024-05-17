@@ -1,4 +1,11 @@
 #!/bin/bash
+#
+#	_______
+#	\_   _/
+#	  |_|horbits 
+#
+#	My bash config
+
 
 RC='\e[0m'
 RED='\e[31m'
@@ -9,6 +16,39 @@ command_exists() {
     command -v $1 >/dev/null 2>&1
 }
 
+# Check the current distribution
+distribution () {
+	local dtype="unknown"  # Default to unknown
+
+	# Use /etc/os-release for modern distro identification
+	if [ -r /etc/os-release ]; then
+		source /etc/os-release
+		case $ID in
+			fedora|rhel|centos)
+				dtype="redhat"
+				;;
+			sles|opensuse*)
+				dtype="suse"
+				;;
+			ubuntu|debian)
+				dtype="debian"
+				;;
+			gentoo)
+				dtype="gentoo"
+				;;
+			arch)
+				dtype="arch"
+				;;
+			slackware)
+				dtype="slackware"
+				;;
+			*)
+				# If ID is not recognized, keep dtype as unknown
+				;;
+		esac
+	fi
+}
+
 checkEnv() {
     ## Check for requirements.
     REQUIREMENTS='curl groups sudo'
@@ -17,8 +57,8 @@ checkEnv() {
         exit 1
     fi
 
-    ## Check Package Handeler
-    PACKAGEMANAGER='apt yum dnf pacman zypper'
+    ## Check Package manager.
+    PACKAGEMANAGER='apt dnf pacman zypper'
     for pgm in ${PACKAGEMANAGER}; do
         if command_exists ${pgm}; then
             PACKAGER=${pgm}
@@ -38,7 +78,7 @@ checkEnv() {
         exit 1
     fi
 
-    ## Check SuperUser Group
+    ## Check SuperUser group.
     SUPERUSERGROUP='wheel sudo root'
     for sug in ${SUPERUSERGROUP}; do
         if groups | grep ${sug}; then
@@ -52,10 +92,41 @@ checkEnv() {
         echo -e "${RED}You need to be a member of the sudo group to run me!"
         exit 1
     fi
-
 }
 
-installDepend() {
+# Automatically install the needed support files for this .bashrc file
+install_bashrc_support() {
+	local dtype
+	dtype=$(distribution)
+
+	case $dtype in
+ 		"arch")
+			sudo paru multitail tree zoxide trash-cli fzf bash-completion fastfetch
+			;;
+		"debian")
+			sudo apt-get install multitail tree zoxide trash-cli fzf bash-completion
+			# Fetch the latest fastfetch release URL for linux-amd64 deb file
+			FASTFETCH_URL=$(curl -s https://api.github.com/repos/fastfetch-cli/fastfetch/releases/latest | grep "browser_download_url.*linux-amd64.deb" | cut -d '"' -f 4)
+			
+			# Download the latest fastfetch deb file
+			curl -sL $FASTFETCH_URL -o /tmp/fastfetch_latest_amd64.deb
+			
+			# Install the downloaded deb file using apt-get
+			sudo apt-get install /tmp/fastfetch_latest_amd64.deb
+			;;
+   		"redhat")
+			sudo dnf install multitail tree zoxide trash-cli fzf bash-completion fastfetch
+			;;
+		"suse")
+			sudo zypper install multitail tree zoxide trash-cli fzf bash-completion fastfetch
+			;;
+		*)
+			echo "Unknown distribution"
+			;;
+	esac
+}
+
+install_dependencies() {
     ## Check for dependencies.
     DEPENDENCIES='bash bash-completion tar neovim bat tree multitail fastfetch'
     echo -e "${YELLOW}Installing dependencies...${RC}"
@@ -82,36 +153,6 @@ installDepend() {
     fi
 }
 
-installStarship() {
-    if command_exists starship; then
-        echo "Starship already installed"
-        return
-    fi
-
-    if ! curl -sS https://starship.rs/install.sh | sh; then
-        echo -e "${RED}Something went wrong during starship install!${RC}"
-        exit 1
-    fi
-    if command_exists fzf; then
-        echo "Fzf already installed"
-    else
-        git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-        ~/.fzf/install
-    fi
-}
-
-installZoxide() {
-    if command_exists zoxide; then
-        echo "Zoxide already installed"
-        return
-    fi
-
-    if ! curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh; then
-        echo -e "${RED}Something went wrong during zoxide install!${RC}"
-        exit 1
-    fi
-}
-
 install_additional_dependencies() {
    sudo apt update
    sudo apt install -y trash-cli bat meld jpico
@@ -133,14 +174,11 @@ linkConfig() {
     echo -e "${YELLOW}Linking new bash config file...${RC}"
     ## Make symbolic link.
     ln -svf ${GITPATH}/.bashrc ${USER_HOME}/.bashrc
-    ln -svf ${GITPATH}/starship.toml ${USER_HOME}/.config/starship.toml
 }
 
 checkEnv
-installDepend
-installStarship
-installZoxide
-install_additional_dependencies
+install_dependencies
+## install_additional_dependencies
 
 if linkConfig; then
     echo -e "${GREEN}Done!\nrestart your shell to see the changes.${RC}"
