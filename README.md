@@ -4,10 +4,12 @@
   </p>
 </div>
 <div align="center">
+  
 ## *Welcome to my bash config*
 </div>
 <div align="center">
   <p><br><br><br></p>
+  
 #### To install this config
 </div>
 <div>
@@ -22,6 +24,7 @@
 </div>
 <div align="center">
   <p><br><br></p>
+  
 #### The following dependencies can be installed with setup.sh
 </div>
 <div>
