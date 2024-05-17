@@ -6,11 +6,13 @@
 <div align="center">
   
 ## *Welcome to my bash config*
+
 </div>
 <div align="center">
   <p><br><br><br></p>
   
 #### To install this config
+
 </div>
 <div>
   
@@ -26,6 +28,7 @@
   <p><br><br></p>
   
 #### The following dependencies can be installed with setup.sh
+
 </div>
 <div>
   
@@ -42,7 +45,6 @@
 >      bc curl eza feh figlet git lolcat links lynx lolcat make man-db mpv fastfetch neovim parallel pv rsync sudo tldr vim yt-dlp wget
 
 </div>
-
 <div align="center">
   <p><br><br><br></p>
 
