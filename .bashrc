@@ -110,4 +110,9 @@ for file in ~/.{bash_prompt,aliases,exports,functions,screensavers}; do
 		source "$file"
 	fi
 done
+
+if [ -f usr/bin/fastfetch ]; then
+fastfetch
+fi
+
 unset file
