@@ -15,7 +15,8 @@
 
 </div>
 <div>
-  
+  <p><br></p>
+
 -
   -  First clone this repo: *git clone* https://github.com/thorbits/thBash.git
   -  Go to cloned repo directory and type: *make install*
@@ -30,6 +31,7 @@
 
 </div>
 <div>
+  <p><br></p>
   
 - <img src="https://github.com/devicons/devicon/blob/master/icons/archlinux/archlinux-original.svg" width="32" height="32">
 >      bc curl eza feh figlet git lolcat links lynx lolcat make man-db mpv fastfetch neovim parallel pv rsync sudo tldr vim yt-dlp wget
