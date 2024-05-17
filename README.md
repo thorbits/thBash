@@ -18,8 +18,7 @@
 </div>
 
 <div>
-  -
-  
+- 
   -  Go to cloned repo directory and type: *make install*.
   -  After shell is refreshed type: *exit*
   -  Once installed, to see a description of the included functions, simply type:  *fulist*
