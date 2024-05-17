@@ -40,8 +40,8 @@
 
 </div>
 
-<div>
-  <br>
+<div align="center">
+  <p><br><br><br></p>
 
 ## *About me*
 
