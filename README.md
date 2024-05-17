@@ -19,7 +19,7 @@
 - 
 
   -  First clone this repo: git clone https://github.com/thorbits/thBash.git
-  -  Go to cloned repo directory and type: *make install*. 
+  -  Go to cloned repo directory and type: *make install*
   -  After shell is refreshed type: *exit*
   -  Once installed, to see a description of the included functions, simply type:  *fulist*
 
