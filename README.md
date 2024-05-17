@@ -17,7 +17,6 @@
 <div>
   
 -
-
   -  First clone this repo: *git clone* https://github.com/thorbits/thBash.git
   -  Go to cloned repo directory and type: *make install*
   -  After shell is refreshed type: *exit*
