@@ -3,36 +3,27 @@
     <img src="https://github.com/devicons/devicon/blob/master/icons/bash/bash-plain.svg" width="128" height="128">
   </p>
 </div>
-
 <div align="center">
-
 ## *Welcome to my bash config*
-
 </div>
-
 <div align="center">
   <p><br><br><br></p>
-
 #### To install this config
-
 </div>
-
 <div>
   
 - 
-  -  Go to cloned repo directory and type: *make install*.
+
+  -  First clone this repo: git clone https://github.com/thorbits/thBash.git
+  -  Go to cloned repo directory and type: *make install*. 
   -  After shell is refreshed type: *exit*
   -  Once installed, to see a description of the included functions, simply type:  *fulist*
 
 </div>
-
 <div align="center">
   <p><br><br></p>
-
 #### The following dependencies can be installed with setup.sh
-
 </div>
-
 <div>
   
 - <img src="https://github.com/devicons/devicon/blob/master/icons/archlinux/archlinux-original.svg" width="32" height="32">
