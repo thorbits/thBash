@@ -13,7 +13,7 @@
 <div align="center">
   <p><br><br><br></p>
 
-#### To install this config,
+#### To install this config
 -
   -  Go to cloned repo directory and type: *make install*.
   -  After shell is refreshed type: *exit*
@@ -22,10 +22,11 @@
 </div>
 
 <div align="center">
-  <p><br><br><br></p>
+  <p><br><br></p>
 
 #### The following dependencies can be installed with setup.sh
 </div>
+<div>
 - <img src="https://github.com/devicons/devicon/blob/master/icons/archlinux/archlinux-original.svg" width="32" height="32">
 >      bc curl eza feh figlet git lolcat links lynx lolcat make man-db mpv fastfetch neovim parallel pv rsync sudo tldr vim yt-dlp wget
 
