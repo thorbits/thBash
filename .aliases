@@ -58,4 +58,4 @@ alias h10="history | awk '{print \$2}' | sort | uniq -c | sort -nr | head"
 alias diskspeed='time (dd if=/dev/zero of=zerofile bs=1M count=500;sync);rm zerofile'
 alias rope='if [[ "$i" == "0" ]]; then cd $dir; i=1; else dir=$(pwd); export dir; i=0; fi'
 alias funfact='wget randomfunfacts.com -O - 2>/dev/null | grep \<strong\> | sed "s;^.*<i>\(.*\)</i>.*$;\1;"'
-alias linus="wget -qO - https://raw.githubusercontent.com/torvalds/linux/master/Makefile | head -n5 | grep -E '\ \=\ [0-9]{1,}' | cut -d' ' -f3 | tr '\n' '.' | sed -e "s/\.$//""
+alias linus="curl -s https://www.kernel.org/ | grep -oP '(?<=<strong>)[^<]+(?=</strong>)' | head -n 2 | tail -n 1"
