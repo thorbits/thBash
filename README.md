@@ -47,10 +47,17 @@
 
 </div>
 <div align="center">
-  <p><br><br><br></p>
+  <p><br><br><br><br><br></p>
+</div>
+
+<div align="center">
+  <p>
+    <img src="https://github.com/devicons/devicon/blob/master/fonts/devicon.svg" width="128" height="128">
+  </p>
+</div>
+<div align="center">
 
 ## *About me*
-
 </div>
 
 <div align="center">
