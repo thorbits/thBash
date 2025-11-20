@@ -18,7 +18,7 @@
   <p><br></p>
 
 -
-  -  Clone this repo -
+  -  Clone this repo
   ```bash
   git clone https://github.com/thorbits/thBash.git
   ```
