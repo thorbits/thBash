@@ -18,10 +18,19 @@
   <p><br></p>
 
 -
-  -  First clone this repo: *git clone* https://github.com/thorbits/thBash.git
-  -  Go to cloned repo directory and type: *make install*
-  -  After shell is refreshed type: *exit*
-  -  Once installed, to see a description of the included functions, simply type:  *fulist*
+  -  First clone this repo -
+  ```bash
+  git clone* https://github.com/thorbits/thBash.git
+  ```
+  -  Go to cloned repo directory and type
+    ```bash
+  make install
+  ```
+  -  After shell is refreshed type: exit
+  -  Once installed, to see a description of the included functions, simply type
+   ```bash
+  fulist
+  ```
 
 </div>
 <div>
