@@ -11,24 +11,27 @@
 <div>
   <p><br></p>
   
-#### To install this config
+#### Installation
 
 </div>
 <div>
   <p><br></p>
 
 -
-  -  First clone this repo -
+  -  Clone this repo -
   ```bash
-  git clone* https://github.com/thorbits/thBash.git
+  git clone https://github.com/thorbits/thBash.git
   ```
   -  Go to cloned repo directory and type
-    ```bash
+  ```bash
   make install
   ```
-  -  After shell is refreshed type: exit
-  -  Once installed, to see a description of the included functions, simply type
-   ```bash
+  -  After the shell is refreshed type
+  ```bash
+  exit
+  ```
+  -  Once installed, to see a description of the included functions, type
+  ```bash
   fulist
   ```
 
